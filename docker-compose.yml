@@ -24,8 +24,7 @@ services:
     depends_on:
       - mongodb
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_DB=${MONGO_INITDB_URL}
     env_file:
       - .env
 
