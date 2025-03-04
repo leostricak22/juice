@@ -38,4 +38,6 @@ yarn-error.*
 app-example
 
 .env.development
+.env.production
 .idea
+.android
