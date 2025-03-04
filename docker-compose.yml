@@ -29,20 +29,15 @@ services:
       - .env
 
   frontend:
-    image: node:22-alpine
+    build: ./apps/frontend
     container_name: frontend_container
     restart: always
-    working_dir: /app
     ports:
-      - "3000:8081"
-    volumes:
-      - ./apps/frontend:/app
-      - /app/node_modules
+      - "80:80"
     depends_on:
       - backend
-    command: sh -c "npm install && npm start"
     environment:
-      - EXPO_PUBLIC_API_URL=http://backend:8085
+      - EXPO_PUBLIC_API_URL=http://backend:5000
     env_file:
       - .env
 
