@@ -8,6 +8,7 @@ class PadelApplicationTests {
 
 	@Test
 	void contextLoads() {
+		// This test is empty
 	}
 
 }
