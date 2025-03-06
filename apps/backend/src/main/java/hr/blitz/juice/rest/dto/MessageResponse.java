@@ -8,4 +8,8 @@ import lombok.Data;
 public class MessageResponse {
 
     String message;
+
+    public String toJsonString() {
+        return "{\"message\":\"" + message + "\"}";
+    }
 }

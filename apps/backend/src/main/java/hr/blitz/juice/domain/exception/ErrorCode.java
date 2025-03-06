@@ -9,7 +9,8 @@ public enum ErrorCode {
     UNAUTHORIZED(401, "user is not authorized", HttpStatus.UNAUTHORIZED),
     FORBIDDEN(403, "user is not permited for this action", HttpStatus.FORBIDDEN),
     NOT_FOUND(404, "not found", HttpStatus.NOT_FOUND),
-    CONFLICT(409, "resource already exists", HttpStatus.CONFLICT);
+    CONFLICT(409, "resource already exists", HttpStatus.CONFLICT),
+    INTERNAL_SERVER_ERROR(500, "internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
 
     private final int code;
     private final String message;

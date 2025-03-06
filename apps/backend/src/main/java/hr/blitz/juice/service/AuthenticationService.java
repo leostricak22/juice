@@ -12,8 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import static hr.blitz.juice.domain.exception.ErrorCode.CONFLICT;
-import static hr.blitz.juice.domain.exception.ErrorCode.UNAUTHORIZED;
+import static hr.blitz.juice.domain.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor

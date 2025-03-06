@@ -1,5 +1,6 @@
 package hr.blitz.juice.config.security;
 
+import hr.blitz.juice.domain.exception.AppException;
 import hr.blitz.juice.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -28,42 +29,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
-    ) throws ServletException, IOException {
+    ) throws ServletException, IOException, AppException {
         final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String username;
 
-        if (authHeader == null || !authHeader.startsWith("Bearer")) {
-            filterChain.doFilter(request, response);
-            return;
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String jwt = authHeader.substring(7);
+
+            try {
+                String username = jwtService.extractUsername(jwt);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+                if (jwtService.isTokenValid(jwt, userDetails) &&
+                        SecurityContextHolder.getContext().getAuthentication() == null) {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities()
+                    );
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
+            } catch (Exception _) {}
         }
 
-        System.out.println(authHeader);
-        jwt = authHeader.substring(7);
-
-        try {
-            username = jwtService.extractUsername(jwt);
-        } catch (Exception ex) {
-            logger.error("Error extracting username from JWT: " + ex.getMessage());
-            return;
-        }
-
-        if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username); // load user object by username
-
-            if(!jwtService.isTokenValid(jwt, userDetails)) {
-                return;
-            }
-
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                    userDetails,
-                    null,
-                    userDetails.getAuthorities()
-            );
-
-            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authToken);
-        }
         filterChain.doFilter(request, response);
     }
 }

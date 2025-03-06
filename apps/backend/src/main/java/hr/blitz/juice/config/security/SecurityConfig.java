@@ -1,5 +1,8 @@
 package hr.blitz.juice.config.security;
 
+import hr.blitz.juice.domain.exception.AppException;
+import hr.blitz.juice.domain.exception.ErrorCode;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,8 +36,18 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((_, response, _) -> {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.setContentType("application/json");
+                            response.setCharacterEncoding("UTF-8");
+                            response.getWriter().write(
+                                    new AppException(ErrorCode.UNAUTHORIZED, "Invalid or missing JWT token")
+                                            .toMessageResponse()
+                                            .toJsonString());
+                        })
+                );
         return http.build();
     }
 }
