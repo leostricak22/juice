@@ -25,6 +25,7 @@ services:
       - mongodb
     environment:
       - MONGO_INITDB_DB=${MONGO_INITDB_URL}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
     env_file:
       - .env
 
@@ -36,8 +37,6 @@ services:
       - "80:80"
     depends_on:
       - backend
-    environment:
-      - EXPO_PUBLIC_API_URL=http://backend:5000
     env_file:
       - .env
 

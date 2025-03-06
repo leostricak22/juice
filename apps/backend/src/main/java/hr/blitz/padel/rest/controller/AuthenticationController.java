@@ -19,15 +19,10 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
     private final ModelMapper modelMapper;
 
-    @GetMapping("/sessionUser")
-    public ResponseEntity<User> getAllUsers() {
-        return ResponseEntity.ok(authenticationService.findUserBySessionUsername());
-    }
-
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/validate")
-    public ResponseEntity<Boolean> validateToken() {
-        return ResponseEntity.ok(true);
+    @GetMapping("/user")
+    public ResponseEntity<User> user() {
+        return ResponseEntity.ok(authenticationService.findUserBySessionUsername());
     }
 
     @PostMapping("/register")
