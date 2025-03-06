@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "padel",
-    "slug": "padel",
+    "name": "juice",
+    "slug": "juice",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./app/assets/images/icon.png",
@@ -16,7 +16,7 @@
         "foregroundImage": "./app/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.padel"
+      "package": "com.anonymous.juice"
     },
     "web": {
       "bundler": "metro",

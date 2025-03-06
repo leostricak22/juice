@@ -6,13 +6,13 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.4.3</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 	<groupId>hr.blitz</groupId>
-	<artifactId>padel</artifactId>
+	<artifactId>juice</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>padel</name>
-	<description>Padel project for TVZ Mc2 competition</description>
+	<name>Juice</name>
+	<description>Juice is a project created for the TVZ Mc2 competition</description>
 	<url/>
 	<licenses>
 		<license/>
