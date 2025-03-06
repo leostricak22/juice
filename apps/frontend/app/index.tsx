@@ -17,7 +17,7 @@ export default function Index() {
 
     const handleBackendCheck = async () => {
         try {
-            const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/`);
+            const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/test`);
 
             if (!response.ok) {
                 alert("Error while connecting to the backend!");
@@ -32,7 +32,7 @@ export default function Index() {
 
     const handleDatabaseCheck = async () => {
         try {
-            const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/test/db`);
+            const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/test/db`);
 
             if (!response.ok) {
                 alert("Error while connecting to the database!");
