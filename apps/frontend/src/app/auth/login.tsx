@@ -37,7 +37,7 @@ function Login() {
 
         if (!isValidMessageResponse(response)) {
             // TODO: Handle error
-            console.log((response as MessageResponse).message);
+            alert((response as MessageResponse).message);
             return;
         }
 
