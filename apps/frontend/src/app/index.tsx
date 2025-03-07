@@ -2,6 +2,10 @@ import {View, Text, Button, StyleSheet} from "react-native";
 import {Link} from "expo-router";
 
 export default function Index() {
+    if (typeof window === 'undefined') {
+        return null;
+    }
+
     return (
         <View style={styles.container}>
             <Link href={"/auth/login"} asChild>

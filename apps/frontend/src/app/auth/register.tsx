@@ -12,6 +12,7 @@ import {isValidMessageResponse} from "@/src/utils/Validation";
 
 function Register() {
     const router = useRouter();
+
     const [formData, setFormData] = useState<RegisterRequest>({
         name: "",
         surname: "",
@@ -81,7 +82,7 @@ function Register() {
                 placeholder="Confirm Password"
                 value=""
             />
-            <ActionButton text={"Login"} onClick={handleSubmit} />
+            <ActionButton text={"Register"} onClick={handleSubmit} />
             <Link href="/auth/login" asChild><Text>Already have an account? Login here.</Text></Link>
         </View>
     );
