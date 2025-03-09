@@ -17,4 +17,7 @@ public class PropertiesConfig {
 
     @Value("${spring.security.oauth2.client.registration.google.client-secret}")
     private String googleClientSecret;
+
+    @Value("${FRONTEND_URL}")
+    private String frontendUrl;
 }

@@ -1,5 +1,6 @@
 package hr.blitz.juice.config.security;
 
+import hr.blitz.juice.config.PropertiesConfig;
 import hr.blitz.juice.domain.model.User;
 import hr.blitz.juice.service.JwtService;
 import org.springframework.context.annotation.Bean;
@@ -14,21 +15,21 @@ import jakarta.servlet.http.HttpServletResponse;
 public class SecurityBeans {
 
     private final JwtService jwtService;
+    private final PropertiesConfig propertiesConfig;
 
-    public SecurityBeans(JwtService jwtService) {
+    public SecurityBeans(JwtService jwtService, PropertiesConfig propertiesConfig) {
         this.jwtService = jwtService;
+        this.propertiesConfig = propertiesConfig;
     }
 
     @Bean
     public AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
-        return (HttpServletRequest request, HttpServletResponse response, Authentication authentication) -> {
+        return (HttpServletRequest _, HttpServletResponse response, Authentication authentication) -> {
             UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
             User user = userPrincipal.getUser();
             String token = jwtService.generateToken(user);
 
-            System.out.println("JWT token is: " + token);
-
-            String redirectUrl = "http://localhost:8081/auth/callback?token=" + token;
+            String redirectUrl = propertiesConfig.getFrontendUrl() + "/auth/callback?token=" + token;
             response.sendRedirect(redirectUrl);
         };
     }
