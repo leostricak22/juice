@@ -12,6 +12,9 @@ export default function Index() {
                 <Button title={"Login"} />
             </Link>
             <Text>test</Text>
+            <Link href={`${process.env.EXPO_PUBLIC_API_URL}/oauth2/authorization/google`} asChild>
+                <Button title={"Google login"} />
+            </Link>
         </View>
     )
 }

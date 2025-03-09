@@ -6,11 +6,18 @@ import hr.blitz.juice.repository.UserRepository;
 import hr.blitz.juice.rest.dto.AuthenticationRequest;
 import hr.blitz.juice.rest.dto.AuthenticationResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+
 
 import static hr.blitz.juice.domain.exception.ErrorCode.*;
 

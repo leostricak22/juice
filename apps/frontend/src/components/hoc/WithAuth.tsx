@@ -9,7 +9,7 @@ const withAuth = (WrappedComponent: React.ComponentType<any>) => {
         const { userData, loading } = useUserData();
 
         if (loading) {
-            return <Text>Loading...</Text>;
+            return <Text>Loading...{process.env.EXPO_PUBLIC_API_URL}</Text>;
         }
 
         if (!userData) {

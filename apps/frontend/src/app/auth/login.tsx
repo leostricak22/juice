@@ -9,6 +9,8 @@ import MessageResponse from "@/src/models/dto/MessageResponse";
 import {isValidMessageResponse} from "@/src/utils/Validation";
 import {Link, useRouter} from "expo-router";
 import WithNoAuth from "@/src/components/hoc/WithNoAuth";
+import * as WebBrowser from 'expo-web-browser';
+import * as Linking from 'expo-linking';
 
 function Login() {
     const router = useRouter();
@@ -45,6 +47,11 @@ function Login() {
         router.replace("/dashboard");
     };
 
+    const handleGoogleLogin = async () => {
+        const authUrl = `${process.env.EXPO_PUBLIC_API_URL}/oauth2/authorization/google`;
+        await WebBrowser.openBrowserAsync(authUrl);
+    };
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Login</Text>
@@ -59,6 +66,7 @@ function Login() {
                 onInputChange={(event) => handleFormChange("password", event)}
             />
             <ActionButton text={"Login"} onClick={handleSubmit} />
+            <ActionButton text={"Google Login"} onClick={handleGoogleLogin} />
             <Link href="/auth/register" asChild><Text>Don't have an account? Register here.</Text></Link>
         </View>
     );
@@ -79,4 +87,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default WithNoAuth(Login);
+export default Login;

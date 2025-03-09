@@ -26,6 +26,8 @@ services:
     environment:
       - MONGO_INITDB_DB=${MONGO_INITDB_URL}
       - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
     env_file:
       - .env
 

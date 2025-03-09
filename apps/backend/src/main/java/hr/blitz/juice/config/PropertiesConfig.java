@@ -11,4 +11,10 @@ import org.springframework.context.annotation.PropertySource;
 public class PropertiesConfig {
     @Value("${SECRET_KEY}")
     private String secretKey;
+
+    @Value("${spring.security.oauth2.client.registration.google.client-id}")
+    private String googleClientId;
+
+    @Value("${spring.security.oauth2.client.registration.google.client-secret}")
+    private String googleClientSecret;
 }

@@ -9,7 +9,7 @@ const WithNoAuth = (WrappedComponent: React.ComponentType<any>) => {
         const { userData, loading } = useUserData();
 
         if (loading) {
-            return <Text>Loading...</Text>;
+            return <Text>Loading...aa{process.env.EXPO_PUBLIC_API_URL}</Text>;
         }
 
         if (userData) {
