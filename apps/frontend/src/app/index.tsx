@@ -8,22 +8,28 @@ export default function Index() {
 
     return (
         <View style={styles.container}>
-            <Link href={"/auth/login"} asChild>
-                <Button title={"Login"} />
-            </Link>
-            <Text>test</Text>
-            <Link href={`${process.env.EXPO_PUBLIC_API_URL}/oauth2/authorization/google`} asChild>
-                <Button title={"Google login"} />
-            </Link>
+            <Text style={{fontWeight:"bold"}}>Dobrodošli u aplikaciju Juice</Text>
+            <Text>Juice olakšava rezerviranje dvorana za padel, praćenja rezultata, prijava na turnire te mnogo drugih stvari.</Text>
+            <Text>Da biste nastavili, molimo Vas da se prijavite</Text>
+            <View style={styles.loginButton}>
+                <Link href={"/auth/login"} asChild>
+                    <Button title={"Login"} />
+                </Link>
+            </View>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
+        padding: 10,
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        gap: 10,
         backgroundColor: 'white',
+    },
+    loginButton: {
+        paddingTop: 20,
+        width: '100%',
+        maxWidth: 400,
     },
 })
