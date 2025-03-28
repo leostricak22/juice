@@ -29,7 +29,8 @@ public class SecurityBeans {
             User user = userPrincipal.getUser();
             String token = jwtService.generateToken(user);
 
-            String redirectUrl = propertiesConfig.getFrontendUrl() + "/auth/callback?token=" + token;
+            String redirectUrl = propertiesConfig.getFrontendUrl() + "auth/callback?token=" + token;
+            System.out.println(redirectUrl);
             response.sendRedirect(redirectUrl);
         };
     }

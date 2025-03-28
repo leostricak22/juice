@@ -1,22 +1,26 @@
 {
   "expo": {
     "name": "juice",
-    "slug": "juice",
+    "slug": "padel",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./app/assets/images/icon.png",
-    "scheme": "com.blitz.juice",
+    "scheme": "juice",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.blitz.juice",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./app/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.juice"
+      "package": "com.blitz.juice"
     },
     "web": {
       "bundler": "metro",

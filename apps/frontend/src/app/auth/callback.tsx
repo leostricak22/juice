@@ -1,38 +1,24 @@
-import { useRouter, useLocalSearchParams } from 'expo-router';
-import { View, Text, ActivityIndicator } from 'react-native';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { View, Text } from 'react-native';
 
-export default function AuthCallback() {
+export default function CallbackScreen() {
+    const params = useLocalSearchParams(); // Get query params (like "token")
     const router = useRouter();
-    const params = useLocalSearchParams();
-
-    const [token, setToken] = useState('');
-
-    const handleAuthCallback = (token: string) => {
-        console.log('Received token:', token);
-        setToken(token);
-    };
+    const [token, setToken] = useState<string | null>(null);
 
     useEffect(() => {
-        const { token }:any = params;
-
-        if (token) {
-            handleAuthCallback(token);
+        if (params.token) {
+            setToken(params.token as string);
         } else {
-            console.log('No token received');
-            router.replace('/auth/login');
+            router.replace("/auth/login")
         }
     }, [params]);
 
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            {
-                token ? <Text>{token}</Text> :
-                    <>
-                        <ActivityIndicator size="large" />
-                        <Text>Processing authentication...</Text>
-                    </>
-            }
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Token:</Text>
+            <Text>{token || 'No token found'}</Text>
         </View>
     );
 }
