@@ -10,6 +10,8 @@ import {isValidMessageResponse} from "@/src/utils/Validation";
 import ActionButton from "@/src/components/button/ActionButton";
 import Input from "@/src/components/input/Input";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import WithAuth from "@/src/components/hoc/WithAuth";
+import WithNoAuth from "@/src/components/hoc/WithNoAuth";
 
 const GOOGLE_AUTH_URL =  process.env.EXPO_PUBLIC_API_URL + '/oauth2/authorization/google';
 
@@ -123,4 +125,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Login;
+export default WithNoAuth(Login);

@@ -1,19 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'expo-router';
 import useUserData from '@/src/hooks/useUserData';
 import { Text } from 'react-native';
 
-const WithNoAuth = (WrappedComponent: React.ComponentType<any>) => {
-    return function WithNoAuth(props: any) {
+const WithNoAuth = (WrappedComponent:any) => {
+    return function WithNoAuth(props:any) {
         const router = useRouter();
         const { userData, loading } = useUserData();
 
+        useEffect(() => {
+            if (!loading && userData) {
+                router.replace('/dashboard');
+            }
+        }, [loading, userData, router]);
+
         if (loading) {
-            return <Text>Loading...aa{process.env.EXPO_PUBLIC_API_URL}</Text>;
+            return <Text>Loading...</Text>;
         }
 
         if (userData) {
-            router.replace('/dashboard');
             return null;
         }
 
