@@ -20,4 +20,7 @@ public class PropertiesConfig {
 
     @Value("${FRONTEND_URL}")
     private String frontendUrl;
+
+    @Value("${APP_ANDROID_URL}")
+    private String appAndroidUrl;
 }

@@ -11,6 +11,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import static java.util.Objects.isNull;
+
 @Configuration
 public class SecurityBeans {
 
@@ -24,13 +26,27 @@ public class SecurityBeans {
 
     @Bean
     public AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
-        return (HttpServletRequest _, HttpServletResponse response, Authentication authentication) -> {
+        return (HttpServletRequest request, HttpServletResponse response, Authentication authentication) -> {
             UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
             User user = userPrincipal.getUser();
             String token = jwtService.generateToken(user);
 
-            String redirectUrl = propertiesConfig.getFrontendUrl() + "auth/callback?token=" + token;
-            System.out.println(redirectUrl);
+            String userAgent = request.getHeader("User-Agent").toLowerCase();
+            boolean isMobile = userAgent.contains("mobile") ||
+                    userAgent.contains("android") ||
+                    userAgent.contains("iphone");
+
+            String redirectUri = request.getParameter("redirect_uri");
+            if (isNull(redirectUri) || redirectUri.isEmpty()) {
+                redirectUri = propertiesConfig.getFrontendUrl() + "/auth/callback";
+            }
+
+            String redirectUrl = redirectUri + "?token=" + token;
+
+            if (isMobile) {
+                redirectUrl = propertiesConfig.getAppAndroidUrl()+"auth/callback?token=" + token;
+            }
+
             response.sendRedirect(redirectUrl);
         };
     }
