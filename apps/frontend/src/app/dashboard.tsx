@@ -4,20 +4,23 @@ import React from "react";
 import PageProps from "@/src/types/PageProps";
 import ActionButton from "@/src/components/button/ActionButton";
 import {useRouter} from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Dashboard: React.FC<PageProps> = ({ userData }) => {
     const router = useRouter();
 
-    const handleLogout = () => {
-        localStorage.removeItem("token");
+    const handleLogout = async () => {
+        await AsyncStorage.removeItem('token');
         router.replace("/auth/login");
     }
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Welcome, {userData.username}</Text>
-            <Text style={styles.subtitle}>Your email is {userData.email}</Text>
-            <ActionButton text={"Logout"} onClick={handleLogout} />
+            <View style={styles.content}>
+                <Text style={styles.title}>Welcome, {userData.name}</Text>
+                <Text style={styles.subtitle}>Your email is {userData.email}</Text>
+                <ActionButton text={"Logout"} onClick={handleLogout} />
+            </View>
         </View>
     );
 }
@@ -27,9 +30,17 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        width: 400,
+        width: "100%",
         gap: 10,
         margin: "auto",
+    },
+    content: {
+        flex: 1,
+        width: "100%",
+        maxWidth: 500,
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 10,
     },
     title: {
         fontSize: 36,

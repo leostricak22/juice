@@ -1,7 +1,8 @@
 import dataFetch from "@/src/utils/DataFetch";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const getUserData = async () => {
-    const token = localStorage.getItem("token");
+    const token = await AsyncStorage.getItem('token');
 
     if (!token) {
         return null;

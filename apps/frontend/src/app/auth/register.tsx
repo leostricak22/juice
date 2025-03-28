@@ -9,6 +9,7 @@ import AuthenticationResponse from "@/src/models/dto/AuthenticationResponse";
 import MessageResponse from "@/src/models/dto/MessageResponse";
 import dataFetch from "@/src/utils/DataFetch";
 import {isValidMessageResponse} from "@/src/utils/Validation";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function Register() {
     const router = useRouter();
@@ -46,7 +47,7 @@ function Register() {
             return;
         }
 
-        localStorage.setItem('token', (response as AuthenticationResponse).token);
+        await AsyncStorage.setItem("token", (response as AuthenticationResponse).token);
         router.replace("/dashboard");
     };
 

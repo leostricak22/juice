@@ -1,4 +1,5 @@
 import MessageResponse from "@/src/models/dto/MessageResponse";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default async function dataFetch<T>(
     url: string,
@@ -9,7 +10,7 @@ export default async function dataFetch<T>(
         method: method,
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
+            'Authorization': 'Bearer ' + await AsyncStorage.getItem('token')
         },
         body: JSON.stringify(data)
     });

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import dataFetch from "@/src/utils/DataFetch";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const useUserData = () => {
     const [userData, setUserData] = useState<any>(null);
@@ -14,7 +15,7 @@ const useUserData = () => {
 
     const fetchUserData = async () => {
         setLoading(true);
-        const token = localStorage.getItem("token");
+        const token = await AsyncStorage.getItem("token");
 
         if (!token) {
             if (isMounted.current) {

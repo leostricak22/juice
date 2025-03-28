@@ -1,24 +1,28 @@
-import { useEffect, useState } from 'react';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect } from 'react';
+import {UnknownOutputParams, useLocalSearchParams, useRouter} from 'expo-router';
 import { View, Text } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function CallbackScreen() {
-    const params = useLocalSearchParams(); // Get query params (like "token")
+    const params = useLocalSearchParams();
     const router = useRouter();
-    const [token, setToken] = useState<string | null>(null);
 
     useEffect(() => {
-        if (params.token) {
-            setToken(params.token as string);
-        } else {
-            router.replace("/auth/login")
+        const checkToken = async (params:UnknownOutputParams) => {
+            if (params.token) {
+                await AsyncStorage.setItem("token", params.token as string);
+                router.replace("/dashboard");
+            } else {
+                router.replace("/auth/login")
+            }
         }
+
+        checkToken(params).then(r => r);
     }, [params]);
 
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Token:</Text>
-            <Text>{token || 'No token found'}</Text>
+        <View>
+            <Text>Loading...</Text>
         </View>
     );
 }
