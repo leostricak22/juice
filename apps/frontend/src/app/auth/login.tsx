@@ -1,5 +1,13 @@
 import React, {useState} from 'react';
-import {Alert, Platform, StyleSheet, NativeSyntheticEvent, TextInputChangeEventData, View, Text} from 'react-native';
+import {
+    Alert,
+    Platform,
+    StyleSheet,
+    NativeSyntheticEvent,
+    TextInputChangeEventData,
+    View,
+    Text, Pressable,
+} from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import LoginRequest from "@/src/models/dto/LoginRequest";
 import {Link, useRouter} from "expo-router";
@@ -10,8 +18,9 @@ import {isValidMessageResponse} from "@/src/utils/Validation";
 import ActionButton from "@/src/components/button/ActionButton";
 import Input from "@/src/components/input/Input";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import WithAuth from "@/src/components/hoc/WithAuth";
 import WithNoAuth from "@/src/components/hoc/WithNoAuth";
+
+import textStyles from "@/assets/styles/text";
 
 const GOOGLE_AUTH_URL =  process.env.EXPO_PUBLIC_API_URL + '/oauth2/authorization/google';
 
@@ -80,14 +89,14 @@ const Login: React.FC = () => {
                         placeholder="Password"
                         value={formData.password}
                         onInputChange={(event:any) => handleFormChange("password", event)}
+                        type={"password"}
                     />
                     <ActionButton text={"Login"} onClick={handleSubmit} />
-                    <ActionButton
-                        text={"Google Login"}
-                        onClick={handleGoogleLogin}
-                    />
+                    <ActionButton text={"Sign in with Google"} color={"black"} onClick={handleGoogleLogin} />
                     <Link href="/auth/register" asChild>
-                        <Text>Don't have an account? Register here.</Text>
+                        <Text style={textStyles.text}>Don't have an account? Register&nbsp;
+                            <Text style={textStyles.link}>here</Text>.
+                        </Text>
                     </Link>
                 </View>
             </View>
@@ -122,7 +131,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         gap: 10,
         padding: 10,
-    },
+    }
 });
 
 export default WithNoAuth(Login);

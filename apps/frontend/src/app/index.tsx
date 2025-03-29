@@ -16,6 +16,7 @@ export default function Index() {
                     <Button title={"Login"} />
                 </Link>
             </View>
+            <Text>Backend url: {process.env.EXPO_PUBLIC_API_URL}</Text>
         </View>
     )
 }

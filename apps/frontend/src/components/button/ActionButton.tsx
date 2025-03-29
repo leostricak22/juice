@@ -1,38 +1,34 @@
 import React, { useState } from "react";
-import { Text, Pressable, StyleSheet } from "react-native";
+import { Text, Pressable, Platform } from "react-native";
 import ButtonProps from "@/src/types/ButtonProps";
 
-const ActionButton: React.FC<ButtonProps> = ({ text, onClick }) => {
+import buttonStyles from "@/assets/styles/button";
+import colorStyles from "@/assets/styles/colors";
+
+const ActionButton: React.FC<ButtonProps> = ({ text, onClick, color = "blue" }) => {
     const [isHovered, setIsHovered] = useState(false);
+
+    const buttonBackgroundStyle = isHovered ? colorStyles[`${color}Hovered`] : colorStyles[`${color}Background`];
 
     return (
         <Pressable
-            style={[styles.button, isHovered && styles.buttonHovered]}
+            style={[buttonStyles.button, buttonBackgroundStyle]}
             onPress={onClick}
-            onHoverIn={() => setIsHovered(true)}
-            onHoverOut={() => setIsHovered(false)}
+            {...(Platform.OS === "web"
+                ? {
+                    onMouseEnter: () => setIsHovered(true),
+                    onMouseLeave: () => setIsHovered(false),
+                }
+                : {
+                    onPressIn: () => setIsHovered(true),
+                    onPressOut: () => setIsHovered(false),
+                })}
+            onFocus={() => setIsHovered(true)}
+            onBlur={() => setIsHovered(false)}
         >
-            <Text style={styles.buttonText}>{text}</Text>
+            <Text style={[buttonStyles.buttonText, colorStyles[`${color}Element`]]}>{text}</Text>
         </Pressable>
     );
 };
-
-const styles = StyleSheet.create({
-    button: {
-        width: "100%",
-        padding: 10,
-        backgroundColor: "#646E68",
-        borderRadius: 5,
-        alignItems: "center",
-    },
-    buttonHovered: {
-        backgroundColor: "#4E5B51",
-    },
-    buttonText: {
-        color: "white",
-        fontSize: 16,
-        fontWeight: "bold",
-    },
-});
 
 export default ActionButton;
