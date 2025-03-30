@@ -11,10 +11,10 @@ export default function CallbackScreen() {
         const checkToken = async (params:UnknownOutputParams) => {
             if (params.token) {
                 await AsyncStorage.setItem("token", params.token as string);
-                router.replace("/dashboard");
+                router.push("/dashboard");
             } else {
                 let errorMessage = params.error || "";
-                router.replace(`/auth/login?error=${errorMessage}`);
+                router.push(`/auth/login?error=${errorMessage}`);
             }
         }
 

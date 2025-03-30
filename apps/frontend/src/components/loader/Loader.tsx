@@ -16,8 +16,6 @@ const Loader: React.FC<LoaderProps> = ({ size = "large", color = "#3498db", mess
     );
 };
 
-export default Loader;
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -32,3 +30,5 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
 });
+
+export default Loader;
