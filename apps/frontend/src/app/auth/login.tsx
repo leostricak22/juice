@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {
     Alert,
     Platform,
-    StyleSheet,
     NativeSyntheticEvent,
     TextInputChangeEventData,
     View,
@@ -21,6 +20,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import WithNoAuth from "@/src/components/hoc/WithNoAuth";
 
 import textStyles from "@/assets/styles/text";
+import containerStyles from "@/assets/styles/container";
+import formStyles from "@/assets/styles/form";
 
 const GOOGLE_AUTH_URL =  process.env.EXPO_PUBLIC_API_URL + '/oauth2/authorization/google';
 
@@ -76,10 +77,10 @@ const Login: React.FC = () => {
     };
 
     return (
-        <View style={styles.container}>
-            <View style={styles.content}>
-                <View style={styles.form}>
-                    <Text style={styles.title}>Login</Text>
+        <View style={containerStyles.screenContainerCenter}>
+            <View style={containerStyles.screenContainerContent}>
+                <View style={formStyles.formContainer}>
+                    <Text style={textStyles.heading}>Login</Text>
                     <Input
                         placeholder="Email"
                         value={formData.email}
@@ -93,45 +94,13 @@ const Login: React.FC = () => {
                     />
                     <ActionButton text={"Login"} onClick={handleSubmit} />
                     <ActionButton text={"Sign in with Google"} color={"black"} onClick={handleGoogleLogin} />
-                    <Link href="/auth/register" asChild>
-                        <Text style={textStyles.text}>Don't have an account? Register&nbsp;
-                            <Text style={textStyles.link}>here</Text>.
-                        </Text>
-                    </Link>
+                    <Pressable onPress={() => router.replace("/auth/register")}>
+                        <Text style={textStyles.text}>Don't have an account? Sign up here.</Text>
+                    </Pressable>
                 </View>
             </View>
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        width: "100%",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "white",
-    },
-    content: {
-        flex: 1,
-        width: "100%",
-        maxWidth: 500,
-        justifyContent: "center",
-        alignItems: "center",
-        gap: 10,
-    },
-    title: {
-        fontSize: 36,
-        fontWeight: "bold",
-    },
-    form: {
-        width: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: 10,
-        padding: 10,
-    }
-});
 
 export default WithNoAuth(Login);

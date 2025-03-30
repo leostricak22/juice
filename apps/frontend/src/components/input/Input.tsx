@@ -1,8 +1,6 @@
-import { StyleSheet, TextInput, View, Text, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
-import { FontAwesome } from "@expo/vector-icons";
+import { TextInput, View, Text, TouchableOpacity } from "react-native";
+import React, { useCallback, useState } from "react";
 import InputProps from "@/src/types/InputProps";
-
 import inputStyles from "@/assets/styles/input";
 import Icon from "@/src/components/icon/Icon";
 
@@ -15,6 +13,9 @@ const Input: React.FC<InputProps> = ({
                                      }) => {
     const [isFocused, setIsFocused] = useState(false);
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+    const handleFocus = useCallback(() => setIsFocused(true), []);
+    const handleBlur = useCallback(() => setIsFocused(false), []);
 
     return (
         <View style={inputStyles.inputContainer}>
@@ -30,11 +31,11 @@ const Input: React.FC<InputProps> = ({
                     value={value}
                     style={inputStyles.inputField}
                     onChange={onInputChange}
-                    onFocus={() => setIsFocused(true)}
-                    onBlur={() => setIsFocused(false)}
                     secureTextEntry={type === "password" && !isPasswordVisible}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
                 />
-                {type === "password" && (
+                {type === "password" && value.trim().length !== 0 && (
                     <TouchableOpacity
                         style={inputStyles.iconContainer}
                         onPress={() => setIsPasswordVisible(!isPasswordVisible)}

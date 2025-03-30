@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import {UnknownOutputParams, useLocalSearchParams, useRouter} from 'expo-router';
 import { View, Text } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Loader from "@/src/components/loader/Loader";
 
 export default function CallbackScreen() {
     const params = useLocalSearchParams();
@@ -21,8 +22,6 @@ export default function CallbackScreen() {
     }, [params]);
 
     return (
-        <View>
-            <Text>Loading...</Text>
-        </View>
+        <Loader />
     );
 }

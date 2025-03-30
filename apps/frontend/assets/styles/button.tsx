@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         width: "100%",
         /* @ts-ignore */
-        outlineStyle: "none"
+        outlineStyle: "none",
     },
     iconContainer: {
         backgroundColor: 'white',
@@ -19,9 +19,9 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: 'white',
-        fontSize: 16,
-        fontWeight: 'bold',
-        margin: "auto"
+        fontSize: 10,
+        margin: "auto",
+        fontFamily: "Boldonse",
     },
 });
 

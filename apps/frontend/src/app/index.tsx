@@ -1,5 +1,8 @@
 import {View, Text, Button, StyleSheet} from "react-native";
 import {Link} from "expo-router";
+import {useEffect, useState} from "react";
+import * as Font from "expo-font";
+import Loader from "@/src/components/loader/Loader";
 
 export default function Index() {
     if (typeof window === 'undefined') {

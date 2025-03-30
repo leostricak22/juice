@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     },
     inputErrorText: {
         color: "red",
-        fontSize: 12,
+        fontSize: 10,
         marginTop: 4,
         textAlign: "left",
     },
@@ -22,6 +22,8 @@ const styles = StyleSheet.create({
         height: 50,
         padding: 10,
         paddingRight: 40,
+        fontSize: 10,
+        fontFamily: "Boldonse",
         /* @ts-ignore */
         outlineStyle: "none",
     },
@@ -34,11 +36,7 @@ const styles = StyleSheet.create({
         borderColor: "red",
     },
     inputWrapperFocused: {
-        shadowColor: "#000000",
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.19,
-        shadowRadius: 5.62,
-        elevation: 6,
+        backgroundColor: "#f4f4f4",
     },
 });
 
