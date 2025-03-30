@@ -63,7 +63,7 @@ function Register() {
         <View style={containerStyles.screenContainerCenter}>
             <View style={containerStyles.screenContainerContent}>
                 <View style={formStyles.formContainer}>
-                    <Text style={textStyles.heading}>Register</Text>
+                    <Text style={textStyles.heading}>Sign up</Text>
                     <Input
                         placeholder="Name"
                         value={formData.name}
@@ -93,8 +93,8 @@ function Register() {
                         placeholder="Confirm Password"
                         value=""
                     />
-                    <ActionButton text={"Sign up"} onClick={handleSubmit} />
-                    <ActionButton text={"Sign up with Google"} color={"black"} onClick={handleGoogleLogin} />
+                    <ActionButton text={"Sign up"} color={"orange"} onClick={handleSubmit} />
+                    <ActionButton text={"Sign up with Google"} icon={"google"} color={"black"} onClick={handleGoogleLogin} />
                     <Pressable onPress={() => router.replace("/auth/login")}>
                         <Text style={textStyles.text}>Already have an account? Sign in here.</Text>
                     </Pressable>

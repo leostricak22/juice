@@ -2,19 +2,18 @@ import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
     text: {
-        fontSize: 10,
+        fontSize: 14,
         color: "black",
         textAlign: "left",
-        fontFamily: "Boldonse"
+        fontFamily: "Tektur"
     },
     link: {
         color: "#007BFF",
         textDecorationLine: "underline",
-        fontFamily: "Boldonse"
+        fontFamily: "Tektur"
     },
     heading: {
         fontSize: 46,
-        fontWeight: "bold",
         color: "black",
         textAlign: "center",
         borderBottomWidth: 1,
@@ -23,7 +22,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         width: "100%",
         textTransform: "uppercase",
-        fontFamily: "Boldonse"
+        fontFamily: "Tektur-Bold"
     }
 });
 

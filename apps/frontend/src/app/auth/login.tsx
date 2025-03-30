@@ -80,7 +80,7 @@ const Login: React.FC = () => {
         <View style={containerStyles.screenContainerCenter}>
             <View style={containerStyles.screenContainerContent}>
                 <View style={formStyles.formContainer}>
-                    <Text style={textStyles.heading}>Login</Text>
+                    <Text style={textStyles.heading}>Sign in</Text>
                     <Input
                         placeholder="Email"
                         value={formData.email}
@@ -92,8 +92,15 @@ const Login: React.FC = () => {
                         onInputChange={(event:any) => handleFormChange("password", event)}
                         type={"password"}
                     />
-                    <ActionButton text={"Login"} onClick={handleSubmit} />
-                    <ActionButton text={"Sign in with Google"} color={"black"} onClick={handleGoogleLogin} />
+                    <ActionButton text={"Sign in"}
+                                  color={"orange"}
+                                  onClick={handleSubmit}
+                    />
+                    <ActionButton text={"Sign in with Google"}
+                                  color={"black"}
+                                  onClick={handleGoogleLogin}
+                                  icon={"google"}
+                    />
                     <Pressable onPress={() => router.replace("/auth/register")}>
                         <Text style={textStyles.text}>Don't have an account? Sign up here.</Text>
                     </Pressable>

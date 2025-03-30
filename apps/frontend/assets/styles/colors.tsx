@@ -5,7 +5,7 @@ const colors = {
     white: "#FFFFFF",
     blue: "#007BFF",
     red: "#FF0000",
-    green: "#28A745",
+    orange: "#bc623c",
     gray: "#808080",
 };
 
@@ -18,7 +18,7 @@ const colorsElements: { [key: string]: string } = {
     white: "#000000",
     blue: "#FFFFFF",
     red: "#FFFFFF",
-    green: "#FFFFFF",
+    orange: "#FFFFFF",
     gray: "#000000",
 };
 

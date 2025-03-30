@@ -1,7 +1,5 @@
 import React, {FC} from 'react';
 import { View } from 'react-native';
-import HidePasswordIcon from '@/assets/images/icons/ts/HidePassword';
-import ShowPasswordIcon from '@/assets/images/icons/ts/ShowPassword';
 
 interface IconProps {
     name: string;
@@ -16,10 +14,13 @@ const Icon: FC<IconProps> = ({ name, size = 24, color="white", ...props })=> {
 
     switch (name) {
         case 'hidePassword':
-            IconComponent = HidePasswordIcon;
+            IconComponent = require('@/assets/images/icons/ts/HidePassword').default;
             break;
         case 'showPassword':
-            IconComponent = ShowPasswordIcon;
+            IconComponent = require('@/assets/images/icons/ts/ShowPassword').default;
+            break;
+        case 'google':
+            IconComponent = require('@/assets/images/icons/ts/Google').default;
             break;
         default:
             return null;

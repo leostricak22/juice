@@ -4,6 +4,7 @@ const styles = StyleSheet.create({
     button: {
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center',
         borderRadius: 4,
         paddingVertical: 12,
         paddingHorizontal: 20,
@@ -19,9 +20,9 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: 'white',
-        fontSize: 10,
-        margin: "auto",
-        fontFamily: "Boldonse",
+        fontSize: 14,
+        marginHorizontal: 10,
+        fontFamily: "Tektur",
     },
 });
 

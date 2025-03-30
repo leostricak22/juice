@@ -9,7 +9,8 @@ export default function RootLayout() {
     useEffect(() => {
         async function loadFonts() {
             await Font.loadAsync({
-                "Boldonse": require("@/assets/fonts/Boldonse-Regular.ttf"),
+                "Tektur": require("@/assets/fonts/Tektur-Regular.ttf"),
+                "Tektur-Bold": require("@/assets/fonts/Tektur-Bold.ttf"),
             });
             setFontsLoaded(true);
         }

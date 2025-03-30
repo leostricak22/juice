@@ -3,10 +3,11 @@ import {StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
     inputContainer: {
         width: "100%",
+        backgroundColor: "white",
     },
     inputErrorText: {
         color: "red",
-        fontSize: 10,
+        fontSize: 12,
         marginTop: 4,
         textAlign: "left",
     },
@@ -22,10 +23,11 @@ const styles = StyleSheet.create({
         height: 50,
         padding: 10,
         paddingRight: 40,
-        fontSize: 10,
-        fontFamily: "Boldonse",
+        fontSize: 14,
+        fontFamily: "Tektur",
         /* @ts-ignore */
         outlineStyle: "none",
+        paddingLeft: 10,
     },
     iconContainer: {
         position: "absolute",
