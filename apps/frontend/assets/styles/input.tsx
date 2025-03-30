@@ -3,7 +3,6 @@ import {StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
     inputContainer: {
         width: "100%",
-        backgroundColor: "white",
     },
     inputErrorText: {
         color: "red",
@@ -12,6 +11,7 @@ const styles = StyleSheet.create({
         textAlign: "left",
     },
     inputWrapper: {
+        backgroundColor: "white",
         position: "relative",
         width: "100%",
         height: 50,

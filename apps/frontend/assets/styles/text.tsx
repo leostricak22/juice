@@ -23,6 +23,11 @@ const styles = StyleSheet.create({
         width: "100%",
         textTransform: "uppercase",
         fontFamily: "Tektur-Bold"
+    },
+    error: {
+        fontSize: 12,
+        color: "red",
+        fontFamily: "Tektur"
     }
 });
 

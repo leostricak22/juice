@@ -1,19 +1,16 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-    Alert,
-    Platform,
     NativeSyntheticEvent,
     TextInputChangeEventData,
     View,
     Text, Pressable,
 } from 'react-native';
-import * as WebBrowser from 'expo-web-browser';
 import LoginRequest from "@/src/models/dto/LoginRequest";
-import {Link, useRouter} from "expo-router";
+import {useLocalSearchParams, useRouter} from "expo-router";
 import AuthenticationResponse from "@/src/models/dto/AuthenticationResponse";
 import MessageResponse from "@/src/models/dto/MessageResponse";
 import dataFetch from "@/src/utils/DataFetch";
-import {isValidMessageResponse} from "@/src/utils/Validation";
+import {isResponseError, isValidMessageResponse} from "@/src/utils/Validation";
 import ActionButton from "@/src/components/button/ActionButton";
 import Input from "@/src/components/input/Input";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -22,31 +19,24 @@ import WithNoAuth from "@/src/components/hoc/WithNoAuth";
 import textStyles from "@/assets/styles/text";
 import containerStyles from "@/assets/styles/container";
 import formStyles from "@/assets/styles/form";
-
-const GOOGLE_AUTH_URL =  process.env.EXPO_PUBLIC_API_URL + '/oauth2/authorization/google';
+import {handleGoogleLogin} from "@/src/utils/OAuth2Util";
+import ErrorResponse from "@/src/models/dto/ErrorResponse";
 
 const Login: React.FC = () => {
+    const params = useLocalSearchParams();
+
     const router = useRouter();
     const [formData, setFormData] = useState<LoginRequest>({
         email: "",
         password: "",
     });
+    const [error, setError] = useState<string>();
 
-    const handleGoogleLogin = async () => {
-        try {
-            if (Platform.OS === 'web') {
-                window.location.href = `${GOOGLE_AUTH_URL}?redirect_uri=${encodeURIComponent(window.location.origin + '/auth/callback')}`;
-            } else {
-                await WebBrowser.openAuthSessionAsync(
-                    GOOGLE_AUTH_URL,
-                    'juice://auth/callback'
-                );
-            }
-        } catch (error: any) {
-            console.error('Error during authentication:', error);
-            Alert.alert('Authentication Error', error.message);
+    useEffect(() => {
+        if (params.error) {
+            setError(params.error as string);
         }
-    };
+    }, [params]);
 
     const handleFormChange = (key: string, event: NativeSyntheticEvent<TextInputChangeEventData>) => {
         const text = event?.nativeEvent?.text || '';
@@ -54,7 +44,7 @@ const Login: React.FC = () => {
     };
 
     const handleSubmit = async () => {
-        let response: AuthenticationResponse | MessageResponse;
+        let response: AuthenticationResponse | MessageResponse | ErrorResponse;
         try {
             response = await dataFetch<AuthenticationResponse>(
                 `${process.env.EXPO_PUBLIC_API_URL}/api/auth/login`,
@@ -62,13 +52,12 @@ const Login: React.FC = () => {
                 formData
             );
         } catch (error) {
-            console.error("Login error:", error);
-            alert("An error occurred during login");
+            setError("An error occurred during login. Please try again.");
             return;
         }
 
-        if (!isValidMessageResponse(response)) {
-            alert((response as MessageResponse).message);
+        if (isResponseError(response)) {
+            setError((response as MessageResponse).message);
             return;
         }
 
@@ -81,6 +70,7 @@ const Login: React.FC = () => {
             <View style={containerStyles.screenContainerContent}>
                 <View style={formStyles.formContainer}>
                     <Text style={textStyles.heading}>Sign in</Text>
+                    {error && <Text style={textStyles.error}>{error}</Text>}
                     <Input
                         placeholder="Email"
                         value={formData.email}
@@ -98,7 +88,7 @@ const Login: React.FC = () => {
                     />
                     <ActionButton text={"Sign in with Google"}
                                   color={"black"}
-                                  onClick={handleGoogleLogin}
+                                  onClick={() => handleGoogleLogin(setError)}
                                   icon={"google"}
                     />
                     <Pressable onPress={() => router.replace("/auth/register")}>

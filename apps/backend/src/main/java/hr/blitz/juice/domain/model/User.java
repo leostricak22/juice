@@ -1,6 +1,7 @@
 package hr.blitz.juice.domain.model;
 
 import hr.blitz.juice.domain.enumeration.CroatianCounty;
+import hr.blitz.juice.domain.enumeration.RegistrationType;
 import hr.blitz.juice.domain.enumeration.Role;
 import jakarta.persistence.Column;
 import lombok.*;
@@ -27,6 +28,10 @@ public class User implements UserDetails {
     private String surname;
     private String username;
     private String email;
+
+    @Builder.Default
+    @Column(name = "registration_type")
+    private RegistrationType registrationType = RegistrationType.EMAIL;
 
     @Builder.Default
     private Boolean active = true;

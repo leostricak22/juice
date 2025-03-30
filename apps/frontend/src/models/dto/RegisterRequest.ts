@@ -4,6 +4,7 @@ export default interface RegisterRequest {
     username: string;
     email: string;
     password: string;
+    confirmPassword: string;
     role: string;
     location: string;
     profilePicture?: string;

@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import {UnknownOutputParams, useLocalSearchParams, useRouter} from 'expo-router';
-import { View, Text } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Loader from "@/src/components/loader/Loader";
 
@@ -14,7 +13,8 @@ export default function CallbackScreen() {
                 await AsyncStorage.setItem("token", params.token as string);
                 router.replace("/dashboard");
             } else {
-                router.replace("/auth/login")
+                let errorMessage = params.error || "";
+                router.replace(`/auth/login?error=${errorMessage}`);
             }
         }
 

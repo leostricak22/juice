@@ -1,5 +1,6 @@
 package hr.blitz.juice.service;
 
+import hr.blitz.juice.domain.enumeration.RegistrationType;
 import hr.blitz.juice.domain.exception.AppException;
 import hr.blitz.juice.domain.model.User;
 import hr.blitz.juice.repository.UserRepository;
@@ -8,6 +9,7 @@ import hr.blitz.juice.rest.dto.AuthenticationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -19,6 +21,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static hr.blitz.juice.domain.exception.ErrorCode.*;
 
 @Service
@@ -29,12 +34,29 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
+    private void validateRegisterRequest(User user) {
+        Map<String, String> errorFields = new HashMap<>();
+
+        if (userRepository.existsByUsername(user.getUsername())) {
+            errorFields.put("username", "Username already exists");
+        }
+        if (userRepository.existsByEmail(user.getEmail())) {
+            errorFields.put("email", "Email already exists");
+        }
+
+        if (!errorFields.isEmpty()) {
+            throw new AppException(
+                    HttpStatus.CONFLICT.value(),
+                    "User already exists",
+                    errorFields
+            );
+        }
+    }
+
     public AuthenticationResponse register(User user, String password) {
-        if (userRepository.existsByUsernameOrEmail(user.getUsername(), user.getEmail()))
-            throw new AppException(CONFLICT);
+        validateRegisterRequest(user);
 
         user.setPassword(passwordEncoder.encode(password));
-
         userRepository.save(user);
 
         var jwtToken = jwtService.generateToken(user);
@@ -45,7 +67,10 @@ public class AuthenticationService {
 
     public AuthenticationResponse login(AuthenticationRequest authenticationRequest) {
         User user = userRepository.findByEmail(authenticationRequest.getEmail())
-                .orElseThrow(() -> new AppException(UNAUTHORIZED));
+                .orElseThrow(() -> new AppException(HttpStatus.UNAUTHORIZED.value(), "Invalid username or password"));
+
+        if (!user.getRegistrationType().equals(RegistrationType.EMAIL))
+            throw new AppException(HttpStatus.UNAUTHORIZED.value(), "Email registered with OAuth2");
 
         try {
             authenticationManager.authenticate(
@@ -55,7 +80,7 @@ public class AuthenticationService {
                     )
             );
         } catch (BadCredentialsException ex) {
-            throw new AppException(UNAUTHORIZED);
+            throw new AppException(HttpStatus.UNAUTHORIZED.value(), "Invalid username or password");
         }
 
         var jwtToken = jwtService.generateToken(user);
