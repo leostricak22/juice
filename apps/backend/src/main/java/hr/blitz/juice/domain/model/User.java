@@ -1,5 +1,6 @@
 package hr.blitz.juice.domain.model;
 
+import hr.blitz.juice.audit.Auditable;
 import hr.blitz.juice.domain.enumeration.CroatianCounty;
 import hr.blitz.juice.domain.enumeration.RegistrationType;
 import hr.blitz.juice.domain.enumeration.Role;
@@ -20,7 +21,7 @@ import java.util.Collections;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User implements UserDetails {
+public class User extends Auditable<String> implements UserDetails {
 
     @Id
     private String id;

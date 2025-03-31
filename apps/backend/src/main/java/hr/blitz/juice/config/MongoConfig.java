@@ -1,0 +1,17 @@
+package hr.blitz.juice.config;
+
+import hr.blitz.juice.audit.AuditorAwareImpl;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.config.EnableMongoAuditing;
+import org.springframework.data.domain.AuditorAware;
+
+@Configuration
+@EnableMongoAuditing
+public class MongoConfig {
+
+    @Bean
+    public AuditorAware<String> auditorProvider() {
+        return new AuditorAwareImpl();
+    }
+}
