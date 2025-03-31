@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'expo-router';
-import useUserData from '@/src/hooks/useUserData';
-import { Text } from 'react-native';
 import Loader from "@/src/components/loader/Loader";
+import {useUserData} from "@/src/context/UserContext";
 
 const withAuth = (WrappedComponent: React.ComponentType<any>) => {
     return function WithAuth(props: any) {

@@ -1,9 +1,11 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {getUserData} from "@/src/utils/data/UserData";
 
 interface UserContextProps {
     userData: any | null;
     setUserData: React.Dispatch<React.SetStateAction<any | null>>;
+    loading: boolean;
 }
 
 const UserContext = createContext<UserContextProps | undefined>(undefined);
@@ -17,7 +19,12 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             try {
                 const token = await AsyncStorage.getItem("token");
                 if (token) {
-                    setUserData({ token });
+                    const userData = await getUserData();
+                    if (userData) {
+                        setUserData(userData);
+                    } else {
+                        setUserData(null);
+                    }
                 }
             } catch (error) {
                 console.error("Failed to load token from storage:", error);
@@ -34,7 +41,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
 
     return (
-        <UserContext.Provider value={{ userData, setUserData }}>
+        <UserContext.Provider value={{ userData, setUserData, loading }}>
             {children}
         </UserContext.Provider>
     );
