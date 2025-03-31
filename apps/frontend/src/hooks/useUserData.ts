@@ -32,7 +32,6 @@ const useUserData = () => {
                 setUserData(response);
             }
         } catch (error) {
-            console.log("Error fetching user data");
             if (isMounted.current) {
                 setUserData(null);
             }

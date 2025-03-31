@@ -62,7 +62,9 @@ public class SecurityConfig {
                             response.setContentType("application/json");
                             response.setCharacterEncoding("UTF-8");
                             response.getWriter().write(
-                                    new AppException(HttpStatus.UNAUTHORIZED.value(), "Invalid or missing JWT token", new HashMap<>()).getStatus());
+                                    new AppException(HttpStatus.UNAUTHORIZED.value(),
+                                            "Invalid or missing JWT token",
+                                            new HashMap<>()).toJSON());
                         })
                 );
         return http.build();

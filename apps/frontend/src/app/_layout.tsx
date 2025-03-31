@@ -1,10 +1,11 @@
-import {Stack} from "expo-router";
+import {Stack, usePathname, useRouter} from "expo-router";
 import {useEffect, useState} from "react";
 import * as Font from "expo-font";
 import Loader from "@/src/components/loader/Loader";
 
 export default function RootLayout() {
     const [fontsLoaded, setFontsLoaded] = useState(false);
+    const pathname = usePathname();
 
     useEffect(() => {
         async function loadFonts() {
@@ -18,7 +19,7 @@ export default function RootLayout() {
         loadFonts().then(r => r);
     }, []);
 
-    if (!fontsLoaded) {
+    if (!fontsLoaded && pathname !== "/") {
         return <Loader />;
     }
 

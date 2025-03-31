@@ -12,7 +12,6 @@ export const getUserData = async () => {
     try {
         response = await dataFetch(`${process.env.EXPO_PUBLIC_API_URL}/api/auth/user`, "GET");
     } catch (error) {
-        console.log("Error fetching user data");
         return null;
     }
 

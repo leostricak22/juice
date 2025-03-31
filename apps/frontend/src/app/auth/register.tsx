@@ -47,8 +47,6 @@ function Register() {
     };
 
     const isFormDataValid = (data: RegisterRequest) => {
-        console.log(data);
-
         const newError = {
             global: "",
             name: "",

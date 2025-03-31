@@ -1,27 +1,23 @@
 import {View, Text, Button, StyleSheet} from "react-native";
-import {Link} from "expo-router";
+import {Link, useRouter} from "expo-router";
 import {useEffect, useState} from "react";
 import * as Font from "expo-font";
 import Loader from "@/src/components/loader/Loader";
+import useUserData from "@/src/hooks/useUserData";
 
 export default function Index() {
-    if (typeof window === 'undefined') {
-        return null;
+    const { userData, loading } = useUserData();
+    const router = useRouter();
+
+    if (loading) {
+        return;
     }
 
-    return (
-        <View style={styles.container}>
-            <Text style={{fontWeight:"bold"}}>Dobrodošli u aplikaciju Juice</Text>
-            <Text>Juice olakšava rezerviranje dvorana za padel, praćenja rezultata, prijava na turnire te mnogo drugih stvari.</Text>
-            <Text>Da biste nastavili, molimo Vas da se prijavite</Text>
-            <View style={styles.loginButton}>
-                <Link href={"/auth/login"} asChild>
-                    <Button title={"Login"} />
-                </Link>
-            </View>
-            <Text>Backend url: {process.env.EXPO_PUBLIC_API_URL}</Text>
-        </View>
-    )
+    if (userData) {
+        router.replace("/dashboard");
+    } else {
+        router.replace("/auth/login")
+    }
 }
 
 const styles = StyleSheet.create({

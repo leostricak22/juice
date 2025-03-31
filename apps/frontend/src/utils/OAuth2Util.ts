@@ -11,8 +11,6 @@ export const handleGoogleLogin = async (setError: any) => {
 
         const authUrl = `${GOOGLE_AUTH_URL}?redirect_uri=${encodeURIComponent(redirectUri)}&source=${source}`;
 
-        console.log(`Redirect to ${authUrl}`);
-
         if (Platform.OS === 'web') {
             window.location.href = authUrl;
         } else {
