@@ -5,6 +5,10 @@ import PageProps from "@/src/types/PageProps";
 import ActionButton from "@/src/components/button/ActionButton";
 import {useRouter} from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Navbar from "@/src/components/navbar/Navbar";
+
+import containerStyles from "@/assets/styles/container";
+import textStyles from "@/assets/styles/text";
 
 const Dashboard: React.FC<PageProps> = ({ userData }) => {
     const router = useRouter();
@@ -15,40 +19,15 @@ const Dashboard: React.FC<PageProps> = ({ userData }) => {
     }
 
     return (
-        <View style={styles.container}>
-            <View style={styles.content}>
-                <Text style={styles.title}>Welcome, {userData.name}</Text>
-                <Text style={styles.subtitle}>Your email is {userData.email}</Text>
-                <ActionButton text={"Logout"} onClick={handleLogout} />
+        <View style={containerStyles.screenContainerCenter}>
+            <Navbar />
+            <View style={containerStyles.screenContainerContent}>
+                <Text style={textStyles.heading}>Welcome, {userData.name}</Text>
+                <Text style={textStyles.text}>Your email is {userData.email}</Text>
+                <ActionButton text={"Logout"} color={"orange"} onClick={handleLogout} />
             </View>
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        width: "100%",
-        gap: 10,
-        margin: "auto",
-    },
-    content: {
-        flex: 1,
-        width: "100%",
-        maxWidth: 500,
-        justifyContent: "center",
-        alignItems: "center",
-        gap: 10,
-    },
-    title: {
-        fontSize: 36,
-        fontWeight: "bold",
-    },
-    subtitle: {
-        fontSize: 24,
-    }
-});
 
 export default withAuth(Dashboard);

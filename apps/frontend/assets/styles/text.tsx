@@ -24,6 +24,14 @@ const styles = StyleSheet.create({
         textTransform: "uppercase",
         fontFamily: "Tektur-Bold"
     },
+    headingMedium: {
+        fontSize: 24,
+        color: "black",
+        textAlign: "center",
+        width: "100%",
+        textTransform: "uppercase",
+        fontFamily: "Tektur-Bold"
+    },
     error: {
         fontSize: 12,
         color: "red",

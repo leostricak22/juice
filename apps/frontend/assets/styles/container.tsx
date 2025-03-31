@@ -11,10 +11,11 @@ const styles = StyleSheet.create({
     screenContainerContent: {
         flex: 1,
         width: "100%",
-        maxWidth: 500,
+        maxWidth: 600,
         justifyContent: "center",
         alignItems: "center",
         gap: 10,
+        padding: 10,
     }
 });
 

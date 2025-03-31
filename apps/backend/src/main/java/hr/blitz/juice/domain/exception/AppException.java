@@ -29,4 +29,22 @@ public class AppException extends RuntimeException {
     public Map<String, String> getFields() {
         return fields;
     }
+
+    public String toJSON() {
+        StringBuilder json = new StringBuilder("{");
+        json.append("\"status\":").append(status).append(",");
+        json.append("\"message\":\"").append(getMessage()).append("\",");
+
+        if (!fields.isEmpty()) {
+            json.append("\"fields\":{");
+            for (Map.Entry<String, String> entry : fields.entrySet()) {
+                json.append("\"").append(entry.getKey()).append("\":\"").append(entry.getValue()).append("\",");
+            }
+            json.deleteCharAt(json.length() - 1); // Remove last comma
+            json.append("}");
+        }
+
+        json.append("}");
+        return json.toString();
+    }
 }

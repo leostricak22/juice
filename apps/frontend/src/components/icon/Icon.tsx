@@ -22,6 +22,9 @@ const Icon: FC<IconProps> = ({ name, size = 24, color="white", ...props })=> {
         case 'google':
             IconComponent = require('@/assets/images/icons/ts/Google').default;
             break;
+        case 'notifications':
+            IconComponent = require('@/assets/images/icons/ts/Notifications').default;
+            break;
         default:
             return null;
     }
