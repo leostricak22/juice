@@ -1,8 +1,17 @@
-import {View, Text, StyleSheet, NativeSyntheticEvent, TextInputChangeEventData, Pressable} from "react-native";
+import {
+    View,
+    Text,
+    StyleSheet,
+    NativeSyntheticEvent,
+    TextInputChangeEventData,
+    Pressable,
+    ScrollView
+} from "react-native";
 import Input from "@/src/components/input/Input";
 import ActionButton from "@/src/components/button/ActionButton";
 import {Link, useRouter} from "expo-router";
 import WithNoAuth from "@/src/components/hoc/WithNoAuth";
+import Navbar from "@/src/components/navbar/Navbar";
 import React, {useState} from "react";
 import RegisterRequest from "@/src/models/dto/RegisterRequest";
 import AuthenticationResponse from "@/src/models/dto/AuthenticationResponse";
@@ -16,6 +25,7 @@ import containerStyles from "@/assets/styles/container";
 import formStyles from "@/assets/styles/form";
 import {handleGoogleLogin} from "@/src/utils/OAuth2Util";
 import {isResponseError} from "@/src/utils/Validation";
+import ScreenContainerView from "@/src/components/ScreenContainerView";
 
 function Register() {
     const router = useRouter();
@@ -122,10 +132,10 @@ function Register() {
     };
 
     return (
-        <View style={containerStyles.screenContainerCenter}>
+        <ScreenContainerView>
             <View style={containerStyles.screenContainerContent}>
                 <View style={formStyles.formContainer}>
-                    <Text style={textStyles.heading}>Sign up</Text>
+                    <Text style={[textStyles.heading, textStyles.alignCenter]}>Sign up</Text>
                     {error && <Text style={textStyles.error}>{error.global}</Text>}
                     <Input
                         placeholder="Name"
@@ -172,7 +182,7 @@ function Register() {
                     </Pressable>
                 </View>
             </View>
-        </View>
+        </ScreenContainerView>
     );
 }
 

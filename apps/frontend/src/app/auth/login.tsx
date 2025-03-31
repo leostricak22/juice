@@ -10,20 +10,25 @@ import {useLocalSearchParams, useRouter} from "expo-router";
 import AuthenticationResponse from "@/src/models/dto/AuthenticationResponse";
 import MessageResponse from "@/src/models/dto/MessageResponse";
 import dataFetch from "@/src/utils/DataFetch";
-import {isResponseError, isValidMessageResponse} from "@/src/utils/Validation";
+import {isResponseError} from "@/src/utils/Validation";
 import ActionButton from "@/src/components/button/ActionButton";
 import Input from "@/src/components/input/Input";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import WithNoAuth from "@/src/components/hoc/WithNoAuth";
+import Navbar from "@/src/components/navbar/Navbar";
 
 import textStyles from "@/assets/styles/text";
 import containerStyles from "@/assets/styles/container";
 import formStyles from "@/assets/styles/form";
 import {handleGoogleLogin} from "@/src/utils/OAuth2Util";
 import ErrorResponse from "@/src/models/dto/ErrorResponse";
+import ScreenContainerView from "@/src/components/ScreenContainerView";
+import {useUserData} from "@/src/context/UserContext";
+import {handleUserDataChange} from "@/src/utils/UserDataChange";
 
 const Login: React.FC = () => {
     const params = useLocalSearchParams();
+    const { setUserData } = useUserData();
 
     const router = useRouter();
     const [formData, setFormData] = useState<LoginRequest>({
@@ -62,14 +67,16 @@ const Login: React.FC = () => {
         }
 
         await AsyncStorage.setItem("token", (response as AuthenticationResponse).token);
+        await handleUserDataChange(setUserData)
+
         router.replace("/dashboard");
     };
 
     return (
-        <View style={containerStyles.screenContainerCenter}>
-            <View style={containerStyles.screenContainerContent}>
+        <ScreenContainerView>
+            <View style={containerStyles.screenContainerContentCenter}>
                 <View style={formStyles.formContainer}>
-                    <Text style={textStyles.heading}>Sign in</Text>
+                    <Text style={[textStyles.heading, textStyles.alignCenter]}>Sign in</Text>
                     {error && <Text style={textStyles.error}>{error}</Text>}
                     <Input
                         placeholder="Email"
@@ -96,7 +103,7 @@ const Login: React.FC = () => {
                     </Pressable>
                 </View>
             </View>
-        </View>
+        </ScreenContainerView>
     );
 };
 

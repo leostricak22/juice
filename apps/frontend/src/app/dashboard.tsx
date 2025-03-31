@@ -9,24 +9,28 @@ import Navbar from "@/src/components/navbar/Navbar";
 
 import containerStyles from "@/assets/styles/container";
 import textStyles from "@/assets/styles/text";
+import ScreenContainerView from "@/src/components/ScreenContainerView";
+import {useUserData} from "@/src/context/UserContext";
+import {handleUserDataChange} from "@/src/utils/UserDataChange";
 
 const Dashboard: React.FC<PageProps> = ({ userData }) => {
     const router = useRouter();
+    const { setUserData } = useUserData();
 
     const handleLogout = async () => {
         await AsyncStorage.removeItem('token');
+        await handleUserDataChange(setUserData)
         router.replace("/auth/login");
     }
 
     return (
-        <View style={containerStyles.screenContainerCenter}>
-            <Navbar />
+        <ScreenContainerView>
             <View style={containerStyles.screenContainerContent}>
-                <Text style={textStyles.heading}>Welcome, {userData.name}</Text>
+                <Text style={textStyles.headingMedium}>Welcome, {userData.name}!</Text>
                 <Text style={textStyles.text}>Your email is {userData.email}</Text>
                 <ActionButton text={"Logout"} color={"orange"} onClick={handleLogout} />
             </View>
-        </View>
+        </ScreenContainerView>
     );
 }
 

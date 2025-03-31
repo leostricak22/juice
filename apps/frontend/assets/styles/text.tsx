@@ -15,27 +15,41 @@ const styles = StyleSheet.create({
     heading: {
         fontSize: 46,
         color: "black",
-        textAlign: "center",
         borderBottomWidth: 1,
         borderBottomColor: "#ccc",
         paddingBottom: 10,
         marginBottom: 10,
         width: "100%",
-        textTransform: "uppercase",
         fontFamily: "Tektur-Bold"
     },
     headingMedium: {
+        fontSize: 36,
+        color: "black",
+        width: "100%",
+        fontFamily: "Tektur-Bold"
+    },
+    headingSmall: {
         fontSize: 24,
         color: "black",
-        textAlign: "center",
         width: "100%",
-        textTransform: "uppercase",
         fontFamily: "Tektur-Bold"
     },
     error: {
         fontSize: 12,
         color: "red",
         fontFamily: "Tektur"
+    },
+    alignLeft: {
+        textAlign: "left",
+    },
+    alignRight: {
+        textAlign: "right",
+    },
+    alignCenter: {
+        textAlign: "center",
+    },
+    uppercase: {
+        textTransform: "uppercase",
     }
 });
 

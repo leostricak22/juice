@@ -9,6 +9,17 @@ const styles = StyleSheet.create({
         backgroundColor: '#51A3A3',
         width: '100%',
         height: 75,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+    },
+    containerCenterLogo: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#51A3A3',
+        width: '100%',
+        height: 75,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
     },
     navbarIcon: {
         width: 60,
@@ -22,7 +33,10 @@ const styles = StyleSheet.create({
     logoTextContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center',
         gap: 10,
+        width: 70,
+        marginHorizontal: 30
     }
 });
 

@@ -1,7 +1,10 @@
 import {Stack, usePathname, useRouter} from "expo-router";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import * as Font from "expo-font";
 import Loader from "@/src/components/loader/Loader";
+import {StatusBar} from "react-native";
+import Navbar from "@/src/components/navbar/Navbar";
+import {UserProvider} from "@/src/context/UserContext";
 
 export default function RootLayout() {
     const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -24,7 +27,12 @@ export default function RootLayout() {
     }
 
     return (
-        <Stack screenOptions={{ headerShown: false }}>
-        </Stack>
+        <>
+            <StatusBar backgroundColor="#51A3A3" />
+            <UserProvider>
+                <Navbar />
+                <Stack screenOptions={{ headerShown: false }} />
+            </UserProvider>
+        </>
     )
 }
