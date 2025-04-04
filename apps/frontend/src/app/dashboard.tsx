@@ -12,6 +12,7 @@ import textStyles from "@/assets/styles/text";
 import ScreenContainerView from "@/src/components/ScreenContainerView";
 import {useUserData} from "@/src/context/UserContext";
 import {handleUserDataChange} from "@/src/utils/UserDataChange";
+import DashboardMenu from "@/src/components/dashboard/DashboardMenu";
 
 const Dashboard: React.FC<PageProps> = ({ userData }) => {
     const router = useRouter();
@@ -28,8 +29,9 @@ const Dashboard: React.FC<PageProps> = ({ userData }) => {
     return (
         <ScreenContainerView>
             <View style={containerStyles.screenContainerContent}>
-                <Text style={textStyles.headingMedium}>Welcome, {userData.name}!</Text>
-                <Text style={textStyles.text}>Your email is {userData.email}</Text>
+                <Text style={textStyles.headingMedium}>Pozdrav, {userData.name}!</Text>
+                <Text style={textStyles.headingSmall}>Odaberite uslugu:</Text>
+                <DashboardMenu />
                 <ActionButton text={"Logout"} color={"orange"} onClick={handleLogout} />
             </View>
         </ScreenContainerView>
