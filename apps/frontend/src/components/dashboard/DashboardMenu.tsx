@@ -11,10 +11,10 @@ const webshopImage = require("@/assets/images/dashboard/webshop.png");
 export default function DashboardMenu() {
     return (
         <View style={dashboardStyles.dashboardMenuContainer}>
-            <DashboardMenuItem image={reservationImage} title={"Rezerviraj termin"} />
-            <DashboardMenuItem image={tournamentImage} title={"Liga i turnir"} />
-            <DashboardMenuItem image={aiTrainerImage} title={"AI trener"} />
-            <DashboardMenuItem image={webshopImage} title={"Oglasnik"} />
+            <DashboardMenuItem image={reservationImage} title={"Rezerviraj termin"} redirect={"/reservation"} />
+            <DashboardMenuItem image={tournamentImage} title={"Liga i turnir"} redirect={"/"} />
+            <DashboardMenuItem image={aiTrainerImage} title={"AI trener"} redirect={"/"} />
+            <DashboardMenuItem image={webshopImage} title={"Oglasnik"} redirect={"/"} />
         </View>
     )
 }

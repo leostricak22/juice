@@ -18,8 +18,6 @@ const Dashboard: React.FC<PageProps> = ({ userData }) => {
     const router = useRouter();
     const { setUserData } = useUserData();
 
-    console.log(userData);
-
     const handleLogout = async () => {
         await AsyncStorage.removeItem('token');
         await handleUserDataChange(setUserData)

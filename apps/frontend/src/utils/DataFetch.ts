@@ -6,16 +6,25 @@ export default async function dataFetch<T>(
     method: string,
     data?: any,
 ): Promise<T | MessageResponse> {
-    const response = await fetch(url, {
-        method: method,
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + await AsyncStorage.getItem('token')
-        },
-        body: JSON.stringify(data)
-    });
+    let response;
+
+    console.log(url, method, data);
+    try {
+        response = await fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + await AsyncStorage.getItem('token')
+            },
+            body: JSON.stringify(data)
+        });
+    } catch (e) {
+        console.error(e);
+    }
+
 
     if (!response || !response.status) {
+        console.log(response);
         throw new Error('No HTTP status code received');
     }
 
