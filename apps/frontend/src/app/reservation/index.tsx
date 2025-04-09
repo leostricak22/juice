@@ -4,15 +4,37 @@ import ScreenContainerView from "@/src/components/ScreenContainerView";
 import textStyles from '@/assets/styles/text'
 import containerStyles from "@/assets/styles/container";
 import HallPicker from "@/src/components/reservation/HallPicker";
+import withAuth from "@/src/components/hoc/WithAuth";
+import {useState} from "react";
+import ReservationRequest from "@/src/models/dto/ReservationRequest";
+import ProgressBar from "@/src/components/progressbar/ProgressBar";
+import ReservationDatePicker from "@/src/components/reservation/ReservationDatePicker";
 
-export default function ReservationIndex() {
+function ReservationIndex() {
+    const [formData, setFormData] = useState<ReservationRequest>({} as ReservationRequest);
+    const [step, setStep] = useState(1);
+
+    const changeFormData = (key: string, value:any) => {
+        setFormData((prevState) => ({...prevState, [key]:value}));
+
+        if (key === "hall") {
+            setStep(2);
+        }
+    }
+
     return (
        <ScreenContainerView>
            <View style={containerStyles.screenContainerContent}>
+               <ProgressBar step={step} maxStep={5} setStep={setStep} />
                <Text style={[textStyles.heading, textStyles.alignCenter]}>Rezervacija termina</Text>
-               <Text style={[textStyles.headingSmall, textStyles.alignCenter]}>Odaberite dvoranu</Text>
-               <HallPicker />
+               {
+                   step === 1 ? <HallPicker changeFormData={changeFormData} /> :
+                   step === 2 ? <ReservationDatePicker changeFormData={changeFormData} /> : null
+               }
+
            </View>
        </ScreenContainerView>
     )
 }
+
+export default withAuth(ReservationIndex)
