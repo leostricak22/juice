@@ -50,6 +50,12 @@ const styles = StyleSheet.create({
     },
     uppercase: {
         textTransform: "uppercase",
+    },
+    bold: {
+        fontWeight: "bold",
+    },
+    italic: {
+        fontStyle: "italic",
     }
 });
 

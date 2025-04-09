@@ -34,8 +34,8 @@ const HallPicker: React.FC<ReservationPickerProps> = ({changeFormData}) => {
             <Text style={[textStyles.headingSmall]}>Odaberite dvoranu:</Text>
             {
                 halls && halls.map((hall: Hall) => (
-                    <Pressable onPress={() => changeFormData("hall", hall)}>
-                        <HallPickerSmallPreview key={hall.id} hall={hall} />
+                    <Pressable key={hall.id} onPress={() => changeFormData("hall", hall)}>
+                        <HallPickerSmallPreview hall={hall} />
                     </Pressable>
                 ))
             }

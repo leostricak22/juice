@@ -1,13 +1,16 @@
 import {Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import React, {useState} from "react";
 
+import textStyles from "@/assets/styles/text"
+
 export type ProgressBarProps = {
     step: number;
     maxStep: number;
     setStep?: (step: number) => void;
+    color?: string;
 };
 
-export const ProgressBar: React.FC<ProgressBarProps> = ({ step, maxStep, setStep }) => {
+export const ProgressBar: React.FC<ProgressBarProps> = ({ step, maxStep, setStep, color="#0478ca" }) => {
     return (
         <View style={styles.container}>
             <View style={styles.textContainer}>
@@ -16,13 +19,13 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({ step, maxStep, setStep
                     <Pressable onPress={() => {
                         if (step > 1) setStep(step-1)
                     }}>
-                        <Text style={styles.backText}>&lt; Back</Text>
+                        <Text style={[styles.backText, { color }, textStyles.bold]}>&lt; Back</Text>
                     </Pressable>
                 }
-                <Text style={styles.stepCount}>Koraci {step} od {maxStep}</Text>
+                <Text style={[styles.stepCount, { color }, textStyles.bold]}>Koraci {step} od {maxStep}</Text>
             </View>
             <View style={styles.barContainer}>
-                <View style={[styles.bar, { width: `${(step-1) * (100/(maxStep-1))}%` }]} />
+                <View style={[styles.bar, { width: `${(step-1) * (100/(maxStep-1))}%` }, {backgroundColor: color}]} />
             </View>
         </View>
     );
@@ -50,11 +53,9 @@ const styles = StyleSheet.create({
     },
     stepCount: {
         alignSelf: 'flex-end',
-        color: '#0478ca',
     },
     backText: {
         alignSelf: 'flex-start',
-        color: '#0478ca',
         userSelect: 'none',
     },
     textContainer: {
@@ -62,6 +63,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        marginBottom: 4,
     }
 });
 
