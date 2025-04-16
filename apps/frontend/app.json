@@ -33,6 +33,13 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "com.leostricak22.juice",
+          "enableGooglePay": true
+        }
       ]
     ],
     "experiments": {

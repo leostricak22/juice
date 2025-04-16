@@ -3,7 +3,7 @@ import {
     NativeSyntheticEvent,
     TextInputChangeEventData,
     View,
-    Text, Pressable,
+    Text, Pressable, Button,
 } from 'react-native';
 import LoginRequest from "@/src/models/dto/LoginRequest";
 import {useLocalSearchParams, useRouter} from "expo-router";
@@ -103,6 +103,7 @@ const Login: React.FC = () => {
                     </Pressable>
                 </View>
             </View>
+            <Button onPress={() => router.push("/payment-test")} title={"payment"} />
         </ScreenContainerView>
     );
 };

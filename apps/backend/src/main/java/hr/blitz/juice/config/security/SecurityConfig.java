@@ -44,6 +44,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/test/**").permitAll()
                         .requestMatchers("/login").permitAll()
+                        .requestMatchers("/api/payment/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

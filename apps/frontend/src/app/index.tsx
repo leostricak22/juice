@@ -8,7 +8,7 @@ export default function Index() {
     const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
-        setIsMounted(true); // Ensure the component is fully mounted before navigating
+        setIsMounted(true);
     }, []);
 
     useEffect(() => {
@@ -22,7 +22,7 @@ export default function Index() {
     }, [isMounted, loading, userData, router]);
 
     if (loading || !isMounted) {
-        return null; // Prevent navigation issues
+        return null;
     }
 
     return null;
