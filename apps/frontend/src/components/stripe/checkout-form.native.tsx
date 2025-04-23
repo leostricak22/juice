@@ -15,7 +15,7 @@ async function fetchPaymentSheetParams(amount:number, data: any) {
                 time: data.time,
             }
         }))
-    return await fetch("https://cat-allowed-rabbit.ngrok-free.app/api/payment/create-payment-intent", {
+    return await fetch(process.env.EXPO_PUBLIC_API_URL + "/api/payment/create-payment-intent", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
