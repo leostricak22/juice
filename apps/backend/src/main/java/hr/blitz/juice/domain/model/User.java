@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 
+@EqualsAndHashCode(callSuper = true)
 @Document(collection = "user")
 @Data
 @Builder

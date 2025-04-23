@@ -1,12 +1,14 @@
 package hr.blitz.juice.rest.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stripe.exception.StripeException;
-import com.stripe.model.PaymentIntent;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
+import hr.blitz.juice.domain.enumeration.PaymentServiceEnum;
 import hr.blitz.juice.domain.model.stripe.PaymentRequest;
-import hr.blitz.juice.domain.model.stripe.PaymentResponse;
 import hr.blitz.juice.rest.dto.PaymentSession;
+import hr.blitz.juice.rest.dto.ReservationRequest;
 import hr.blitz.juice.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,8 +29,19 @@ public class PaymentController {
     private String frontendUrl;
 
     @PostMapping("/create-payment-intent")
-    public ResponseEntity<?> createPaymentIntent(@RequestBody PaymentRequest paymentRequest) {
+    public ResponseEntity<?> createPaymentIntent(
+            @RequestBody PaymentRequest paymentRequest
+    ) throws JsonProcessingException {
         try {
+            System.out.println("Creating payment intent with request: " + paymentRequest.getPaymentService());
+            if (paymentRequest.getPaymentService().equals(PaymentServiceEnum.RESERVATION)) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                ReservationRequest reservation = objectMapper.convertValue(paymentRequest.getData(), ReservationRequest.class);
+                String reservationJson = objectMapper.writeValueAsString(reservation);
+
+                paymentRequest.setMetadata(Map.of("reservationData", reservationJson));
+            }
+
             PaymentSession session = paymentService.createPaymentSession(paymentRequest);
             return ResponseEntity.ok(session);
         } catch (StripeException e) {

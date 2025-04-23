@@ -1,24 +1,46 @@
 import {initPaymentSheet, useStripe} from "@stripe/stripe-react-native";
-import React from "react";
+import React, {useEffect} from "react";
 import {Alert, Button} from "react-native";
 import * as Linking from "expo-linking";
+import ActionButton from "@/src/components/button/ActionButton";
 
-async function fetchPaymentSheetParams(amount:number ) {
+async function fetchPaymentSheetParams(amount:number, data: any) {
+    console.log( JSON.stringify(
+        {
+            amount,
+            paymentService: "RESERVATION",
+            data: {
+                hallId: data.hall.id,
+                date: data.date,
+                time: data.time,
+            }
+        }))
     return await fetch("https://cat-allowed-rabbit.ngrok-free.app/api/payment/create-payment-intent", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ amount })
+        body: JSON.stringify(
+            {
+                amount,
+                paymentService: "RESERVATION",
+                data: {
+                    hallId: data.hall.id,
+                    date: data.date,
+                    time: data.time,
+                }
+            }
+        )
     }).then(async (res) => await res.json());
 }
 
-export default function CheckoutForm({amount}: {amount:number}) {
+export default function CheckoutForm({amount, data}: {amount:number, data: any}) {
     const {initPaymentSheet, presentPaymentSheet} = useStripe();
     const [loading, setLoading] = React.useState(false);
 
     const initializePaymentSheet = async () => {
-        const {paymentIntent, ephemeralKey, customer} = await fetchPaymentSheetParams(amount);
+        setLoading(true)
+        const {paymentIntent, ephemeralKey, customer} = await fetchPaymentSheetParams(amount, data);
         const {error} = await initPaymentSheet({
             merchantDisplayName: "Juice",
             customerId: customer,
@@ -35,10 +57,17 @@ export default function CheckoutForm({amount}: {amount:number}) {
             applePay: {
                 merchantCountryCode: "HR",
             },
+            googlePay: {
+                merchantCountryCode: "HR",
+                testEnv: true,
+                currencyCode: "EUR",
+            }
         });
 
+        setLoading(false)
+
         if (!error) {
-            setLoading(true);
+            setLoading(false);
         }
     }
 
@@ -52,10 +81,23 @@ export default function CheckoutForm({amount}: {amount:number}) {
         }
     }
 
+    const handlePayment = async () => {
+        await openPaymentSheet();
+    }
+
+    useEffect(() => {
+        const initializePaymentSheetOnRender = async () => {
+            await initializePaymentSheet();
+        }
+
+        initializePaymentSheetOnRender().then(r => r);
+    }, []);
+
+    if (loading) {
+        return <ActionButton text={"Učitavanje..."} color={"orange"} />
+    }
+
     return (
-        <>
-            <Button title={"Initiate Payment"} onPress={initializePaymentSheet} />
-            <Button title={"Open Payment Sheet"} onPress={openPaymentSheet} />
-        </>
+        <ActionButton text={"Plati"} color={"orange"} onClick={handlePayment} />
     )
 }

@@ -4,6 +4,7 @@ import React, {useState} from "react";
 
 import textStyles from "@/assets/styles/text"
 import ActionButton from "@/src/components/button/ActionButton";
+import Hr from "@/src/components/divider/Hr";
 
 const ReservationDatePicker:React.FC<ReservationPickerProps> = ({ changeFormData }) => {
     const { width } = useWindowDimensions();
@@ -81,7 +82,7 @@ const ReservationDatePicker:React.FC<ReservationPickerProps> = ({ changeFormData
                     </View>
                 </View>
 
-                <hr style={{width:'100%', height:'100%'}}/>
+                <Hr />
 
                 <View style={styles.section}>
                     <Text style={textStyles.headingSmall}>Vrijeme</Text>

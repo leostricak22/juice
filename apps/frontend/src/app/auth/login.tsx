@@ -103,7 +103,6 @@ const Login: React.FC = () => {
                     </Pressable>
                 </View>
             </View>
-            <Button onPress={() => router.push("/payment-test")} title={"payment"} />
         </ScreenContainerView>
     );
 };

@@ -6,6 +6,7 @@ import {StatusBar} from "react-native";
 import Navbar from "@/src/components/navbar/Navbar";
 import {UserProvider} from "@/src/context/UserContext";
 import StripeProvider from "@/src/components/stripe/stripe-provider";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function RootLayout() {
     const [fontsLoaded, setFontsLoaded] = useState(false);

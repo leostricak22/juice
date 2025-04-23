@@ -32,12 +32,18 @@ public class PaymentService {
                 .setStripeVersion("2023-10-16")
                 .build();
 
+        Map<String, String> metadata = paymentRequest.getMetadata();
+        if (metadata == null) {
+            metadata = Map.of();
+        }
+
         PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
                 .setAmount(paymentRequest.getAmount())
-                .setCurrency(paymentRequest.getCurrency())
+                .setCurrency("eur")
                 .setCustomer(customer.getId())
-                .setDescription(paymentRequest.getDescription())
+                .setDescription(paymentRequest.getPaymentService().toString())
                 .addPaymentMethodType("card")
+                .putAllMetadata(metadata)
                 .build();
 
         PaymentIntent paymentIntent = PaymentIntent.create(params);

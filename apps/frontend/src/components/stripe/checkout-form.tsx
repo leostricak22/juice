@@ -1,29 +1,21 @@
 import React from "react";
-import {Alert, Button} from "react-native";
 import {router} from "expo-router";
+import ActionButton from "@/src/components/button/ActionButton";
 
 async function openPaymentModal(amount: number) {
-    const {url} = await fetch("https://cat-allowed-rabbit.ngrok-free.app/api/payment/hosted-checkout-session", {
+    const {url} = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/payment/hosted-checkout-session`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
             custom_amount: amount.toString(),
         },
-    }).then(async (res) => {
-        var newVar = await res.json();
-        console.log(newVar)
-        return newVar;
-    });
-
-    console.log(url)
+    }).then(async (res) => await res.json());
 
     router.push(url);
 }
 
-export default function CheckoutForm({amount}: {amount:number}) {
+export default function CheckoutForm({amount, data}: {amount:number, data:any}) {
     return (
-        <>
-            <Button title={"Checkout"} onPress={() => openPaymentModal(1500)} />
-        </>
+        <ActionButton text={"Plati"} color={"orange"} onClick={() => openPaymentModal(amount)} />
     )
 }

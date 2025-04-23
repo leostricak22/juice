@@ -9,6 +9,7 @@ import {useState} from "react";
 import ReservationRequest from "@/src/models/dto/ReservationRequest";
 import ProgressBar from "@/src/components/progressbar/ProgressBar";
 import ReservationDatePicker from "@/src/components/reservation/ReservationDatePicker";
+import ReservationDetails from "@/src/components/reservation/ReservationDetails";
 
 function ReservationIndex() {
     const [formData, setFormData] = useState<ReservationRequest>({} as ReservationRequest);
@@ -31,7 +32,8 @@ function ReservationIndex() {
                <Text style={[textStyles.heading, textStyles.alignCenter]}>Rezervacija termina</Text>
                {
                    step === 1 ? <HallPicker changeFormData={changeFormData} /> :
-                   step === 2 ? <ReservationDatePicker changeFormData={changeFormData} /> : null
+                   step === 2 ? <ReservationDatePicker changeFormData={changeFormData} /> :
+                   step === 3 ? <ReservationDetails changeFormData={changeFormData} formData={formData} /> : null
                }
 
            </View>
