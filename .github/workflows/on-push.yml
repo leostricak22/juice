@@ -1,0 +1,59 @@
+name: CI/CD for Spring Boot (Maven - apps/backend)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'  # or 11, etc.
+
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('apps/backend/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-
+
+      - name: Run tests
+        working-directory: apps/backend
+        run: mvn clean test
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy via Webhook
+        run: |
+          curl -X POST https://padel-r2mi8.ondigitalocean.app/deploy?token=${{ secrets.DEPLOY_TOKEN }}
+
+      # Optional SSH-based deployment
+      # - name: Deploy via SSH
+      #   uses: appleboy/ssh-action@v0.1.10
+      #   with:
+      #     host: ${{ secrets.DO_HOST }}
+      #     username: ${{ secrets.DO_USER }}
+      #     key: ${{ secrets.DO_SSH_KEY }}
+      #     script: |
+      #       cd /path/to/your/app
+      #       git pull origin main
+      #       cd apps/backend
+      #       mvn clean install
+      #       systemctl restart your-springboot-service
