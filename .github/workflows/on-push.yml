@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '12'
+          java-version: '23.0.1+11'
 
       - name: Cache Maven packages
         uses: actions/cache@v3
@@ -43,17 +43,3 @@ jobs:
       - name: Deploy via Webhook
         run: |
           curl -X POST https://padel-r2mi8.ondigitalocean.app/deploy?token=${{ secrets.DEPLOY_TOKEN }}
-
-      # Optional SSH-based deployment
-      # - name: Deploy via SSH
-      #   uses: appleboy/ssh-action@v0.1.10
-      #   with:
-      #     host: ${{ secrets.DO_HOST }}
-      #     username: ${{ secrets.DO_USER }}
-      #     key: ${{ secrets.DO_SSH_KEY }}
-      #     script: |
-      #       cd /path/to/your/app
-      #       git pull origin main
-      #       cd apps/backend
-      #       mvn clean install
-      #       systemctl restart your-springboot-service
