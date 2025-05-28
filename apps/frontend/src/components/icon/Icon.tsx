@@ -40,6 +40,9 @@ const Icon: FC<IconProps> = ({ name, size = 24, color="white", ...props })=> {
         case 'add':
             IconComponent = require('@/assets/images/icons/ts/Add').default;
             break;
+        case 'juiceNavbarLogo':
+            IconComponent = require('@/assets/images/icons/ts/JuiceNavbarLogo').default;
+            break;
         default:
             return null;
     }

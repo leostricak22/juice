@@ -29,7 +29,7 @@ const Dashboard: React.FC<PageProps> = ({ userData }) => {
     return (
         <>
             <ScreenContainerView>
-                <View style={containerStyles.screenContainerContent}>
+                <View style={[containerStyles.screenContainerContent, {paddingBottom: 80}]}>
                     <Text style={textStyles.headingMedium}>Pozdrav, {userData.name}!</Text>
                     <Text style={textStyles.headingSmall}>Odaberite uslugu:</Text>
                     <DashboardMenu />
@@ -39,6 +39,7 @@ const Dashboard: React.FC<PageProps> = ({ userData }) => {
             <View style={navigationStyles.navigationContainer}>
                 <Navigation selectedSection={selectedSection} setSelectedSection={setSelectedSection}></Navigation>
             </View>
+
         </>
     );
 }

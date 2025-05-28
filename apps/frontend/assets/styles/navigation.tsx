@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
         left: 0,
         width: "100%",
         height: 80,
-        backgroundColor: "white",
+        backgroundColor: "transparent",
     },
     navigationSectionContainer: {
         width: "100%",
@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-around",
         alignItems: "center",
+        backgroundColor: "white",
     },
     navigationSection: {
         width: "20%",

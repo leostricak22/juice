@@ -1,33 +1,20 @@
-import React, { useEffect } from "react";
-import { Image, Text, View } from "react-native";
-// @ts-ignore
-import LogoImage from '@/assets/images/logo-transparent-no-text.png';
+import React from "react";
+import { Image, View } from "react-native";
 // @ts-ignore
 import DefaultAccountImage from "@/assets/images/account/default-image.png";
 import Icon from "@/src/components/icon/Icon";
-import textStyles from "@/assets/styles/text";
-import colorStyles from "@/assets/styles/colors";
 import navbarStyles from "@/assets/styles/navbar";
 import { useUserData } from "@/src/context/UserContext";
 
 const Navbar: React.FC = () => {
     const { userData } = useUserData();
-    const isLoggedIn = Boolean(userData);
 
     return (
-        <View style={isLoggedIn ? navbarStyles.container : navbarStyles.containerCenterLogo}>
+        <View style={navbarStyles.container}>
             <View style={navbarStyles.logoTextContainer}>
-                <Image source={LogoImage} style={{ height: 45, width: 40 }} />
-                <Text style={[textStyles.headingSmall, colorStyles.white, textStyles.uppercase, { marginTop: 3 }]}>
-                    Juice
-                </Text>
+                <Icon name={"juiceNavbarLogo"} size={120} />
             </View>
-            {isLoggedIn && (
-                <View style={navbarStyles.navbarIcons}>
-                    <Icon name={"notifications"} size={50} />
-                    <Image source={DefaultAccountImage} style={{ height: 60, width: 60 }} />
-                </View>
-            )}
+                <Image source={DefaultAccountImage} style={{ height: 40, width: 40 }} />
         </View>
     );
 };
