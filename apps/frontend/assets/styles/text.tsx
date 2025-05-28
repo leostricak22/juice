@@ -5,12 +5,12 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: "black",
         textAlign: "left",
-        fontFamily: "Tektur"
+        fontFamily: "Roboto"
     },
     link: {
         color: "#007BFF",
         textDecorationLine: "underline",
-        fontFamily: "Tektur"
+        fontFamily: "Roboto"
     },
     heading: {
         fontSize: 46,
@@ -20,24 +20,24 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         marginBottom: 10,
         width: "100%",
-        fontFamily: "Tektur-Bold"
+        fontFamily: "Roboto-Bold"
     },
     headingMedium: {
         fontSize: 36,
         color: "black",
         width: "100%",
-        fontFamily: "Tektur-Bold"
+        fontFamily: "Roboto-Bold"
     },
     headingSmall: {
         fontSize: 24,
         color: "black",
         width: "100%",
-        fontFamily: "Tektur-Bold"
+        fontFamily: "Roboto-Bold"
     },
     error: {
         fontSize: 12,
         color: "red",
-        fontFamily: "Tektur"
+        fontFamily: "Roboto"
     },
     alignLeft: {
         textAlign: "left",

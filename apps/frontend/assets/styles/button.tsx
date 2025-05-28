@@ -5,12 +5,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 4,
-        paddingVertical: 12,
-        paddingHorizontal: 20,
+        borderRadius: 35,
         width: "100%",
-        /* @ts-ignore */
-        outlineStyle: "none",
+        height: 45,
+        borderWidth: 1
     },
     iconContainer: {
         backgroundColor: 'white',
@@ -20,9 +18,10 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: 'white',
-        fontSize: 14,
+        fontSize: 16,
         marginHorizontal: 10,
-        fontFamily: "Tektur",
+        fontFamily: "Roboto",
+        fontWeight: 'bold',
     },
 });
 

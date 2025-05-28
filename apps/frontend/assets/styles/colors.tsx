@@ -5,12 +5,12 @@ const colors = {
     white: "#FFFFFF",
     blue: "#007BFF",
     red: "#FF0000",
-    orange: "#bc623c",
+    orange: "#f57e20",
     gray: "#808080",
 };
 
 const colorsHovered: { [key: string]: string } = {
-    black: "#6a6a6a"
+    black: "#6a6a6a",
 }
 
 const colorsElements: { [key: string]: string } = {
@@ -18,15 +18,23 @@ const colorsElements: { [key: string]: string } = {
     white: "#000000",
     blue: "#FFFFFF",
     red: "#FFFFFF",
-    orange: "#FFFFFF",
+    orange: "#000",
     gray: "#000000",
 };
+
+const colorsBorder: { [key: string]: string } = {
+    white: "#000000",
+}
 
 const colorStyles = StyleSheet.create(
     Object.fromEntries(
         Object.entries(colors).flatMap(([key, value]) => [
             [key, { color: value }],
-            [`${key}Hovered`, { backgroundColor: colorsHovered[key] || darkenColor(value, 0.2) }],
+            [`${key}Border`, { borderColor: (colorsBorder[key] || value) }],
+            [`${key}Hovered`, {
+                borderColor: colorsBorder[key] || darkenColor(value, 0.2),
+                backgroundColor: colorsHovered[key] || darkenColor(value, 0.2),
+            }],
             [`${key}Background`, { backgroundColor: value }],
             [`${key}Element`, { color: (colorsElements[key] || "black") }],
         ])

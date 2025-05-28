@@ -11,6 +11,8 @@ export default function CallbackScreen() {
     const [isMounted, setIsMounted] = useState(false);
     const { setUserData } = useUserData();
 
+    console.log(123);
+
     useEffect(() => {
         setIsMounted(true);
     }, []);

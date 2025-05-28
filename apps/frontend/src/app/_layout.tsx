@@ -1,12 +1,12 @@
-import {Stack, usePathname} from "expo-router";
-import React, {useEffect, useState} from "react";
+import { Stack, usePathname } from "expo-router";
+import React, { useEffect, useState } from "react";
 import * as Font from "expo-font";
 import Loader from "@/src/components/loader/Loader";
-import {StatusBar} from "react-native";
+import { StatusBar } from "react-native";
 import Navbar from "@/src/components/navbar/Navbar";
-import {UserProvider} from "@/src/context/UserContext";
+import { UserProvider } from "@/src/context/UserContext";
 import StripeProvider from "@/src/components/stripe/stripe-provider";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 export default function RootLayout() {
     const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -21,7 +21,7 @@ export default function RootLayout() {
             setFontsLoaded(true);
         }
 
-        loadFonts().then(r => r);
+        loadFonts();
     }, []);
 
     if (!fontsLoaded && pathname !== "/") {
@@ -29,14 +29,16 @@ export default function RootLayout() {
     }
 
     return (
-        <>
-            <StatusBar backgroundColor="#51A3A3" />
-            <StripeProvider>
-                <UserProvider>
-                    <Navbar />
-                    <Stack screenOptions={{ headerShown: false }} />
-                </UserProvider>
-            </StripeProvider>
-        </>
-    )
+        <SafeAreaProvider>
+            <SafeAreaView style={{ flex: 1, backgroundColor: "#f57e20", marginBottom: 10}} edges={['top']}>
+                <StatusBar backgroundColor="#f57e20" />
+                <StripeProvider>
+                    <UserProvider>
+                        <Navbar />
+                        <Stack screenOptions={{ headerShown: false }} />
+                    </UserProvider>
+                </StripeProvider>
+            </SafeAreaView>
+        </SafeAreaProvider>
+    );
 }

@@ -25,6 +25,21 @@ const Icon: FC<IconProps> = ({ name, size = 24, color="white", ...props })=> {
         case 'notifications':
             IconComponent = require('@/assets/images/icons/ts/Notifications').default;
             break;
+        case 'home':
+            IconComponent = require('@/assets/images/icons/ts/Home').default;
+            break;
+        case 'robot':
+            IconComponent = require('@/assets/images/icons/ts/Robot').default;
+            break;
+        case 'shoppingCart':
+            IconComponent = require('@/assets/images/icons/ts/ShoppingCart').default;
+            break;
+        case 'trophy':
+            IconComponent = require('@/assets/images/icons/ts/Trophy').default;
+            break;
+        case 'add':
+            IconComponent = require('@/assets/images/icons/ts/Add').default;
+            break;
         default:
             return null;
     }
