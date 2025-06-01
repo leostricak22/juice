@@ -49,6 +49,15 @@ const Icon: FC<IconProps> = ({ name, size = 24, color="white", ...props })=> {
         case 'search':
             IconComponent = require('@/assets/images/icons/ts/Search').default;
             break;
+        case 'arrowLeft':
+            IconComponent = require('@/assets/images/icons/ts/ArrowLeft').default;
+            break;
+        case 'arrowRight':
+            IconComponent = require('@/assets/images/icons/ts/ArrowRight').default;
+            break;
+        case 'arrowDown':
+            IconComponent = require('@/assets/images/icons/ts/ArrowDown').default;
+            break;
         default:
             return null;
     }

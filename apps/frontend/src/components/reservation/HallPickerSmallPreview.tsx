@@ -68,7 +68,7 @@ const HallPickerSmallPreview: React.FC<{
                     source={require("@/assets/images/no-image.jpg")}
                     resizeMode="cover"
                     style={styles.imageBackground}
-                    imageStyle={{ borderRadius: 12 }}
+                    imageStyle={{ borderRadius: 15 }}
                 >
                     <Animated.View
                         style={[

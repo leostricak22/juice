@@ -20,7 +20,7 @@ const ReservationDetails: React.FC<ReservationPickerProps> = ({changeFormData, f
             <Text style={textStyles.text}>{formData?.hall.address}</Text>
 
             <Text style={[textStyles.headingSmall, {marginTop:20}]}>Datum</Text>
-            <Text style={[textStyles.text]}>{formData?.date.toLocaleDateString("hr", {
+            <Text style={[textStyles.text]}>{formData?.date?.toLocaleDateString("hr", {
                 day: "numeric",
                 month: "numeric",
                 weekday: "short"

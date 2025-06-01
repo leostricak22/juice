@@ -1,12 +1,5 @@
-import ReservationPickerProps from "@/src/types/ReservationPickerProps";
-import {Text, TouchableOpacity, View, StyleSheet, useWindowDimensions} from "react-native";
-import React, {useState} from "react";
 
-import textStyles from "@/assets/styles/text"
-import ActionButton from "@/src/components/button/ActionButton";
-import Hr from "@/src/components/divider/Hr";
-
-const ReservationDatePicker:React.FC<ReservationPickerProps> = ({ changeFormData }) => {
+/*const ReservationDatePicker:React.FC<ReservationPickerProps> = ({ changeFormData }) => {
     const { width } = useWindowDimensions();
     const optionWidth = width < 280 ? "90%" : (width < 460 ? "48%" : "32%");
 
@@ -166,3 +159,4 @@ const styles = StyleSheet.create({
 });
 
 export default ReservationDatePicker;
+ */

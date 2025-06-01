@@ -8,8 +8,8 @@ import withAuth from "@/src/components/hoc/WithAuth";
 import {useState} from "react";
 import ReservationRequest from "@/src/models/dto/ReservationRequest";
 import ProgressBar from "@/src/components/progressbar/ProgressBar";
-import ReservationDatePicker from "@/src/components/reservation/ReservationDatePicker";
 import ReservationDetails from "@/src/components/reservation/ReservationDetails";
+import ReservationTerrainPicker from "@/src/components/reservation/ReservationTerrainPicker";
 
 function ReservationIndex() {
     const [formData, setFormData] = useState<ReservationRequest>({} as ReservationRequest);
@@ -20,17 +20,17 @@ function ReservationIndex() {
 
         if (key === "hall") {
             setStep(2);
-        } else if (key === "date") {
+        } else if (key === "terrain") {
             setStep(3);
         }
     }
 
     return (
        <ScreenContainerView>
-           <View style={containerStyles.screenContainerContent}>
+           <View style={[containerStyles.screenContainerContent, {margin: 0, padding: 0}]}>
                {
                    step === 1 ? <HallPicker changeFormData={changeFormData} /> :
-                   step === 2 ? <ReservationDatePicker changeFormData={changeFormData} /> :
+                   step === 2 ? <ReservationTerrainPicker changeFormData={changeFormData} formData={formData} /> :
                    step === 3 ? <ReservationDetails changeFormData={changeFormData} formData={formData} /> : null
                }
 

@@ -33,12 +33,12 @@ const HallPicker: React.FC<ReservationPickerProps> = ({changeFormData}) => {
 
     return (
         <>
-            <View style={{paddingHorizontal: 14, gap: 10}}>
+            <View style={{padding: 14, gap: 10}}>
                 <Text style={[textStyles.headingSmall]}>Odaberi dvoranu</Text>
                 <Input value={""} placeholder={"Pretraga..."} icon={"search"}></Input>
                 <Icon name={"filter"}/>
             </View>
-            <View style={{marginTop: 10, gap: 20}}>
+            <View style={{ gap: 20}}>
                 {
                     halls && halls.map((hall: Hall) => (
                         <HallPickerSmallPreview key={hall.id} hall={hall}
