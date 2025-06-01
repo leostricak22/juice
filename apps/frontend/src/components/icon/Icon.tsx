@@ -43,6 +43,12 @@ const Icon: FC<IconProps> = ({ name, size = 24, color="white", ...props })=> {
         case 'juiceNavbarLogo':
             IconComponent = require('@/assets/images/icons/ts/JuiceNavbarLogo').default;
             break;
+        case 'filter':
+            IconComponent = require('@/assets/images/icons/ts/Filter').default;
+            break;
+        case 'search':
+            IconComponent = require('@/assets/images/icons/ts/Search').default;
+            break;
         default:
             return null;
     }

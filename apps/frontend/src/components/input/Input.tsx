@@ -2,6 +2,7 @@ import { TextInput, View, Text, TouchableOpacity } from "react-native";
 import React, { useCallback, useState } from "react";
 import InputProps from "@/src/types/InputProps";
 import inputStyles from "@/assets/styles/input";
+import shadowStyles from "@/assets/styles/shadow";
 import Icon from "@/src/components/icon/Icon";
 
 const Input: React.FC<InputProps> = ({
@@ -10,6 +11,7 @@ const Input: React.FC<InputProps> = ({
                                          onInputChange,
                                          error,
                                          type = "text",
+                                         icon
                                      }) => {
     const [isFocused, setIsFocused] = useState(false);
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -18,14 +20,18 @@ const Input: React.FC<InputProps> = ({
     const handleBlur = useCallback(() => setIsFocused(false), []);
 
     return (
-        <View style={inputStyles.inputContainer}>
+        <View style={[inputStyles.inputContainer]}>
             <View
                 style={[
-                    inputStyles.inputWrapper,
+                    icon ? inputStyles.inputWrapperWithIcon : inputStyles.inputWrapper,
                     error && inputStyles.inputWrapperError,
                     isFocused && inputStyles.inputWrapperFocused,
+                    shadowStyles.mediumShadow
                 ]}
             >
+                {icon && (
+                    <Icon style={inputStyles.inputIcon} name={icon} color={"black"} size={18} />
+                )}
                 <TextInput
                     placeholder={placeholder}
                     value={value}

@@ -1,15 +1,18 @@
 import NavigationProps from "@/src/types/NavigationProps";
-import React, { useEffect, useRef, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Animated, Modal, Text, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
 import navigationStyles from "@/assets/styles/navigation";
 import textStyles from "@/assets/styles/text";
 import shadowStyles from "@/assets/styles/shadow";
 import Icon from "@/src/components/icon/Icon";
 import ActionButton from "@/src/components/button/ActionButton";
+import {useRouter} from "expo-router";
 
-const Navigation: React.FC<NavigationProps> = ({ selectedSection, setSelectedSection }) => {
+const Navigation: React.FC<NavigationProps> = ({selectedSection, setSelectedSection}) => {
     const [addButtonPressed, setAddButtonPressed] = useState<boolean>(false);
     const rotation = useRef(new Animated.Value(0)).current;
+
+    const router = useRouter();
 
     useEffect(() => {
         Animated.timing(rotation, {
@@ -36,7 +39,7 @@ const Navigation: React.FC<NavigationProps> = ({ selectedSection, setSelectedSec
                         selectedSection === 0 ? navigationStyles.navigationSelectedIcon : {},
                     ]}
                 >
-                    <Icon name={"home"} size={20} color={selectedSection === 1 ? "#000" : "white"} />
+                    <Icon name={"home"} size={20} color={selectedSection === 1 ? "#000" : "white"}/>
                 </View>
                 <Text style={textStyles.text}>Početna</Text>
             </TouchableOpacity>
@@ -51,7 +54,7 @@ const Navigation: React.FC<NavigationProps> = ({ selectedSection, setSelectedSec
                         selectedSection === 1 ? navigationStyles.navigationSelectedIcon : {},
                     ]}
                 >
-                    <Icon name={"shoppingCart"} size={20} color={selectedSection === 1 ? "#000" : "white"} />
+                    <Icon name={"shoppingCart"} size={20} color={selectedSection === 1 ? "#000" : "white"}/>
                 </View>
                 <Text style={textStyles.text}>Trgovina</Text>
             </TouchableOpacity>
@@ -61,11 +64,11 @@ const Navigation: React.FC<NavigationProps> = ({ selectedSection, setSelectedSec
                     style={[
                         navigationStyles.navigationAddButton,
                         shadowStyles.mediumShadow,
-                        { transform: [{ rotate: rotateInterpolate }] },
+                        {transform: [{rotate: rotateInterpolate}]},
                     ]}
                 >
-                    <View style={{ alignItems: "center", justifyContent: "center" }}>
-                        <Icon name={"add"} size={26} color={"white"} />
+                    <View style={{alignItems: "center", justifyContent: "center"}}>
+                        <Icon name={"add"} size={26} color={"white"}/>
                     </View>
                 </Animated.View>
             </TouchableOpacity>
@@ -80,7 +83,7 @@ const Navigation: React.FC<NavigationProps> = ({ selectedSection, setSelectedSec
                         selectedSection === 2 ? navigationStyles.navigationSelectedIcon : {},
                     ]}
                 >
-                    <Icon name={"robot"} size={20} color={selectedSection === 2 ? "#000" : "white"} />
+                    <Icon name={"robot"} size={20} color={selectedSection === 2 ? "#000" : "white"}/>
                 </View>
                 <Text style={textStyles.text}>AI</Text>
             </TouchableOpacity>
@@ -95,7 +98,7 @@ const Navigation: React.FC<NavigationProps> = ({ selectedSection, setSelectedSec
                         selectedSection === 3 ? navigationStyles.navigationSelectedIcon : {},
                     ]}
                 >
-                    <Icon name={"trophy"} size={20} color={selectedSection === 3 ? "#000" : "white"} />
+                    <Icon name={"trophy"} size={20} color={selectedSection === 3 ? "#000" : "white"}/>
                 </View>
                 <Text style={textStyles.text}>Natjecanja</Text>
             </TouchableOpacity>
@@ -108,10 +111,12 @@ const Navigation: React.FC<NavigationProps> = ({ selectedSection, setSelectedSec
             >
                 <TouchableWithoutFeedback onPress={() => setAddButtonPressed(false)}>
                     <View style={navigationStyles.navigationCreateSectionModal}>
-                        <TouchableWithoutFeedback onPress={() => {}}>
+                        <TouchableWithoutFeedback onPress={() => {
+                        }}>
                             <View style={navigationStyles.navigationAddButtonModalButtonsContainer}>
                                 <ActionButton text={"Objavi oglas"} color={"white"} />
-                                <ActionButton text={"Rezerviraj termin"} color={"orange"} />
+                                <ActionButton text={"Rezerviraj termin"} color={"orange"}
+                                              onClick={() => router.push("/reservation")} />
                                 <TouchableOpacity
                                     style={navigationStyles.navigationAddButtonModalContainer}
                                     onPress={() => setAddButtonPressed(false)}
@@ -121,11 +126,11 @@ const Navigation: React.FC<NavigationProps> = ({ selectedSection, setSelectedSec
                                         style={[
                                             navigationStyles.navigationAddButtonModal,
                                             shadowStyles.mediumShadow,
-                                            { transform: [{ rotate: rotateInterpolate }] },
+                                            {transform: [{rotate: rotateInterpolate}]},
                                         ]}
                                     >
-                                        <View style={{ alignItems: "center", justifyContent: "center" }}>
-                                            <Icon name={"add"} size={26} color={"white"} />
+                                        <View style={{alignItems: "center", justifyContent: "center"}}>
+                                            <Icon name={"add"} size={26} color={"white"}/>
                                         </View>
                                     </Animated.View>
                                 </TouchableOpacity>

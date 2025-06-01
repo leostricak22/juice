@@ -6,6 +6,7 @@ type InputProps = {
     onInputChange?: (event: NativeSyntheticEvent<TextInputChangeEventData>) => void;
     error?: string;
     type?: string;
+    icon?: string;
 }
 
 export default InputProps;

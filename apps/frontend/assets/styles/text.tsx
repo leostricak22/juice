@@ -29,10 +29,11 @@ const styles = StyleSheet.create({
         fontFamily: "Roboto-Bold"
     },
     headingSmall: {
-        fontSize: 24,
+        fontSize: 22,
         color: "black",
         width: "100%",
-        fontFamily: "Roboto-Bold"
+        fontFamily: "Roboto-Bold",
+        fontWeight: "bold"
     },
     error: {
         fontSize: 12,

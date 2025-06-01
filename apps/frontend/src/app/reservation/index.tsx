@@ -28,8 +28,6 @@ function ReservationIndex() {
     return (
        <ScreenContainerView>
            <View style={containerStyles.screenContainerContent}>
-               <ProgressBar step={step} maxStep={5} setStep={setStep} color={"#BC623CFF"} />
-               <Text style={[textStyles.heading, textStyles.alignCenter]}>Rezervacija termina</Text>
                {
                    step === 1 ? <HallPicker changeFormData={changeFormData} /> :
                    step === 2 ? <ReservationDatePicker changeFormData={changeFormData} /> :
