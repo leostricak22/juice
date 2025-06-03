@@ -7,10 +7,12 @@ const colors = {
     red: "#FF0000",
     orange: "#f57e20",
     gray: "#808080",
+    transparent: "transparent"
 };
 
 const colorsHovered: { [key: string]: string } = {
     black: "#6a6a6a",
+    transparent: "#aaaaaa",
 }
 
 const colorsElements: { [key: string]: string } = {
@@ -20,10 +22,22 @@ const colorsElements: { [key: string]: string } = {
     red: "#FFFFFF",
     orange: "#000",
     gray: "#000000",
+    transparent: "#000000",
 };
 
 const colorsBorder: { [key: string]: string } = {
     white: "#000000",
+    transparent: "#000"
+}
+
+const colorsDisabled: { [key: string]: string } = {
+    black: "#6a6a6a",
+    white: "#d3d3d3",
+    blue: "#d3d3d3",
+    red: "#d3d3d3",
+    orange: "#d3d3d3",
+    gray: "#d3d3d3",
+    transparent: "#aaaaaa"
 }
 
 const colorStyles = StyleSheet.create(
@@ -37,6 +51,11 @@ const colorStyles = StyleSheet.create(
             }],
             [`${key}Background`, { backgroundColor: value }],
             [`${key}Element`, { color: (colorsElements[key] || "black") }],
+            [`${key}Disabled`, {
+                backgroundColor: colorsDisabled[key] || darkenColor(value, 0.2),
+                borderColor: colorsDisabled[key] || darkenColor(value, 0.2),
+                color: colorsElements[key] || "black",
+            }],
         ])
     )
 );

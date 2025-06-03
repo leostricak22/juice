@@ -1,7 +1,6 @@
 package hr.blitz.juice.domain.model.stripe;
 
 import hr.blitz.juice.domain.enumeration.PaymentServiceEnum;
-import hr.blitz.juice.service.PaymentService;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -35,7 +35,7 @@ public class PaymentController {
         try {
             System.out.println("Creating payment intent with request: " + paymentRequest.getPaymentService());
             if (paymentRequest.getPaymentService().equals(PaymentServiceEnum.RESERVATION)) {
-                ObjectMapper objectMapper = new ObjectMapper();
+                ObjectMapper objectMapper = new ObjectMapper().registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
                 ReservationRequest reservation = objectMapper.convertValue(paymentRequest.getData(), ReservationRequest.class);
                 String reservationJson = objectMapper.writeValueAsString(reservation);
 

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 
 @Service
 public class ReservationService {
@@ -31,12 +32,9 @@ public class ReservationService {
         reservation.setHall(hallRepository.findById(reservationRequest.getHallId())
                 .orElseThrow(() -> new AppException(404, "Hall not found")));
 
-        // Parse ISO 8601 datetime string with timezone
-        OffsetDateTime offsetDateTime = OffsetDateTime.parse(reservationRequest.getDate());
-        // Convert to LocalDate (UTC date)
-        reservation.setDate(offsetDateTime.toLocalDate());
-
-        reservation.setTime(reservationRequest.getTime());
+        reservation.setDate(reservationRequest.getTerrainAndDate().getDate().toInstant());
+        reservation.setTimeFrom(reservationRequest.getTerrainAndDate().getTimeFrom());
+        reservation.setTimeTo(reservationRequest.getTerrainAndDate().getTimeTo());
 
         return reservationRepository.save(reservation);
     }

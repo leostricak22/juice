@@ -1,71 +1,185 @@
 import React, {useState} from "react";
 import ReservationPickerProps from "@/src/types/ReservationPickerProps";
-import {Text, TextInput, View} from "react-native";
-import ScreenContainerView from "@/src/components/ScreenContainerView";
+import {Image, ImageBackground, Pressable, StyleSheet, Text, View} from "react-native";
 
 import textStyles from "@/assets/styles/text";
-import ActionButton from "@/src/components/button/ActionButton";
-import Checkbox from "@/src/components/input/CheckBox";
-import RadioButton from "@/src/components/input/RadioButton";
-import Hr from "@/src/components/divider/Hr";
+import shadowStyles from "@/assets/styles/shadow";
 import CheckoutForm from "@/src/components/stripe/checkout-form";
+import Icon from "@/src/components/icon/Icon";
+import {Portal} from "react-native-portalize";
+
+const mockTerrains = [
+    {id: 1, name: "Terra 1"},
+    {id: 2, name: "Terra 2"},
+    {id: 3, name: "Terra 3"},
+    {id: 4, name: "Terra 4"},
+];
 
 const ReservationDetails: React.FC<ReservationPickerProps> = ({changeFormData, formData}) => {
-    const [selectedOption, setSelectedOption] = useState<'app' | 'club' | null>('app');
+    const [paymentMethod, setPaymentMethod] = useState<'card' | 'club' | null>(null);
+
+    if (!formData?.players) {
+        changeFormData("players", [{"id":1,"name": "Leo", "image": null}]);
+    }
+
+    console.log("form data: ", formData)
 
     return (
         <View>
-            <Text style={textStyles.headingSmall}>Dvorana</Text>
-            <Text style={[textStyles.text, textStyles.bold]}>{formData?.hall.name}</Text>
-            <Text style={textStyles.text}>{formData?.hall.address}</Text>
-
-            <Text style={[textStyles.headingSmall, {marginTop:20}]}>Datum</Text>
-            <Text style={[textStyles.text]}>{formData?.date?.toLocaleDateString("hr", {
-                day: "numeric",
-                month: "numeric",
-                weekday: "short"
-            })}, {formData?.time}</Text>
-
-            <Text style={[textStyles.headingSmall, {marginTop:20}]}>Način plaćanja</Text>
-            <RadioButton
-                label="Plaćanje putem aplikacije"
-                selected={selectedOption === 'app'}
-                onPress={() => setSelectedOption('app')}
-            />
-            <RadioButton
-                label="Plaćanje u klubu"
-                selected={selectedOption === 'club'}
-                onPress={() => setSelectedOption('club')}
-            />
-
-            <Hr margin={15} />
-
-            {
-                selectedOption === 'app' ?
-                <>
+            <ImageBackground
+                source={require("@/assets/images/2187ab84c89911225771d65328d846ef89f43593.png")}
+                resizeMode="cover"
+                style={styles.imageBackground}
+                imageStyle={{borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}
+            >
+                <Text style={styles.text}>{formData?.hall.name}</Text>
+            </ImageBackground>
+            <View style={styles.container}>
+                <View style={styles.selectedReservationDateAndTime}>
                     <Text style={textStyles.headingSmall}>
-                        Za platiti: 40.20€
+                        {formData?.terrainAndDate.date
+                            ? `${new Date(formData.terrainAndDate.date).toLocaleDateString("hr", {weekday: "long"}).charAt(0).toUpperCase() +
+                            new Date(formData.terrainAndDate.date).toLocaleDateString("hr", {weekday: "long"}).slice(1)
+                            } ${new Date(formData.terrainAndDate.date).toLocaleDateString("hr", {
+                                day: "2-digit",
+                                month: "2-digit"
+                            }).replace(/\s/g, "")}`
+                            : ""}
                     </Text>
-                    <Text style={textStyles.text}>
-                        Termin: <Text style={textStyles.bold}>40.00€</Text>
-                    </Text>
-                    <Text style={textStyles.text}>
-                        Troškovi: <Text style={textStyles.bold}>0.20€</Text>
-                    </Text>
-                    <Text style={[textStyles.text, {marginBottom: 20}]}>
-                        Uplata se vrši putem aplikacije.
-                    </Text>
-                </> :
-                selectedOption === 'club' &&
-                <>
-                    <Text style={[textStyles.text, {marginBottom: 20}]}>
-                        Plaćanje se odvija u klubu.
-                    </Text>
-                </>
-            }
-            <CheckoutForm amount={4020} data={formData} />
+                    <Text
+                        style={textStyles.headingSmall}>{formData?.terrainAndDate.timeFrom} - {formData?.terrainAndDate.timeTo}</Text>
+                </View>
+                <Text style={textStyles.headingSmallNoBold}>{mockTerrains.find((terain) =>
+                    terain.id === formData?.terrainAndDate.terrainId)?.name}</Text>
+                <Text style={textStyles.headingSmallNoBold}>Dodaj igrače:</Text>
+                <View style={{flexDirection: "row", gap: 10, justifyContent: "space-between", alignItems: "center"}}>
+                    {[...Array(4)].map((_, i) => {
+                        const player = formData?.players && formData.players[i];
+                        const playerElement = player ? (
+                            <Image
+                                key={`player-${i}`}
+                                source={player.image ?? require("@/assets/images/account/default-image.png")}
+                                style={[
+                                    shadowStyles.largeShadow,
+                                    {width: "20%", aspectRatio: 1, borderRadius: 20},
+                                ]}
+                            />
+                        ) : (
+                            <View
+                                key={`player-${i}`}
+                                style={[
+                                    {
+                                        width: "20%",
+                                        aspectRatio: 1,
+                                        borderRadius: 100,
+                                        borderWidth: 1,
+                                        borderColor: "black",
+                                        backgroundColor: "white",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                    },
+                                    shadowStyles.largeShadow,
+                                ]}
+                            >
+                                <Icon name={"plus"}/>
+                            </View>
+                        );
+
+                        if (i === 1) {
+                            return (
+                                <React.Fragment key={i}>
+                                    {playerElement}
+                                    <View style={{alignItems: "center", justifyContent: "center"}}>
+                                        <View
+                                            style={{
+                                                width: 2,
+                                                height: 85,
+                                                backgroundColor: "#F57E20",
+                                            }}
+                                        />
+                                    </View>
+                                </React.Fragment>
+                            );
+                        }
+
+                        return playerElement;
+                    })}
+                </View>
+
+                <Text style={textStyles.headingSmallNoBold}>Način plaćanja:</Text>
+                <View style={styles.paymentMethodContainer}>
+                    <Pressable style={styles.paymentMethod} onPress={() => setPaymentMethod("card")}>
+                        <Text style={paymentMethod === "card" && textStyles.bold}>Kartica</Text>
+                        <Icon name={paymentMethod === "card" ? "creditCardSelected" : "creditCard"} size={60} />
+                    </Pressable>
+                    <Pressable style={styles.paymentMethod} onPress={() => setPaymentMethod("club")}>
+                        <Text style={paymentMethod === "club" && textStyles.bold}>U klubu</Text>
+                        <Icon name={paymentMethod === "club" ? "cashSelected" : "cash"} size={60} />
+                    </Pressable>
+                </View>
+
+                {
+                    paymentMethod === "card" &&
+                    <Portal>
+                        <View style={styles.reservationContainer}>
+                            <Text style={[textStyles.headingSmall, textStyles.alignRight]}>Cijena 41.50€</Text>
+                            <Text style={[textStyles.text, {color: "gray", marginBottom: 5}, textStyles.alignRight]}>Klikom na gumb prihvaćaš uvjete</Text>
+                            <CheckoutForm amount={4150} data={formData}/>
+                        </View>
+                    </Portal>
+                }
+            </View>
         </View>
     )
 }
 
 export default ReservationDetails;
+
+const styles = StyleSheet.create({
+    container: {
+        marginTop: 15,
+        gap: 15,
+        paddingHorizontal: 16,
+    },
+    imageBackground: {
+        flex: 1,
+        justifyContent: "flex-end",
+        height: 130,
+        width: "100%",
+    },
+    text: {
+        color: "white",
+        fontSize: 23,
+        fontFamily: "Roboto-Bold",
+        padding: 10,
+        paddingLeft: 16,
+    },
+    selectedReservationDateAndTime: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+    },
+    paymentMethodContainer: {
+        width: "100%",
+        flexDirection: "row",
+        gap: 10,
+        alignItems: "center"
+    },
+    paymentMethod: {
+        flex: 1,
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: 15
+    },
+    reservationContainer: {
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: "white",
+        marginBottom: 0,
+        padding: 15,
+        gap: 5
+    }
+})

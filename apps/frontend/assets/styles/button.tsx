@@ -17,11 +17,11 @@ const styles = StyleSheet.create({
         marginRight: 12,
     },
     buttonText: {
-        color: 'white',
         fontSize: 16,
         marginHorizontal: 10,
         fontFamily: "Roboto",
         fontWeight: 'bold',
+        color: 'white',
     },
 });
 

@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         paddingBottom: 20,
         minHeight: '100%',
-        backgroundColor: "#fff7ef",
+        backgroundColor: "#fff",
         width: '100%',
     },
     screenContainerCenter: {
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
         width: "100%",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#fff7ef",
+        backgroundColor: "#fff",
     },
     screenContainerContentCenter: {
         flex: 1,

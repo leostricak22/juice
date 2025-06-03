@@ -20,7 +20,7 @@ function ReservationIndex() {
 
         if (key === "hall") {
             setStep(2);
-        } else if (key === "terrain") {
+        } else if (key === "terrainAndDate") {
             setStep(3);
         }
     }

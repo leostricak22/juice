@@ -16,6 +16,6 @@ async function openPaymentModal(amount: number) {
 
 export default function CheckoutForm({amount, data}: {amount:number, data:any}) {
     return (
-        <ActionButton text={"Plati"} color={"orange"} onClick={() => openPaymentModal(amount)} />
+        <ActionButton text={"Rezerviraj"} color={"black"} onClick={() => openPaymentModal(amount)} />
     )
 }

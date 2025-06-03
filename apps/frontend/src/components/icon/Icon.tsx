@@ -58,6 +58,27 @@ const Icon: FC<IconProps> = ({ name, size = 24, color="white", ...props })=> {
         case 'arrowDown':
             IconComponent = require('@/assets/images/icons/ts/ArrowDown').default;
             break;
+        case 'close':
+            IconComponent = require('@/assets/images/icons/ts/Close').default;
+            break;
+        case 'logo':
+            IconComponent = require('@/assets/images/icons/ts/Logo').default;
+            break;
+        case 'plus':
+            IconComponent = require('@/assets/images/icons/ts/AddPlus').default;
+            break;
+        case 'creditCard':
+            IconComponent = require('@/assets/images/icons/ts/CreditCard').default;
+            break;
+        case 'cash':
+            IconComponent = require('@/assets/images/icons/ts/Cash').default;
+            break;
+        case 'creditCardSelected':
+            IconComponent = require('@/assets/images/icons/ts/CreditCardSelected').default;
+            break;
+        case 'cashSelected':
+            IconComponent = require('@/assets/images/icons/ts/CashSelected').default;
+            break;
         default:
             return null;
     }

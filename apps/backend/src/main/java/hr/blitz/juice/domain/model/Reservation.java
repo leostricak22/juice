@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
 import java.time.LocalDate;
 
 @Document(collection = "reservation")
@@ -18,7 +19,8 @@ public class Reservation extends Auditable<String> {
     private String id;
     private User user;
     private Hall hall;
-    private LocalDate date;
-    private String time;
+    private Instant date;
+    private String timeFrom;
+    private String timeTo;
     private boolean isPayed;
 }

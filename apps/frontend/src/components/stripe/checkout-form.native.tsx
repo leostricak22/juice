@@ -3,18 +3,9 @@ import React, {useEffect} from "react";
 import {Alert, Button} from "react-native";
 import * as Linking from "expo-linking";
 import ActionButton from "@/src/components/button/ActionButton";
+import { useRouter } from "expo-router";
 
 async function fetchPaymentSheetParams(amount:number, data: any) {
-    console.log( JSON.stringify(
-        {
-            amount,
-            paymentService: "RESERVATION",
-            data: {
-                hallId: data.hall.id,
-                date: data.date,
-                time: data.time,
-            }
-        }))
     return await fetch(process.env.EXPO_PUBLIC_API_URL + "/api/payment/create-payment-intent", {
         method: "POST",
         headers: {
@@ -26,8 +17,13 @@ async function fetchPaymentSheetParams(amount:number, data: any) {
                 paymentService: "RESERVATION",
                 data: {
                     hallId: data.hall.id,
-                    date: data.date,
-                    time: data.time,
+                    terrainAndDate: {
+                        terrainId: data.terrainAndDate.terrainId,
+                        timeFrom: data.terrainAndDate.timeFrom,
+                        timeTo: data.terrainAndDate.timeTo,
+                        date: data.terrainAndDate.date.getTime()
+                    },
+                    playerIds: data.players.map((player: any) => {player.id})
                 }
             }
         )
@@ -37,6 +33,7 @@ async function fetchPaymentSheetParams(amount:number, data: any) {
 export default function CheckoutForm({amount, data}: {amount:number, data: any}) {
     const {initPaymentSheet, presentPaymentSheet} = useStripe();
     const [loading, setLoading] = React.useState(false);
+    const router = useRouter();
 
     const initializePaymentSheet = async () => {
         setLoading(true)
@@ -75,9 +72,11 @@ export default function CheckoutForm({amount, data}: {amount:number, data: any})
         const {error} = await presentPaymentSheet();
 
         if (error) {
+            console.log(error.message)
             Alert.alert(`Error: ${error.message}`);
         } else {
-            Alert.alert("Success", "Your order is confirmed!");
+            console.log(123)
+            router.replace("/success");
         }
     }
 
@@ -94,10 +93,10 @@ export default function CheckoutForm({amount, data}: {amount:number, data: any})
     }, []);
 
     if (loading) {
-        return <ActionButton text={"Učitavanje..."} color={"orange"} />
+        return <ActionButton text={"Učitavanje..."} color={"black"} disabled={true} />
     }
 
     return (
-        <ActionButton text={"Plati"} color={"orange"} onClick={handlePayment} />
+        <ActionButton text={"Rezerviraj"} color={"black"} onClick={handlePayment} />
     )
 }

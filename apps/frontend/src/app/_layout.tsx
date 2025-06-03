@@ -7,6 +7,7 @@ import Navbar from "@/src/components/navbar/Navbar";
 import { UserProvider } from "@/src/context/UserContext";
 import StripeProvider from "@/src/components/stripe/stripe-provider";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { Host } from 'react-native-portalize';
 
 export default function RootLayout() {
     const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -34,8 +35,10 @@ export default function RootLayout() {
                 <StatusBar backgroundColor="#f57e20" />
                 <StripeProvider>
                     <UserProvider>
-                        <Navbar />
-                        <Stack screenOptions={{ headerShown: false }} />
+                        <Host>
+                            <Navbar />
+                            <Stack screenOptions={{ headerShown: false }} />
+                        </Host>
                     </UserProvider>
                 </StripeProvider>
             </SafeAreaView>

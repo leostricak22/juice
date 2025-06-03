@@ -30,10 +30,21 @@ const Dashboard: React.FC<PageProps> = ({ userData }) => {
         <>
             <ScreenContainerView>
                 <View style={[containerStyles.screenContainerContent, {paddingBottom: 80}]}>
-                    <Text style={textStyles.headingMedium}>Pozdrav, {userData.name}!</Text>
-                    <Text style={textStyles.headingSmall}>Odaberite uslugu:</Text>
-                    <DashboardMenu />
-                    <ActionButton text={"Logout"} color={"orange"} onClick={handleLogout} />
+                    {
+                        selectedSection === 0 ? <View>
+                            <Text>Početna</Text>
+                            <ActionButton text={"Logout"} color={"orange"} onClick={handleLogout} />
+                        </View> :
+                        selectedSection === 1 ? <View>
+                            <Text>Trgovina</Text>
+                        </View> :
+                        selectedSection === 2 ? <View>
+                            <Text>AI</Text>
+                        </View> :
+                        selectedSection === 3 ? <View>
+                            <Text>Rezervacije</Text>
+                        </View> : null
+                    }
                 </View>
             </ScreenContainerView>
             <View style={navigationStyles.navigationContainer}>
