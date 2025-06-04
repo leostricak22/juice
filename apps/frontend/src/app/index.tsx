@@ -14,9 +14,9 @@ export default function Index() {
     useEffect(() => {
         if (isMounted && !loading) {
             if (userData) {
-                router.replace("/dashboard");
+                router.push("/dashboard");
             } else {
-                router.replace("/auth/login");
+                router.push("/auth/login");
             }
         }
     }, [isMounted, loading, userData, router]);

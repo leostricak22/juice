@@ -8,7 +8,7 @@ import java.time.LocalDate;
 @Data
 public class TerrainAndDateRequest {
 
-    private Long terrainId;
+    private String terrainId;
     private Timestamp date;
     private String timeFrom;
     private String timeTo;

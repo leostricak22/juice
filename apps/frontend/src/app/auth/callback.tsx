@@ -24,10 +24,10 @@ export default function CallbackScreen() {
             if (params.token) {
                 await AsyncStorage.setItem("token", params.token as string);
                 await handleUserDataChange(setUserData)
-                router.replace("/dashboard");
+                router.push("/dashboard");
             } else {
                 let errorMessage = params.error || "";
-                router.replace(`/auth/login?error=${errorMessage}`);
+                router.push(`/auth/login?error=${errorMessage}`);
             }
         };
 

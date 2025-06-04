@@ -10,7 +10,7 @@ const WithNoAuth = (WrappedComponent:any) => {
 
         useEffect(() => {
             if (!loading && userData) {
-                router.replace('/dashboard');
+                router.push('/dashboard');
             }
         }, [loading, userData, router]);
 

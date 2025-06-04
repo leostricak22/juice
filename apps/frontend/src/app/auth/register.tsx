@@ -128,7 +128,7 @@ function Register() {
         }
 
         await AsyncStorage.setItem("token", (response as AuthenticationResponse).token);
-        router.replace("/dashboard");
+        router.push("/dashboard");
     };
 
     return (
@@ -177,7 +177,7 @@ function Register() {
                     />
                     <ActionButton text={"Sign up"} color={"orange"} onClick={handleSubmit} />
                     <ActionButton text={"Sign up with Google"} icon={"google"} color={"black"} onClick={() => handleGoogleLogin(setError)} />
-                    <Pressable onPress={() => router.replace("/auth/login")}>
+                    <Pressable onPress={() => router.push("/auth/login")}>
                         <Text style={textStyles.text}>Already have an account? Sign in here.</Text>
                     </Pressable>
                 </View>

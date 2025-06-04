@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 
 @Document(collection = "reservation")
 @Data
@@ -22,5 +23,7 @@ public class Reservation extends Auditable<String> {
     private Instant date;
     private String timeFrom;
     private String timeTo;
+    private List<User> players;
+    private Terrain terrain;
     private boolean isPayed;
 }

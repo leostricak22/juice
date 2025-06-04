@@ -14,6 +14,7 @@ import {useUserData} from "@/src/context/UserContext";
 import {handleUserDataChange} from "@/src/utils/UserDataChange";
 import DashboardMenu from "@/src/components/dashboard/DashboardMenu";
 import Navigation from "@/src/components/navigation/Navigation";
+import UserReservations from "@/src/components/homepage/UserReservations";
 
 const Dashboard: React.FC<PageProps> = ({ userData }) => {
     const router = useRouter();
@@ -23,7 +24,7 @@ const Dashboard: React.FC<PageProps> = ({ userData }) => {
     const handleLogout = async () => {
         await AsyncStorage.removeItem('token');
         await handleUserDataChange(setUserData)
-        router.replace("/auth/login");
+        router.push("/auth/login");
     }
 
     return (
@@ -32,8 +33,7 @@ const Dashboard: React.FC<PageProps> = ({ userData }) => {
                 <View style={[containerStyles.screenContainerContent, {paddingBottom: 80}]}>
                     {
                         selectedSection === 0 ? <View>
-                            <Text>Početna</Text>
-                            <ActionButton text={"Logout"} color={"orange"} onClick={handleLogout} />
+                            <UserReservations />
                         </View> :
                         selectedSection === 1 ? <View>
                             <Text>Trgovina</Text>
@@ -42,7 +42,7 @@ const Dashboard: React.FC<PageProps> = ({ userData }) => {
                             <Text>AI</Text>
                         </View> :
                         selectedSection === 3 ? <View>
-                            <Text>Rezervacije</Text>
+                            <ActionButton text={"Logout"} color={"orange"} onClick={handleLogout} />
                         </View> : null
                     }
                 </View>

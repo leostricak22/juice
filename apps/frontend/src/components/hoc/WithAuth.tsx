@@ -14,7 +14,7 @@ const withAuth = (WrappedComponent: React.ComponentType<any>) => {
                 setIsNavigating(true);
 
                 setTimeout(() => {
-                    router.replace('/auth/login');
+                    router.push('/auth/login');
                 }, 0);
             }
         }, [loading, userData, router, isNavigating]);

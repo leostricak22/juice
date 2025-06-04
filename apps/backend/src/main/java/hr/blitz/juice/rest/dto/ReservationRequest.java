@@ -11,5 +11,6 @@ public class ReservationRequest {
 
     private String hallId;
     private TerrainAndDateRequest terrainAndDate;
-    private List<Long> playerIds;
+    private List<String> playerIds;
+    private String userId;
 }

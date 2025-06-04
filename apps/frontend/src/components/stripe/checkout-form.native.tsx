@@ -4,8 +4,9 @@ import {Alert, Button} from "react-native";
 import * as Linking from "expo-linking";
 import ActionButton from "@/src/components/button/ActionButton";
 import { useRouter } from "expo-router";
+import {useUserData} from "@/src/context/UserContext";
 
-async function fetchPaymentSheetParams(amount:number, data: any) {
+async function fetchPaymentSheetParams(amount:number, data: any, userData: any) {
     return await fetch(process.env.EXPO_PUBLIC_API_URL + "/api/payment/create-payment-intent", {
         method: "POST",
         headers: {
@@ -23,7 +24,8 @@ async function fetchPaymentSheetParams(amount:number, data: any) {
                         timeTo: data.terrainAndDate.timeTo,
                         date: data.terrainAndDate.date.getTime()
                     },
-                    playerIds: data.players.map((player: any) => {player.id})
+                    playerIds: data.players.map((player: any) => player.id),
+                    userId: userData.id,
                 }
             }
         )
@@ -34,10 +36,15 @@ export default function CheckoutForm({amount, data}: {amount:number, data: any})
     const {initPaymentSheet, presentPaymentSheet} = useStripe();
     const [loading, setLoading] = React.useState(false);
     const router = useRouter();
+    const { userData } = useUserData();
+
+    if (!userData) {
+        return null
+    }
 
     const initializePaymentSheet = async () => {
         setLoading(true)
-        const {paymentIntent, ephemeralKey, customer} = await fetchPaymentSheetParams(amount, data);
+        const {paymentIntent, ephemeralKey, customer} = await fetchPaymentSheetParams(amount, data, userData);
         const {error} = await initPaymentSheet({
             merchantDisplayName: "Juice",
             customerId: customer,
@@ -76,7 +83,7 @@ export default function CheckoutForm({amount, data}: {amount:number, data: any})
             Alert.alert(`Error: ${error.message}`);
         } else {
             console.log(123)
-            router.replace("/success");
+            router.push("/success");
         }
     }
 

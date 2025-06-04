@@ -1,6 +1,5 @@
 package hr.blitz.juice.domain.model;
 
-import hr.blitz.juice.audit.Auditable;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,18 +7,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-
-@Document(collection = "hall")
+@Document(collection = "terrain")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Hall extends Auditable<String> {
+public class Terrain {
 
     @Id
     private String id;
     private String name;
-    private String address;
-    private List<Terrain> terrains;
 }

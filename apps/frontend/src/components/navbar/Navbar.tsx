@@ -1,13 +1,14 @@
 import React, {useEffect} from "react";
-import { Image, View } from "react-native";
+import {Image, TouchableOpacity, View} from "react-native";
 // @ts-ignore
 import DefaultAccountImage from "@/assets/images/account/default-image.png";
 import Icon from "@/src/components/icon/Icon";
 import navbarStyles from "@/assets/styles/navbar";
-import {usePathname} from "expo-router";
+import {usePathname, useRouter} from "expo-router";
 
 const Navbar: React.FC = () => {
     const pathname = usePathname();
+    const router = useRouter();
 
     useEffect(() => {
         console.log("Path changed to:", pathname);
@@ -26,7 +27,9 @@ const Navbar: React.FC = () => {
                 <View style={navbarStyles.logoTextContainer}>
                     <Icon name={"juiceNavbarLogo"} size={120} />
                 </View>
-            ) : <Icon name={"arrowLeft"} />
+            ) : <TouchableOpacity onPress={router.back}>
+                    <Icon name={"arrowLeft"}  />
+                </TouchableOpacity>
             }
             {
                 !isDashboard && <Icon name={"logo"} size={36} />

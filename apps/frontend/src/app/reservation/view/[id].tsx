@@ -1,64 +1,86 @@
-import React, {useState} from "react";
-import ReservationPickerProps from "@/src/types/ReservationPickerProps";
-import {Image, ImageBackground, Pressable, StyleSheet, Text, View} from "react-native";
-
+import React, {useEffect, useState} from "react";
+import {Alert, Image, ImageBackground, StyleSheet, Text, View} from "react-native";
+import {useLocalSearchParams} from "expo-router";
 import textStyles from "@/assets/styles/text";
 import shadowStyles from "@/assets/styles/shadow";
-import CheckoutForm from "@/src/components/stripe/checkout-form";
 import Icon from "@/src/components/icon/Icon";
-import {Portal} from "react-native-portalize";
+import Reservation from "@/src/models/entity/Reservation";
+import MessageResponse from "@/src/models/dto/MessageResponse";
+import ErrorResponse from "@/src/models/dto/ErrorResponse";
+import dataFetch from "@/src/utils/DataFetch";
+import {isResponseError} from "@/src/utils/Validation";
+import Loader from "@/src/components/loader/Loader";
 
-const mockTerrains = [
-    {id: 1, name: "Terra 1"},
-    {id: 2, name: "Terra 2"},
-    {id: 3, name: "Terra 3"},
-    {id: 4, name: "Terra 4"},
-];
+const ViewReservation: React.FC = () => {
+    const { id } = useLocalSearchParams<{ id: string }>();
 
-const ReservationDetails: React.FC<ReservationPickerProps> = ({changeFormData, formData}) => {
-    const [paymentMethod, setPaymentMethod] = useState<'card' | 'club' | null>(null);
+    const [reservation, setReservation] = useState<Reservation | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
 
-    if (!formData?.players) {
-        changeFormData("players", [{"id":"67ec5d16b8161f162ee1e76f","name": "Leo", "image": null}]);
-    }
+    const getReservation = async () => {
+        setLoading(true);
 
-    console.log("form data: ", formData)
+        let response: Reservation | MessageResponse | ErrorResponse;
+        try {
+            response = await dataFetch<Reservation>(`${process.env.EXPO_PUBLIC_API_URL}/api/reservation/${id}`, "GET");
+        } catch (error) {
+            setLoading(false);
+            Alert.alert("Error", error instanceof Error ? error.message : "An error occurred while fetching the reservation.");
+            return;
+        }
+
+        if (isResponseError(response)) {
+            Alert.alert("Error", "An error occurred while fetching the reservation.");
+            setLoading(false);
+            return;
+        }
+
+        setReservation(response as Reservation);
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        getReservation();
+    }, []);
+
+    if (loading || !reservation)
+        return <Loader />
 
     return (
-        <View>
+        <View style={{flex: 1}}>
             <ImageBackground
-                source={require("@/assets/images/2187ab84c89911225771d65328d846ef89f43593.png")}
+                source={require("@/assets/images/no-image.jpg")}
                 resizeMode="cover"
                 style={styles.imageBackground}
                 imageStyle={{borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}
             >
-                <Text style={styles.text}>{formData?.hall.name}</Text>
+                <Text style={styles.text}>{reservation.hall.name}</Text>
             </ImageBackground>
             <View style={styles.container}>
                 <View style={styles.selectedReservationDateAndTime}>
                     <Text style={textStyles.headingSmall}>
-                        {formData?.terrainAndDate.date
-                            ? `${new Date(formData.terrainAndDate.date).toLocaleDateString("hr", {weekday: "long"}).charAt(0).toUpperCase() +
-                            new Date(formData.terrainAndDate.date).toLocaleDateString("hr", {weekday: "long"}).slice(1)
-                            } ${new Date(formData.terrainAndDate.date).toLocaleDateString("hr", {
+                        {reservation.date
+                            ? `${new Date(reservation.date).toLocaleDateString("hr", {weekday: "long"}).charAt(0).toUpperCase() +
+                            new Date(reservation.date).toLocaleDateString("hr", {weekday: "long"}).slice(1)
+                            } ${new Date(reservation.date).toLocaleDateString("hr", {
                                 day: "2-digit",
                                 month: "2-digit"
                             }).replace(/\s/g, "")}`
                             : ""}
                     </Text>
                     <Text
-                        style={textStyles.headingSmall}>{formData?.terrainAndDate.timeFrom} - {formData?.terrainAndDate.timeTo}</Text>
+                        style={textStyles.headingSmall}>{reservation.timeFrom} - {reservation.timeTo}</Text>
                 </View>
-                <Text style={textStyles.headingSmallNoBold}>{mockTerrains.find((terain) =>
-                    terain.id === formData?.terrainAndDate.terrainId)?.name}</Text>
+
+                <Text style={textStyles.headingSmallNoBold}>{reservation.terrain.name}</Text>
                 <Text style={textStyles.headingSmallNoBold}>Dodaj igrače:</Text>
                 <View style={{flexDirection: "row", gap: 10, justifyContent: "space-between", alignItems: "center"}}>
                     {[...Array(4)].map((_, i) => {
-                        const player = formData?.players && formData.players[i];
+                        const player = reservation.players && reservation.players[i];
                         const playerElement = player ? (
                             <Image
                                 key={`player-${i}`}
-                                source={player.image ?? require("@/assets/images/account/default-image.png")}
+                                source={player.profilePicture ?? require("@/assets/images/account/default-image.png")}
                                 style={[
                                     shadowStyles.largeShadow,
                                     {width: "20%", aspectRatio: 1, borderRadius: 20},
@@ -106,45 +128,26 @@ const ReservationDetails: React.FC<ReservationPickerProps> = ({changeFormData, f
                     })}
                 </View>
 
-                <Text style={textStyles.headingSmallNoBold}>Način plaćanja:</Text>
-                <View style={styles.paymentMethodContainer}>
-                    <Pressable style={styles.paymentMethod} onPress={() => setPaymentMethod("card")}>
-                        <Text style={paymentMethod === "card" && textStyles.bold}>Kartica</Text>
-                        <Icon name={paymentMethod === "card" ? "creditCardSelected" : "creditCard"} size={60} />
-                    </Pressable>
-                    <Pressable style={styles.paymentMethod} onPress={() => setPaymentMethod("club")}>
-                        <Text style={paymentMethod === "club" && textStyles.bold}>U klubu</Text>
-                        <Icon name={paymentMethod === "club" ? "cashSelected" : "cash"} size={60} />
-                    </Pressable>
-                </View>
-
-                {
-                    paymentMethod === "card" &&
-                    <Portal>
-                        <View style={styles.reservationContainer}>
-                            <Text style={[textStyles.headingSmall, textStyles.alignRight]}>Cijena 41.50€</Text>
-                            <Text style={[textStyles.text, {color: "gray", marginBottom: 5}, textStyles.alignRight]}>Klikom na gumb prihvaćaš uvjete</Text>
-                            <CheckoutForm amount={4150} data={formData}/>
-                        </View>
-                    </Portal>
-                }
+            </View>
+            <View>
+                {reservation.payed && <Text style={[textStyles.alignRight, textStyles.headingSmallNoBold, {padding: 15}]}>Plaćeno putem aplikacije.</Text>}
             </View>
         </View>
     )
 }
 
-export default ReservationDetails;
-
 const styles = StyleSheet.create({
     container: {
-        marginTop: 15,
         gap: 15,
         paddingHorizontal: 16,
+        paddingTop: 10,
+        flex: 1,
     },
     imageBackground: {
         flex: 1,
         justifyContent: "flex-end",
         height: 130,
+        maxHeight: 130,
         width: "100%",
     },
     text: {
@@ -183,3 +186,5 @@ const styles = StyleSheet.create({
         gap: 5
     }
 })
+
+export default ViewReservation;

@@ -1,11 +1,14 @@
 package hr.blitz.juice.service;
 
 import hr.blitz.juice.config.PropertiesConfig;
+import hr.blitz.juice.domain.model.User;
+import hr.blitz.juice.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,9 +24,11 @@ import java.util.function.Function;
 public class JwtService {
 
     private final PropertiesConfig propertiesConfig;
+    private final UserRepository userRepository;
 
-    public JwtService(PropertiesConfig propertiesConfig) {
+    public JwtService(PropertiesConfig propertiesConfig, UserRepository userRepository) {
         this.propertiesConfig = propertiesConfig;
+        this.userRepository = userRepository;
     }
 
     public String extractUsername(String token) {
@@ -37,6 +42,10 @@ public class JwtService {
     public String getUsernameFromSession() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getName();
+    }
+
+    public User getUserFromSession() {
+        return userRepository.findByUsername(getUsernameFromSession()).orElse(null);
     }
 
     public String generateToken(

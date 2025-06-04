@@ -69,7 +69,7 @@ const Login: React.FC = () => {
         await AsyncStorage.setItem("token", (response as AuthenticationResponse).token);
         await handleUserDataChange(setUserData)
 
-        router.replace("/dashboard");
+        router.push("/dashboard");
     };
 
     return (
@@ -98,7 +98,7 @@ const Login: React.FC = () => {
                                   onClick={() => handleGoogleLogin(setError)}
                                   icon={"google"}
                     />
-                    <Pressable onPress={() => router.replace("/auth/register")}>
+                    <Pressable onPress={() => router.push("/auth/register")}>
                         <Text style={textStyles.text}>Don't have an account? Sign up here.</Text>
                     </Pressable>
                 </View>
