@@ -1,12 +1,15 @@
 import React, {useState} from "react";
 import ReservationPickerProps from "@/src/types/ReservationPickerProps";
-import {Image, ImageBackground, Pressable, StyleSheet, Text, View} from "react-native";
+import {Image, ImageBackground, Pressable, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 
 import textStyles from "@/assets/styles/text";
 import shadowStyles from "@/assets/styles/shadow";
 import CheckoutForm from "@/src/components/stripe/checkout-form";
 import Icon from "@/src/components/icon/Icon";
 import {Portal} from "react-native-portalize";
+import AddPlayerToReservationModal from "@/src/components/reservation/AddPlayerToReservationModal";
+import {setFips} from "node:crypto";
+import RemovePlayerFromReservationModal from "@/src/components/reservation/RemovePlayerFromReservationModal";
 
 const mockTerrains = [
     {id: 1, name: "Terra 1"},
@@ -15,14 +18,13 @@ const mockTerrains = [
     {id: 4, name: "Terra 4"},
 ];
 
-const ReservationDetails: React.FC<ReservationPickerProps> = ({changeFormData, formData}) => {
+const ReservationDetails: React.FC<ReservationPickerProps> = ({changeFormData, formData, setFormData, userData}) => {
     const [paymentMethod, setPaymentMethod] = useState<'card' | 'club' | null>(null);
+    const [playerIndexSelected, setPlayerIndexSelected] = useState<number | null>(null);
 
     if (!formData?.players) {
-        changeFormData("players", [{"id":"67ec5d16b8161f162ee1e76f","name": "Leo", "image": null}]);
+        changeFormData("players", [userData]);
     }
-
-    console.log("form data: ", formData)
 
     return (
         <View>
@@ -54,18 +56,39 @@ const ReservationDetails: React.FC<ReservationPickerProps> = ({changeFormData, f
                 <Text style={textStyles.headingSmallNoBold}>Dodaj igrače:</Text>
                 <View style={{flexDirection: "row", gap: 10, justifyContent: "space-between", alignItems: "center"}}>
                     {[...Array(4)].map((_, i) => {
-                        const player = formData?.players && formData.players[i];
+                        const player = formData?.players && formData?.players[i];
                         const playerElement = player ? (
-                            <Image
-                                key={`player-${i}`}
-                                source={player.image ?? require("@/assets/images/account/default-image.png")}
+                            <TouchableOpacity
+                                key={i}
+                                onPress={() => {
+                                    if (i !== null)
+                                        setPlayerIndexSelected(i)
+                                }}
                                 style={[
-                                    shadowStyles.largeShadow,
-                                    {width: "20%", aspectRatio: 1, borderRadius: 20},
+                                    shadowStyles.smallShadow,
+                                    {
+                                        width: "20%",
+                                        aspectRatio: 1,
+                                        borderRadius: 20,
+                                        overflow: "hidden",
+                                    },
                                 ]}
-                            />
+                            >
+                                <Image
+                                    source={
+                                        player?.profilePicture ??
+                                        require("@/assets/images/account/default-image.png")
+                                    }
+                                    style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        resizeMode: "cover",
+                                    }}
+                                />
+                            </TouchableOpacity>
                         ) : (
-                            <View
+                            <TouchableOpacity
+                                onPress={() => setPlayerIndexSelected(i)}
                                 key={`player-${i}`}
                                 style={[
                                     {
@@ -78,11 +101,11 @@ const ReservationDetails: React.FC<ReservationPickerProps> = ({changeFormData, f
                                         alignItems: "center",
                                         justifyContent: "center",
                                     },
-                                    shadowStyles.largeShadow,
+                                    shadowStyles.smallShadow,
                                 ]}
                             >
                                 <Icon name={"plus"}/>
-                            </View>
+                            </TouchableOpacity>
                         );
 
                         if (i === 1) {
@@ -129,6 +152,18 @@ const ReservationDetails: React.FC<ReservationPickerProps> = ({changeFormData, f
                     </Portal>
                 }
             </View>
+
+            {
+                // @ts-ignore
+                playerIndexSelected && formData.players.length <= playerIndexSelected &&
+                <AddPlayerToReservationModal formData={formData} setFormData={setFormData} setPlayerIndexSelected={setPlayerIndexSelected} />
+            }
+            {
+                // @ts-ignore
+                playerIndexSelected && formData.players.length > playerIndexSelected &&
+                // @ts-ignore
+                <RemovePlayerFromReservationModal formData={formData} setFormData={setFormData} setPlayerIndexSelected={setPlayerIndexSelected} user={formData.players[playerIndexSelected]} />
+            }
         </View>
     )
 }

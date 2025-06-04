@@ -79,6 +79,12 @@ const Icon: FC<IconProps> = ({ name, size = 24, color="white", ...props })=> {
         case 'cashSelected':
             IconComponent = require('@/assets/images/icons/ts/CashSelected').default;
             break;
+        case 'chat':
+            IconComponent = require('@/assets/images/icons/ts/Chat').default;
+            break;
+        case 'personSearch':
+            IconComponent = require('@/assets/images/icons/ts/PersonSearch').default;
+            break;
         default:
             return null;
     }

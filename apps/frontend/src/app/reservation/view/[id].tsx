@@ -1,5 +1,15 @@
 import React, {useEffect, useState} from "react";
-import {Alert, Image, ImageBackground, StyleSheet, Text, View} from "react-native";
+import {
+    Alert,
+    Image,
+    ImageBackground,
+    Platform,
+    Pressable,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
+} from "react-native";
 import {useLocalSearchParams} from "expo-router";
 import textStyles from "@/assets/styles/text";
 import shadowStyles from "@/assets/styles/shadow";
@@ -10,6 +20,8 @@ import ErrorResponse from "@/src/models/dto/ErrorResponse";
 import dataFetch from "@/src/utils/DataFetch";
 import {isResponseError} from "@/src/utils/Validation";
 import Loader from "@/src/components/loader/Loader";
+import AddPlayerToReservationModal from "@/src/components/reservation/AddPlayerToReservationModal";
+import RemovePlayerFromReservationModal from "@/src/components/reservation/RemovePlayerFromReservationModal";
 
 const ViewReservation: React.FC = () => {
     const { id } = useLocalSearchParams<{ id: string }>();
@@ -17,9 +29,9 @@ const ViewReservation: React.FC = () => {
     const [reservation, setReservation] = useState<Reservation | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
-    const getReservation = async () => {
-        setLoading(true);
+    const [playerIndexSelected, setPlayerIndexSelected] = useState<number | null>(null);
 
+    const getReservation = async () => {
         let response: Reservation | MessageResponse | ErrorResponse;
         try {
             response = await dataFetch<Reservation>(`${process.env.EXPO_PUBLIC_API_URL}/api/reservation/${id}`, "GET");
@@ -40,8 +52,9 @@ const ViewReservation: React.FC = () => {
     };
 
     useEffect(() => {
-        getReservation();
-    }, []);
+        if(playerIndexSelected === null)
+            getReservation();
+    }, [playerIndexSelected]);
 
     if (loading || !reservation)
         return <Loader />
@@ -57,7 +70,7 @@ const ViewReservation: React.FC = () => {
                 <Text style={styles.text}>{reservation.hall.name}</Text>
             </ImageBackground>
             <View style={styles.container}>
-                <View style={styles.selectedReservationDateAndTime}>
+                <View style={[styles.selectedReservationDateAndTime, {paddingHorizontal: 16}]}>
                     <Text style={textStyles.headingSmall}>
                         {reservation.date
                             ? `${new Date(reservation.date).toLocaleDateString("hr", {weekday: "long"}).charAt(0).toUpperCase() +
@@ -72,22 +85,42 @@ const ViewReservation: React.FC = () => {
                         style={textStyles.headingSmall}>{reservation.timeFrom} - {reservation.timeTo}</Text>
                 </View>
 
-                <Text style={textStyles.headingSmallNoBold}>{reservation.terrain.name}</Text>
-                <Text style={textStyles.headingSmallNoBold}>Dodaj igrače:</Text>
-                <View style={{flexDirection: "row", gap: 10, justifyContent: "space-between", alignItems: "center"}}>
+                <Text style={[textStyles.headingSmallNoBold, {paddingHorizontal: 16}]}>{reservation.terrain.name}</Text>
+                <View style={{flexDirection: "row", gap: 10, justifyContent: "space-between", alignItems: "center", paddingHorizontal: 16}}>
                     {[...Array(4)].map((_, i) => {
                         const player = reservation.players && reservation.players[i];
                         const playerElement = player ? (
-                            <Image
-                                key={`player-${i}`}
-                                source={player.profilePicture ?? require("@/assets/images/account/default-image.png")}
+                            <TouchableOpacity
+                                key={i}
+                                onPress={() => {
+                                    if (i !== null)
+                                        setPlayerIndexSelected(i)
+                                }}
                                 style={[
-                                    shadowStyles.largeShadow,
-                                    {width: "20%", aspectRatio: 1, borderRadius: 20},
+                                    shadowStyles.smallShadow,
+                                    {
+                                        width: "20%",
+                                        aspectRatio: 1,
+                                        borderRadius: 20,
+                                        overflow: "hidden",
+                                    },
                                 ]}
-                            />
+                            >
+                                <Image
+                                    source={
+                                        player?.profilePicture ??
+                                        require("@/assets/images/account/default-image.png")
+                                    }
+                                    style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        resizeMode: "cover",
+                                    }}
+                                />
+                            </TouchableOpacity>
                         ) : (
-                            <View
+                            <TouchableOpacity
+                                onPress={() => setPlayerIndexSelected(i)}
                                 key={`player-${i}`}
                                 style={[
                                     {
@@ -100,11 +133,11 @@ const ViewReservation: React.FC = () => {
                                         alignItems: "center",
                                         justifyContent: "center",
                                     },
-                                    shadowStyles.largeShadow,
+                                    shadowStyles.smallShadow,
                                 ]}
                             >
                                 <Icon name={"plus"}/>
-                            </View>
+                            </TouchableOpacity>
                         );
 
                         if (i === 1) {
@@ -128,10 +161,32 @@ const ViewReservation: React.FC = () => {
                     })}
                 </View>
 
+                <View style={styles.sectionsContainer}>
+                    <View style={styles.section}>
+                        <Icon name={"chat"} />
+                        <Text>Chat</Text>
+                    </View>
+
+                    <View style={styles.section}>
+                        <Icon name={"personSearch"} />
+                        <Text>Fali mi igrač</Text>
+                    </View>
+                </View>
             </View>
+
+
             <View>
                 {reservation.payed && <Text style={[textStyles.alignRight, textStyles.headingSmallNoBold, {padding: 15}]}>Plaćeno putem aplikacije.</Text>}
             </View>
+
+            {
+                playerIndexSelected && reservation.players.length <= playerIndexSelected &&
+                <AddPlayerToReservationModal reservationId={reservation.id} setPlayerIndexSelected={setPlayerIndexSelected} />
+            }
+            {
+                playerIndexSelected && reservation.players.length > playerIndexSelected &&
+                <RemovePlayerFromReservationModal reservationId={reservation.id} setPlayerIndexSelected={setPlayerIndexSelected} user={reservation.players[playerIndexSelected]} />
+            }
         </View>
     )
 }
@@ -139,7 +194,6 @@ const ViewReservation: React.FC = () => {
 const styles = StyleSheet.create({
     container: {
         gap: 15,
-        paddingHorizontal: 16,
         paddingTop: 10,
         flex: 1,
     },
@@ -184,6 +238,18 @@ const styles = StyleSheet.create({
         marginBottom: 0,
         padding: 15,
         gap: 5
+    },
+    section: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 10,
+        padding: 15,
+        backgroundColor: "white",
+        ...shadowStyles.smallShadow,
+    },
+    sectionsContainer: {
+        gap: 30,
+        marginTop: 20
     }
 })
 

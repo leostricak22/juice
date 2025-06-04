@@ -44,8 +44,8 @@ const UserReservations: React.FC = () => {
     }, []);
 
     return (
-        <View style={{gap: 15, marginTop: 5}}>
-            <Text style={textStyles.headingSmall}>Moj raspored</Text>
+        <View style={{gap: 5, marginTop: 5}}>
+            <Text style={[textStyles.headingMedium, {marginBottom: 5}]}>Moj raspored</Text>
             {
                 loading ? (
                     <Loader/>
@@ -61,7 +61,7 @@ const UserReservations: React.FC = () => {
                                 onPressOut={() => setHoveredId(null)}
                                 style={[
                                     styles.reservation,
-                                    shadowStyles.largeShadow,
+                                    shadowStyles.smallShadow,
                                     isHovered && styles.hoveredReservation,
                                 ]}
                             >

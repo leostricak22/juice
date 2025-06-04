@@ -11,8 +11,6 @@ export default function CallbackScreen() {
     const [isMounted, setIsMounted] = useState(false);
     const { setUserData } = useUserData();
 
-    console.log(123);
-
     useEffect(() => {
         setIsMounted(true);
     }, []);
@@ -24,7 +22,7 @@ export default function CallbackScreen() {
             if (params.token) {
                 await AsyncStorage.setItem("token", params.token as string);
                 await handleUserDataChange(setUserData)
-                router.push("/dashboard");
+                router.replace("/dashboard");
             } else {
                 let errorMessage = params.error || "";
                 router.push(`/auth/login?error=${errorMessage}`);
