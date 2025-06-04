@@ -35,6 +35,7 @@ public class StripeWebHookService {
     }
 
     public ResponseEntity<String> handleStripeEvent(HttpServletRequest request) {
+        System.out.println(1);
         String payload = "";
         String sigHeader = request.getHeader("Stripe-Signature");
 

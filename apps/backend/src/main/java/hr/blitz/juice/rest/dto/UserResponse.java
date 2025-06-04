@@ -6,12 +6,13 @@ import hr.blitz.juice.domain.enumeration.Role;
 import jakarta.persistence.Column;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 
 @Data
-@Builder
+@NoArgsConstructor
 public class UserResponse {
 
     private String id;

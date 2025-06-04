@@ -8,7 +8,6 @@ import CheckoutForm from "@/src/components/stripe/checkout-form";
 import Icon from "@/src/components/icon/Icon";
 import {Portal} from "react-native-portalize";
 import AddPlayerToReservationModal from "@/src/components/reservation/AddPlayerToReservationModal";
-import {setFips} from "node:crypto";
 import RemovePlayerFromReservationModal from "@/src/components/reservation/RemovePlayerFromReservationModal";
 
 const mockTerrains = [
@@ -23,7 +22,7 @@ const ReservationDetails: React.FC<ReservationPickerProps> = ({changeFormData, f
     const [playerIndexSelected, setPlayerIndexSelected] = useState<number | null>(null);
 
     if (!formData?.players) {
-        changeFormData("players", [userData]);
+        changeFormData("players", [userData, null, null, null]);
     }
 
     return (
@@ -155,14 +154,14 @@ const ReservationDetails: React.FC<ReservationPickerProps> = ({changeFormData, f
 
             {
                 // @ts-ignore
-                playerIndexSelected && formData.players.length <= playerIndexSelected &&
-                <AddPlayerToReservationModal formData={formData} setFormData={setFormData} setPlayerIndexSelected={setPlayerIndexSelected} />
+                playerIndexSelected && formData.players[playerIndexSelected] === null &&
+                <AddPlayerToReservationModal playerIndexSelected={playerIndexSelected} formData={formData} setFormData={setFormData} setPlayerIndexSelected={setPlayerIndexSelected} />
             }
             {
                 // @ts-ignore
-                playerIndexSelected && formData.players.length > playerIndexSelected &&
+                playerIndexSelected && formData.players[playerIndexSelected] !== null &&
                 // @ts-ignore
-                <RemovePlayerFromReservationModal formData={formData} setFormData={setFormData} setPlayerIndexSelected={setPlayerIndexSelected} user={formData.players[playerIndexSelected]} />
+                <RemovePlayerFromReservationModal playerIndexSelected={playerIndexSelected} formData={formData} setFormData={setFormData} setPlayerIndexSelected={setPlayerIndexSelected} user={formData.players[playerIndexSelected]} />
             }
         </View>
     )

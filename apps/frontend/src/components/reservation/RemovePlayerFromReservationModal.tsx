@@ -17,6 +17,7 @@ type RemovePlayerToReservationModalProps = {
     user: User;
     formData?: ReservationRequest;
     setFormData?: (data: ReservationRequest) => void;
+    playerIndexSelected: number | null;
 };
 
 const RemovePlayerFromReservationModal: React.FC<RemovePlayerToReservationModalProps> = ({
@@ -24,23 +25,27 @@ const RemovePlayerFromReservationModal: React.FC<RemovePlayerToReservationModalP
                                                                                              reservationId,
                                                                                              setPlayerIndexSelected,
                                                                                              formData,
-                                                                                             setFormData
+                                                                                             setFormData,
+                                                                                             playerIndexSelected
                                                                                          }) => {
 
     const handleRemovePlayer = async () => {
         if (formData && setFormData) {
-            const updatedPlayers = formData.players?.filter(player => player.id !== user.id) || [];
+            const updatedPlayers = formData.players?.map((player, index) => index === playerIndexSelected ? null : player);
             setFormData({
                 ...formData,
+                // @ts-ignore
                 players: updatedPlayers
             });
+
             setPlayerIndexSelected(null);
             return;
         }
 
         let response: User[] | MessageResponse | ErrorResponse;
         try {
-            response = await dataFetch<User[]>(`${process.env.EXPO_PUBLIC_API_URL}/api/reservation/${reservationId}/remove-player/${user.id}`, "GET");
+            response = await dataFetch<User[]>(`${process.env.EXPO_PUBLIC_API_URL}/api/reservation/${reservationId}/remove-player/${user.id}`, "POST",
+                {playerIndexSelected});
         } catch (error) {
             Alert.alert("Error", error instanceof Error ? error.message : "An error occurred while removing player.");
             return;

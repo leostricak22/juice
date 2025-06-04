@@ -8,6 +8,7 @@ import hr.blitz.juice.domain.model.User;
 import hr.blitz.juice.rest.dto.AuthenticationRequest;
 import hr.blitz.juice.rest.dto.AuthenticationResponse;
 import hr.blitz.juice.rest.dto.UserRequest;
+import hr.blitz.juice.rest.dto.UserResponse;
 import hr.blitz.juice.service.AuthenticationService;
 import hr.blitz.juice.service.JwtService;
 import hr.blitz.juice.service.OAuth2UserService;
@@ -42,9 +43,10 @@ public class AuthenticationController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/user")
-    public ResponseEntity<User> user() {
+    public ResponseEntity<UserResponse> user() {
         return ResponseEntity.ok(
-                authenticationService.findUserBySessionUsername());
+                modelMapper.map(authenticationService.findUserBySessionUsername(),
+                        UserResponse.class));
     }
 
     @PostMapping("/register")

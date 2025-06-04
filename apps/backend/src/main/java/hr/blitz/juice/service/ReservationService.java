@@ -17,7 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+
+import static java.util.Objects.nonNull;
 
 @Service
 @RequiredArgsConstructor
@@ -35,13 +38,19 @@ public class ReservationService {
         reservation.setHall(hallRepository.findById(reservationRequest.getHallId())
                 .orElseThrow(() -> new AppException(404, "Hall not found")));
 
+        if(reservationRequest.getPlayerIds().size() != 4) {
+            while (reservationRequest.getPlayerIds().size() < 4) {
+                reservationRequest.getPlayerIds().add(null);
+            }
+        }
+
         reservation.setUser(userRepository.findById(reservationRequest.getUserId()).orElseThrow(
                 () -> new AppException(404, "User not found")));
         reservation.setDate(reservationRequest.getTerrainAndDate().getDate().toInstant());
         reservation.setTimeFrom(reservationRequest.getTerrainAndDate().getTimeFrom());
         reservation.setTimeTo(reservationRequest.getTerrainAndDate().getTimeTo());
         reservation.setPlayers(reservationRequest.getPlayerIds().stream()
-                .map(playerId -> userRepository.findById(playerId)
+                .map(playerId ->  playerId == null ? null : userRepository.findById(playerId)
                         .orElseThrow(() -> new AppException(404, "User not found")))
                 .toList());
         reservation.setTerrain(terrainRepository.findById(
@@ -87,7 +96,7 @@ public class ReservationService {
                 .timeFrom(reservation.getTimeFrom())
                 .timeTo(reservation.getTimeTo())
                 .players(reservation.getPlayers().stream()
-                        .map(player -> objectMapper.convertValue(player, UserResponse.class))
+                        .map(player -> player == null ? null :  objectMapper.convertValue(player, UserResponse.class))
                         .toList())
                 .terrain(reservation.getTerrain())
                 .isPayed(reservation.isPayed())
@@ -100,6 +109,7 @@ public class ReservationService {
         return userRepository.findAll().stream()
                 .filter(user -> !user.getId().equals(userId))
                 .filter(user -> request.getPlayerIds().stream()
+                        .filter(Objects::nonNull)
                         .noneMatch(playerId -> playerId.equals(user.getId())))
                 .map(user -> objectMapper.convertValue(user, UserResponse.class))
                 .toList();
@@ -112,27 +122,33 @@ public class ReservationService {
 
         return userRepository.findAll().stream()
                 .filter(user -> reservation.getPlayers().stream()
+                        .filter(Objects::nonNull)
                         .noneMatch(player -> player.getId().equals(user.getId())))
                 .map(user -> objectMapper.convertValue(user, UserResponse.class))
                 .toList();
     }
 
-    public ReservationResponse addPlayerToReservation(String id, String userId) {
+    public ReservationResponse addPlayerToReservation(String id, String userId, int playerIndexSelected) {
         Reservation reservation = reservationRepository.findById(id).orElseThrow(
                 () -> new AppException(404, "Reservation not found"));
-        if (reservation.getPlayers().stream().anyMatch(player -> player.getId().equals(userId))) {
+        if (reservation.getPlayers().stream().anyMatch(player -> nonNull(player) && player.getId().equals(userId))) {
             throw new AppException(400, "User already added to reservation");
         }
-        reservation.getPlayers().add(userRepository.findById(userId).orElseThrow(
-                () -> new AppException(404, "User not found")));
+
+        if (playerIndexSelected < 0 || playerIndexSelected >= reservation.getPlayers().size()) {
+            throw new AppException(400, "Invalid player index selected");
+        }
+
+        reservation.getPlayers().set(playerIndexSelected, (userRepository.findById(userId).orElseThrow(
+                () -> new AppException(404, "User not found"))));
         reservationRepository.save(reservation);
         return getReservationById(id);
     }
 
-    public ReservationResponse removePlayerFromReservation(String id, String userId) {
+    public ReservationResponse removePlayerFromReservation(String id, String userId, int playerIndexSelected) {
         Reservation reservation = reservationRepository.findById(id).orElseThrow(
                 () -> new AppException(404, "Reservation not found"));
-        if (reservation.getPlayers().stream().noneMatch(player -> player.getId().equals(userId))) {
+        if (reservation.getPlayers().stream().noneMatch(player -> nonNull(player) && player.getId().equals(userId))) {
             throw new AppException(400, "User not found in reservation");
         }
 
@@ -140,7 +156,7 @@ public class ReservationService {
             throw new AppException(400, "Cannot remove the owner of the reservation");
         }
 
-        reservation.getPlayers().removeIf(player -> player.getId().equals(userId));
+        reservation.getPlayers().set(playerIndexSelected, null);
         reservationRepository.save(reservation);
         return getReservationById(id);
     }

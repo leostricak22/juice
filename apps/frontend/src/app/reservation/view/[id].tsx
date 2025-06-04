@@ -180,12 +180,12 @@ const ViewReservation: React.FC = () => {
             </View>
 
             {
-                playerIndexSelected && reservation.players.length <= playerIndexSelected &&
-                <AddPlayerToReservationModal reservationId={reservation.id} setPlayerIndexSelected={setPlayerIndexSelected} />
+                playerIndexSelected && reservation.players[playerIndexSelected] === null &&
+                <AddPlayerToReservationModal playerIndexSelected={playerIndexSelected} reservationId={reservation.id} setPlayerIndexSelected={setPlayerIndexSelected} />
             }
             {
-                playerIndexSelected && reservation.players.length > playerIndexSelected &&
-                <RemovePlayerFromReservationModal reservationId={reservation.id} setPlayerIndexSelected={setPlayerIndexSelected} user={reservation.players[playerIndexSelected]} />
+                playerIndexSelected && reservation.players[playerIndexSelected] !== null &&
+                <RemovePlayerFromReservationModal playerIndexSelected={playerIndexSelected} reservationId={reservation.id} setPlayerIndexSelected={setPlayerIndexSelected} user={reservation.players[playerIndexSelected]} />
             }
         </View>
     )

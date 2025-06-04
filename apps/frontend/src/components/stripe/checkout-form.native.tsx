@@ -24,7 +24,7 @@ async function fetchPaymentSheetParams(amount:number, data: any, userData: any) 
                         timeTo: data.terrainAndDate.timeTo,
                         date: data.terrainAndDate.date.getTime()
                     },
-                    playerIds: data.players.map((player: any) => player.id),
+                    playerIds: data.players.map((player: any) => player === null ? null : player.id),
                     userId: userData.id,
                 }
             }
@@ -82,7 +82,6 @@ export default function CheckoutForm({amount, data}: {amount:number, data: any})
             console.log(error.message)
             Alert.alert(`Error: ${error.message}`);
         } else {
-            console.log(123)
             router.push("/success");
         }
     }

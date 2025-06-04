@@ -1,6 +1,7 @@
 package hr.blitz.juice.rest.controller;
 
 import hr.blitz.juice.rest.dto.ReservationAllUsersRequest;
+import hr.blitz.juice.rest.dto.ReservationPlayerAddRemoveRequest;
 import hr.blitz.juice.rest.dto.ReservationResponse;
 import hr.blitz.juice.rest.dto.UserResponse;
 import hr.blitz.juice.service.ReservationService;
@@ -37,13 +38,17 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.getAllUsersForReservation(id));
     }
 
-    @GetMapping("/{id}/add-player/{userId}")
-    public ResponseEntity<ReservationResponse> addPlayerToReservation(@PathVariable String id, @PathVariable String userId) {
-        return ResponseEntity.ok(reservationService.addPlayerToReservation(id, userId));
+    @PostMapping("/{id}/add-player/{userId}")
+    public ResponseEntity<ReservationResponse> addPlayerToReservation(@PathVariable String id,
+                                                                      @PathVariable String userId,
+                                                                      @RequestBody ReservationPlayerAddRemoveRequest request) {
+        return ResponseEntity.ok(reservationService.addPlayerToReservation(id, userId, request.getPlayerIndexSelected()));
     }
 
-    @GetMapping("/{id}/remove-player/{userId}")
-    public ResponseEntity<ReservationResponse> removePlayerFromReservation(@PathVariable String id, @PathVariable String userId) {
-        return ResponseEntity.ok(reservationService.removePlayerFromReservation(id, userId));
+    @PostMapping("/{id}/remove-player/{userId}")
+    public ResponseEntity<ReservationResponse> removePlayerFromReservation(@PathVariable String id,
+                                                                           @PathVariable String userId,
+                                                                           @RequestBody ReservationPlayerAddRemoveRequest request) {
+        return ResponseEntity.ok(reservationService.removePlayerFromReservation(id, userId, request.getPlayerIndexSelected()));
     }
 }

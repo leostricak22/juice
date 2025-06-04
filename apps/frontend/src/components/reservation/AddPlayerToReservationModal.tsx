@@ -16,12 +16,14 @@ type AddPlayerToReservationModalProps = {
     setFormData?: (data: ReservationRequest) => void;
     reservationId?: string;
     setPlayerIndexSelected: (index: number | null) => void;
+    playerIndexSelected: number | null;
 };
 
 const AddPlayerToReservationModal: React.FC<AddPlayerToReservationModalProps> = ({
                                                                                      formData,
                                                                                      setFormData,
                                                                                      reservationId,
+                                                                                     playerIndexSelected,
                                                                                      setPlayerIndexSelected
                                                                                  }) => {
     const [allUsers, setAllUsers] = React.useState<User[]>([]);
@@ -34,7 +36,7 @@ const AddPlayerToReservationModal: React.FC<AddPlayerToReservationModalProps> = 
         try {
             if (formData) {
                 response = await dataFetch<User[]>(`${process.env.EXPO_PUBLIC_API_URL}/api/reservation/get-all-users`, "POST",
-                    {playerIds: formData.players?.map(player => player.id) || []});
+                    {playerIds: formData.players?.filter(player => player !== null).map(player => player.id) || []});
             } else {
                 response = await dataFetch<User[]>(`${process.env.EXPO_PUBLIC_API_URL}/api/reservation/${reservationId}/get-all-users`, "GET");
             }
@@ -62,14 +64,13 @@ const AddPlayerToReservationModal: React.FC<AddPlayerToReservationModalProps> = 
         setLoading(true);
 
         if (formData && setFormData) {
-            formData.players ??= [];
+            // @ts-ignore
+            formData.players ??= [null, null, null, null];
 
-            if (formData.players.some((player: User) => player.id === user.id)) {
-                Alert.alert("Error", "Igrač je već dodan.");
-                setLoading(false);
-                return;
+            if (playerIndexSelected !== null) {
+                formData.players[playerIndexSelected] = user;
             }
-            formData.players.push(user);
+
             setFormData(formData);
             setPlayerIndexSelected(null);
             return;
@@ -77,7 +78,8 @@ const AddPlayerToReservationModal: React.FC<AddPlayerToReservationModalProps> = 
 
         let response: MessageResponse | ErrorResponse;
         try {
-            response = await dataFetch<MessageResponse>(`${process.env.EXPO_PUBLIC_API_URL}/api/reservation/${reservationId}/add-player/${user.id}`, "GET");
+            response = await dataFetch<MessageResponse>(`${process.env.EXPO_PUBLIC_API_URL}/api/reservation/${reservationId}/add-player/${user.id}`, "POST",
+                {playerIndexSelected});
         } catch (error) {
             setLoading(false);
             Alert.alert("Error", error instanceof Error ? error.message : "An error occurred while adding the player.");
