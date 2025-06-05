@@ -28,7 +28,7 @@ const ReservationDetails: React.FC<ReservationPickerProps> = ({changeFormData, f
     return (
         <View>
             <ImageBackground
-                source={require("@/assets/images/2187ab84c89911225771d65328d846ef89f43593.png")}
+                source={require("@/assets/images/no-image.jpg")}
                 resizeMode="cover"
                 style={styles.imageBackground}
                 imageStyle={{borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}
