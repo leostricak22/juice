@@ -3,10 +3,15 @@ import React, {useEffect} from "react";
 import {Alert, Button} from "react-native";
 import * as Linking from "expo-linking";
 import ActionButton from "@/src/components/button/ActionButton";
-import { useRouter } from "expo-router";
+import {useRouter} from "expo-router";
 import {useUserData} from "@/src/context/UserContext";
+import dataFetch from "@/src/utils/DataFetch";
+import Reservation from "@/src/models/entity/Reservation";
+import MessageResponse from "@/src/models/dto/MessageResponse";
+import ErrorResponse from "@/src/models/dto/ErrorResponse";
+import {isResponseError} from "@/src/utils/Validation";
 
-async function fetchPaymentSheetParams(amount:number, data: any, userData: any) {
+async function fetchPaymentSheetParams(amount: number, data: any, userData: any) {
     return await fetch(process.env.EXPO_PUBLIC_API_URL + "/api/payment/create-payment-intent", {
         method: "POST",
         headers: {
@@ -32,11 +37,11 @@ async function fetchPaymentSheetParams(amount:number, data: any, userData: any) 
     }).then(async (res) => await res.json());
 }
 
-export default function CheckoutForm({amount, data}: {amount:number, data: any}) {
+export default function CheckoutForm({amount, data, setPaymentMethod}: { amount: number, data: any, setPaymentMethod: (method: string) => void }) {
     const {initPaymentSheet, presentPaymentSheet} = useStripe();
     const [loading, setLoading] = React.useState(false);
     const router = useRouter();
-    const { userData } = useUserData();
+    const {userData} = useUserData();
 
     if (!userData) {
         return null
@@ -82,7 +87,24 @@ export default function CheckoutForm({amount, data}: {amount:number, data: any})
             console.log(error.message)
             Alert.alert(`Error: ${error.message}`);
         } else {
-            router.push("/success");
+            let response: Reservation | MessageResponse | ErrorResponse;
+            setPaymentMethod(null)
+
+            try {
+                response = await dataFetch(`${process.env.EXPO_PUBLIC_API_URL}/api/reservation/last-user-reservation`, "GET");
+            } catch (e) {
+                Alert.alert("Error", "An error occurred while fetching the last reservation.");
+                console.error(e);
+            }
+
+
+            if (isResponseError(response)) {
+                Alert.alert("Error", "An error occurred while fetching the last reservation.");
+                return;
+            }
+
+            const reservation = response as Reservation;
+            router.push("/reservation/view/" + reservation.id);
         }
     }
 
@@ -99,10 +121,10 @@ export default function CheckoutForm({amount, data}: {amount:number, data: any})
     }, []);
 
     if (loading) {
-        return <ActionButton text={"Učitavanje..."} color={"black"} disabled={true} />
+        return <ActionButton text={"Učitavanje..."} color={"black"} disabled={true}/>
     }
 
     return (
-        <ActionButton text={"Rezerviraj"} color={"black"} onClick={handlePayment} />
+        <ActionButton text={"Rezerviraj"} color={"black"} onClick={handlePayment}/>
     )
 }

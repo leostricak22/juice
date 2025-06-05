@@ -51,4 +51,9 @@ public class ReservationController {
                                                                            @RequestBody ReservationPlayerAddRemoveRequest request) {
         return ResponseEntity.ok(reservationService.removePlayerFromReservation(id, userId, request.getPlayerIndexSelected()));
     }
+
+    @GetMapping("/last-user-reservation")
+    public ResponseEntity<ReservationResponse> getLastUserReservation() {
+        return ResponseEntity.ok(reservationService.getLastUserReservation());
+    }
 }

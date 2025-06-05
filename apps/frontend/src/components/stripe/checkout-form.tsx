@@ -14,7 +14,7 @@ async function openPaymentModal(amount: number) {
     router.push(url);
 }
 
-export default function CheckoutForm({amount, data}: {amount:number, data:any}) {
+export default function CheckoutForm({amount, data, setPaymentMethod}: {amount:number, data:any, setPaymentMethod:any}) {
     return (
         <ActionButton text={"Rezerviraj"} color={"black"} onClick={() => openPaymentModal(amount)} />
     )

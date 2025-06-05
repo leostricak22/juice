@@ -146,7 +146,7 @@ const ReservationDetails: React.FC<ReservationPickerProps> = ({changeFormData, f
                         <View style={styles.reservationContainer}>
                             <Text style={[textStyles.headingSmall, textStyles.alignRight]}>Cijena 41.50€</Text>
                             <Text style={[textStyles.text, {color: "gray", marginBottom: 5}, textStyles.alignRight]}>Klikom na gumb prihvaćaš uvjete</Text>
-                            <CheckoutForm amount={4150} data={formData}/>
+                            <CheckoutForm amount={4150} data={formData} setPaymentMethod={setPaymentMethod}/>
                         </View>
                     </Portal>
                 }

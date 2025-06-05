@@ -88,19 +88,7 @@ public class ReservationService {
             throw new AppException(404, "Reservation not found");
         }
         Reservation reservation = reservationOpt.get();
-        return ReservationResponse.builder()
-                .id(reservation.getId())
-                .user(objectMapper.convertValue(reservation.getUser(), UserResponse.class))
-                .hall(reservation.getHall())
-                .date(reservation.getDate())
-                .timeFrom(reservation.getTimeFrom())
-                .timeTo(reservation.getTimeTo())
-                .players(reservation.getPlayers().stream()
-                        .map(player -> player == null ? null :  objectMapper.convertValue(player, UserResponse.class))
-                        .toList())
-                .terrain(reservation.getTerrain())
-                .isPayed(reservation.isPayed())
-                .build();
+        return convertToResponse(reservation);
     }
 
     public List<UserResponse> getAllUsersForReservation(ReservationAllUsersRequest request) {
@@ -159,5 +147,32 @@ public class ReservationService {
         reservation.getPlayers().set(playerIndexSelected, null);
         reservationRepository.save(reservation);
         return getReservationById(id);
+    }
+
+    public ReservationResponse getLastUserReservation() {
+        User user = jwtService.getUserFromSession();
+        List<Reservation> reservations = reservationRepository.findByUserId(user.getId());
+        if (reservations.isEmpty()) {
+            throw new AppException(404, "No reservations found for user");
+        }
+
+        Reservation lastReservation = reservations.getLast();
+        return convertToResponse(lastReservation);
+    }
+
+    private ReservationResponse convertToResponse(Reservation reservation) {
+        return ReservationResponse.builder()
+                .id(reservation.getId())
+                .user(objectMapper.convertValue(reservation.getUser(), UserResponse.class))
+                .hall(reservation.getHall())
+                .date(reservation.getDate())
+                .timeFrom(reservation.getTimeFrom())
+                .timeTo(reservation.getTimeTo())
+                .players(reservation.getPlayers().stream()
+                        .map(player -> player == null ? null : objectMapper.convertValue(player, UserResponse.class))
+                        .toList())
+                .terrain(reservation.getTerrain())
+                .isPayed(reservation.isPayed())
+                .build();
     }
 }
