@@ -15,6 +15,7 @@ import {handleUserDataChange} from "@/src/utils/UserDataChange";
 import DashboardMenu from "@/src/components/dashboard/DashboardMenu";
 import Navigation from "@/src/components/navigation/Navigation";
 import UserReservations from "@/src/components/homepage/UserReservations";
+import Shop from "@/src/components/homepage/Shop";
 
 const Dashboard: React.FC<PageProps> = ({ userData }) => {
     const router = useRouter();
@@ -36,7 +37,7 @@ const Dashboard: React.FC<PageProps> = ({ userData }) => {
                             <UserReservations />
                         </View> :
                         selectedSection === 1 ? <View>
-                            <Text>Trgovina</Text>
+                            <Shop />
                         </View> :
                         selectedSection === 2 ? <View>
                             <Text>AI</Text>
