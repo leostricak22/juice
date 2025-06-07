@@ -5,7 +5,7 @@ import {
     NativeSyntheticEvent,
     TextInputChangeEventData,
     Pressable,
-    ScrollView
+    ScrollView, Image
 } from "react-native";
 import Input from "@/src/components/input/Input";
 import ActionButton from "@/src/components/button/ActionButton";
@@ -26,6 +26,9 @@ import formStyles from "@/assets/styles/form";
 import {handleGoogleLogin} from "@/src/utils/OAuth2Util";
 import {isResponseError} from "@/src/utils/Validation";
 import ScreenContainerView from "@/src/components/ScreenContainerView";
+import Icon from "@/src/components/icon/Icon";
+
+import * as ImagePicker from 'expo-image-picker';
 
 function Register() {
     const router = useRouter();
@@ -39,6 +42,7 @@ function Register() {
         confirmPassword: "",
         role: "USER",
         location: "ZAGREBACKA",
+        profileImage: undefined
     });
     const [error, setError] = useState<any>({
         global: "",
@@ -52,8 +56,8 @@ function Register() {
 
     const handleFormChange = (key: string, event: NativeSyntheticEvent<TextInputChangeEventData>) => {
         const text = event?.nativeEvent?.text || '';
-        setFormData((prevState) => ({ ...prevState, [key]: text }));
-        setError((prevState:any) => ({ ...prevState, [key]: "" }));
+        setFormData((prevState) => ({...prevState, [key]: text}));
+        setError((prevState: any) => ({...prevState, [key]: ""}));
     };
 
     const isFormDataValid = (data: RegisterRequest) => {
@@ -99,8 +103,8 @@ function Register() {
         return true;
     };
 
-    const handleSubmit = async () =>{
-        if(!isFormDataValid(formData))
+    const handleSubmit = async () => {
+        if (!isFormDataValid(formData))
             return;
 
         let response: AuthenticationResponse | MessageResponse | ErrorResponse;
@@ -111,14 +115,14 @@ function Register() {
                 "POST",
                 formData);
         } catch (error) {
-            setError((prevState:any) => ({ ...prevState, global: "An error occurred during registration" }));
+            setError((prevState: any) => ({...prevState, global: "An error occurred during registration"}));
             return;
         }
 
         if (isResponseError(response)) {
             if ((response as ErrorResponse).fields) {
                 const fields = Object.keys((response as ErrorResponse).fields);
-                const newError = { ...error };
+                const newError = {...error};
                 fields.forEach((field) => {
                     newError[field] = (response as ErrorResponse).fields[field];
                 });
@@ -131,55 +135,92 @@ function Register() {
         router.push("/dashboard");
     };
 
+    const handleImagePick = async () => {
+        const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        if (!permissionResult.granted) {
+            alert("Permission to access media library is required!");
+            return;
+        }
+
+        const pickerResult = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images, // Yes, this still works
+            base64: true,
+            allowsEditing: false, // optional, but needed if you pass advanced options
+            quality: 0.7,
+        });
+
+        if (!pickerResult.canceled && pickerResult.assets?.length > 0) {
+            const asset = pickerResult.assets[0];
+
+            if (asset.base64) {
+                console.log("Base64:", asset.base64.substring(0, 50) + "...");
+                setFormData((prevState) => ({
+                    ...prevState,
+                    profileImage: `data:image/jpeg;base64,${asset.base64}`,
+                }));
+            } else {
+                console.warn("Asset did not include base64 data");
+            }
+        }
+    };
+
+
     return (
-        <ScreenContainerView>
+        <ScreenContainerView backgroundColor={"#F57E20"}>
             <View style={containerStyles.screenContainerContent}>
                 <View style={formStyles.formContainer}>
-                    <Text style={[textStyles.heading, textStyles.alignCenter]}>Sign up</Text>
+                    <Icon name={"juiceLogoOnAuthPages"} size={300}/>
                     {error && <Text style={textStyles.error}>{error.global}</Text>}
+                    <Pressable style={styles.profileImageContainer} onPress={handleImagePick}>
+                        {formData.profileImage ? (
+                            <Image
+                                source={{uri: formData.profileImage}}
+                                style={{width: 100, height: 100, borderRadius: 50}}
+                            />
+                        ) : (
+                            <Icon name={"profileImagePicker"} size={100}/>
+                        )}
+                    </Pressable>
                     <Input
-                        placeholder="Name"
+                        placeholder="Ime"
                         value={formData.name}
                         onInputChange={(event) => handleFormChange("name", event)}
                         error={error.name}
                     />
                     <Input
-                        placeholder="Surname"
+                        placeholder="Prezime"
                         value={formData.surname}
                         onInputChange={(event) => handleFormChange("surname", event)}
                         error={error.surname}
                     />
                     <Input
-                        placeholder="Username"
+                        placeholder="Korisničko ime"
                         value={formData.username}
                         onInputChange={(event) => handleFormChange("username", event)}
                         error={error.username}
                     />
                     <Input
-                        placeholder="Email"
+                        placeholder="E-mail"
                         value={formData.email}
                         onInputChange={(event) => handleFormChange("email", event)}
                         error={error.email}
                     />
                     <Input
-                        placeholder="Password"
+                        placeholder="Lozinka"
                         value={formData.password}
                         onInputChange={(event) => handleFormChange("password", event)}
                         type={"password"}
                         error={error.password}
                     />
                     <Input
-                        placeholder="Confirm Password"
+                        placeholder="Potvrda lozinke"
                         value={formData.confirmPassword}
                         onInputChange={(event) => handleFormChange("confirmPassword", event)}
                         type={"password"}
                         error={error.confirmPassword}
                     />
-                    <ActionButton text={"Sign up"} color={"orange"} onClick={handleSubmit} />
-                    <ActionButton text={"Sign up with Google"} icon={"google"} color={"black"} onClick={() => handleGoogleLogin(setError)} />
-                    <Pressable onPress={() => router.push("/auth/login")}>
-                        <Text style={textStyles.text}>Already have an account? Sign in here.</Text>
-                    </Pressable>
+                    <ActionButton text={"Registracija"} color={"black"} onClick={handleSubmit}/>
                 </View>
             </View>
         </ScreenContainerView>
@@ -187,3 +228,16 @@ function Register() {
 }
 
 export default WithNoAuth(Register);
+
+const styles = StyleSheet.create({
+    profileImageContainer: {
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+        borderColor: "#ccc",
+        alignItems: "center",
+        justifyContent: "center",
+        marginBottom: 20,
+        top: -20
+    },
+});

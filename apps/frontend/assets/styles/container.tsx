@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         paddingBottom: 20,
         minHeight: '100%',
-        backgroundColor: "#fff",
+        backgroundColor: "white",
         width: '100%',
     },
     screenContainerCenter: {

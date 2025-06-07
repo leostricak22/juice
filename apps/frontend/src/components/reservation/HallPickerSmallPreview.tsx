@@ -65,7 +65,7 @@ const HallPickerSmallPreview: React.FC<{
                 ]}
             >
                 <ImageBackground
-                    source={require("@/assets/images/no-image.jpg")}
+                    source={hall.image ? {uri: hall.image} : require("@/assets/images/no-image.jpg")}
                     resizeMode="cover"
                     style={styles.imageBackground}
                     imageStyle={{ borderRadius: 15 }}

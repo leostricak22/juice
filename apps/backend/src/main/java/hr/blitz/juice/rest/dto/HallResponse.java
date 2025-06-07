@@ -9,4 +9,5 @@ public class HallResponse {
     private String id;
     private String name;
     private String address;
+    private String image;
 }

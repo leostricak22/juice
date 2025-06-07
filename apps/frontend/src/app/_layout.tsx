@@ -2,7 +2,7 @@ import { Stack, usePathname } from "expo-router";
 import React, { useEffect, useState } from "react";
 import * as Font from "expo-font";
 import Loader from "@/src/components/loader/Loader";
-import { StatusBar } from "react-native";
+import {KeyboardAvoidingView, Platform, StatusBar} from "react-native";
 import Navbar from "@/src/components/navbar/Navbar";
 import { UserProvider } from "@/src/context/UserContext";
 import StripeProvider from "@/src/components/stripe/stripe-provider";
@@ -10,24 +10,6 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Host } from 'react-native-portalize';
 
 export default function RootLayout() {
-    const [fontsLoaded, setFontsLoaded] = useState(false);
-    const pathname = usePathname();
-
-    useEffect(() => {
-        async function loadFonts() {
-            await Font.loadAsync({
-                "Tektur": require("@/assets/fonts/Tektur-Regular.ttf"),
-                "Tektur-Bold": require("@/assets/fonts/Tektur-Bold.ttf"),
-            });
-            setFontsLoaded(true);
-        }
-
-        loadFonts();
-    }, []);
-
-    if (!fontsLoaded && pathname !== "/") {
-        return <Loader />;
-    }
 
     return (
         <SafeAreaProvider>
@@ -37,7 +19,13 @@ export default function RootLayout() {
                     <UserProvider>
                         <Host>
                             <Navbar />
+                            <KeyboardAvoidingView
+                                style={{ flex: 1 }}
+                                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                                keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0} // Adjust if needed
+                            >
                             <Stack screenOptions={{ headerShown: false }} />
+                            </KeyboardAvoidingView>
                         </Host>
                     </UserProvider>
                 </StripeProvider>

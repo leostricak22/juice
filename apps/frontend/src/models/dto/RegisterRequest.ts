@@ -7,5 +7,5 @@ export default interface RegisterRequest {
     confirmPassword: string;
     role: string;
     location: string;
-    profilePicture?: string;
+    profileImage?: string;
 }

@@ -28,7 +28,7 @@ const ReservationDetails: React.FC<ReservationPickerProps> = ({changeFormData, f
     return (
         <View>
             <ImageBackground
-                source={require("@/assets/images/no-image.jpg")}
+                source={formData?.hall?.image ? {uri: formData.hall.image} : require("@/assets/images/no-image.jpg")}
                 resizeMode="cover"
                 style={styles.imageBackground}
                 imageStyle={{borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}
@@ -75,13 +75,15 @@ const ReservationDetails: React.FC<ReservationPickerProps> = ({changeFormData, f
                             >
                                 <Image
                                     source={
-                                        player?.profilePicture ??
+                                        player.profileImage ?
+                                        {uri: player.profileImage} :
                                         require("@/assets/images/account/default-image.png")
                                     }
                                     style={{
                                         width: "100%",
                                         height: "100%",
                                         resizeMode: "cover",
+                                        borderRadius: 50,
                                     }}
                                 />
                             </TouchableOpacity>

@@ -22,4 +22,5 @@ public class Hall extends Auditable<String> {
     private String name;
     private String address;
     private List<Terrain> terrains;
+    private String image;
 }

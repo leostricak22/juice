@@ -72,7 +72,7 @@ const RemovePlayerFromReservationModal: React.FC<RemovePlayerToReservationModalP
                 <Text style={textStyles.headingSmall}>Ukloni igrača?</Text>
                 <View style={styles.userContainer}>
                     <Image style={styles.userImage}
-                           source={user.profilePicture ?? require("@/assets/images/account/default-image.png")}/>
+                           source={user.profileImage ? {uri: user.profileImage} : require("@/assets/images/account/default-image.png")}/>
                     <Text style={textStyles.headingSmallNoBold}>{user.name} {user.surname}</Text>
                 </View>
                 <View style={styles.buttonSection}>

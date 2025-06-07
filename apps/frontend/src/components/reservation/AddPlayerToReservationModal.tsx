@@ -118,7 +118,7 @@ const AddPlayerToReservationModal: React.FC<AddPlayerToReservationModalProps> = 
                             <View key={user.id} style={styles.userContainer}>
                                 <View style={styles.userInfo}>
                                     <Image style={styles.userImage}
-                                           source={user.profilePicture ?? require("@/assets/images/account/default-image.png")}/>
+                                           source={user.profileImage ? {uri: user.profileImage} : require("@/assets/images/account/default-image.png")}/>
                                     <Text style={textStyles.headingSmallNoBold}>{user.name} {user.surname}</Text>
                                 </View>
                                 <TouchableOpacity

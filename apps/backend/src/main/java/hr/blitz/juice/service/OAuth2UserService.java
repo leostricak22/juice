@@ -36,6 +36,19 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         return new UserPrincipal(user, oAuth2User.getAttributes());
     }
 
+    private String encodeImageToBase64(String imageUrl) {
+        try {
+            java.net.URL url = new java.net.URL(imageUrl);
+            java.io.InputStream is = url.openStream();
+            byte[] bytes = is.readAllBytes();
+            is.close();
+            return "data:image/jpeg;base64," + java.util.Base64.getEncoder().encodeToString(bytes);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+
     private User findOrCreateUser(String email, Map<String, Object> attributes) {
         return userRepository.findByEmail(email).orElseGet(() -> userRepository.save(User.builder()
                         .name((String) attributes.get("name"))
@@ -43,6 +56,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
                         .username(email)
                         .role(Role.USER)
                         .registrationType(RegistrationType.GOOGLE)
-                        .build()));
+                .profileImage(attributes.get("picture") != null ? encodeImageToBase64((String) attributes.get("picture")) : null)
+                .build()));
     }
 }

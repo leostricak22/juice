@@ -66,7 +66,7 @@ const ReservationTerrainPicker: React.FC<ReservationPickerProps> = ({
     return (
         <View style={styles.container}>
             <ImageBackground
-                source={require("@/assets/images/no-image.jpg")}
+                source={formData?.hall?.image ? {uri: formData.hall.image} : require("@/assets/images/no-image.jpg")}
                 resizeMode="cover"
                 style={styles.imageBackground}
                 imageStyle={{borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}

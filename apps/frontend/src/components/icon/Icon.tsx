@@ -85,6 +85,12 @@ const Icon: FC<IconProps> = ({ name, size = 24, color="white", ...props })=> {
         case 'personSearch':
             IconComponent = require('@/assets/images/icons/ts/PersonSearch').default;
             break;
+        case 'juiceLogoOnAuthPages':
+            IconComponent = require('@/assets/images/icons/ts/JuiceLogoOnAuthPages').default;
+            break;
+        case 'profileImagePicker':
+            IconComponent = require('@/assets/images/icons/ts/ProfileImagePicker').default;
+            break;
         default:
             return null;
     }

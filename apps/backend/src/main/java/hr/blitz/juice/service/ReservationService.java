@@ -13,7 +13,6 @@ import hr.blitz.juice.rest.dto.ReservationRequest;
 import hr.blitz.juice.rest.dto.ReservationResponse;
 import hr.blitz.juice.rest.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

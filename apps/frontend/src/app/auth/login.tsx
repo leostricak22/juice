@@ -3,7 +3,7 @@ import {
     NativeSyntheticEvent,
     TextInputChangeEventData,
     View,
-    Text, Pressable, Button,
+    Text, Pressable,
 } from 'react-native';
 import LoginRequest from "@/src/models/dto/LoginRequest";
 import {useLocalSearchParams, useRouter} from "expo-router";
@@ -15,7 +15,6 @@ import ActionButton from "@/src/components/button/ActionButton";
 import Input from "@/src/components/input/Input";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import WithNoAuth from "@/src/components/hoc/WithNoAuth";
-import Navbar from "@/src/components/navbar/Navbar";
 
 import textStyles from "@/assets/styles/text";
 import containerStyles from "@/assets/styles/container";
@@ -25,10 +24,11 @@ import ErrorResponse from "@/src/models/dto/ErrorResponse";
 import ScreenContainerView from "@/src/components/ScreenContainerView";
 import {useUserData} from "@/src/context/UserContext";
 import {handleUserDataChange} from "@/src/utils/UserDataChange";
+import Icon from "@/src/components/icon/Icon";
 
 const Login: React.FC = () => {
     const params = useLocalSearchParams();
-    const { setUserData } = useUserData();
+    const {setUserData} = useUserData();
 
     const router = useRouter();
     const [formData, setFormData] = useState<LoginRequest>({
@@ -45,7 +45,7 @@ const Login: React.FC = () => {
 
     const handleFormChange = (key: string, event: NativeSyntheticEvent<TextInputChangeEventData>) => {
         const text = event?.nativeEvent?.text || '';
-        setFormData((prevState) => ({ ...prevState, [key]: text }));
+        setFormData((prevState) => ({...prevState, [key]: text}));
     };
 
     const handleSubmit = async () => {
@@ -73,34 +73,38 @@ const Login: React.FC = () => {
     };
 
     return (
-        <ScreenContainerView>
-            <View style={containerStyles.screenContainerContentCenter}>
-                <View style={formStyles.formContainer}>
-                    <Text style={[textStyles.heading, textStyles.alignCenter]}>Sign in</Text>
-                    {error && <Text style={textStyles.error}>{error}</Text>}
-                    <Input
-                        placeholder="Email"
-                        value={formData.email}
-                        onInputChange={(event:any) => handleFormChange("email", event)}
-                    />
-                    <Input
-                        placeholder="Password"
-                        value={formData.password}
-                        onInputChange={(event:any) => handleFormChange("password", event)}
-                        type={"password"}
-                    />
-                    <ActionButton text={"Sign in"}
-                                  color={"orange"}
-                                  onClick={handleSubmit}
-                    />
-                    <ActionButton text={"Sign in with Google"}
-                                  color={"black"}
-                                  onClick={() => handleGoogleLogin(setError)}
-                                  icon={"google"}
-                    />
-                    <Pressable onPress={() => router.push("/auth/register")}>
-                        <Text style={textStyles.text}>Don't have an account? Sign up here.</Text>
-                    </Pressable>
+        <ScreenContainerView backgroundColor={"#F57E20"}>
+            <View style={[containerStyles.screenContainerContentCenter, {justifyContent: "space-between"}]}>
+                <View style={{width: "100%", alignItems: "center", marginTop: 20}}>
+                    <Icon name={"juiceLogoOnAuthPages"} size={300}/>
+                    <View style={formStyles.formContainer}>
+                        {error && <Text style={[textStyles.error]}>{error}</Text>}
+                        <Input
+                            placeholder="E-mail"
+                            value={formData.email}
+                            onInputChange={(event: any) => handleFormChange("email", event)}
+                        />
+                        <Input
+                            placeholder="Lozinka"
+                            value={formData.password}
+                            onInputChange={(event: any) => handleFormChange("password", event)}
+                            type={"password"}
+                        />
+                        <ActionButton text={"Prijava"}
+                                      color={"black"}
+                                      onClick={handleSubmit}
+                        />
+                        <Text>ili</Text>
+                        <ActionButton text={"Sign in with Google"}
+                                      color={"white"}
+                                      onClick={() => handleGoogleLogin(setError)}
+                                      icon={"google"}
+                        />
+                    </View>
+                </View>
+                <View style={{width: "100%", alignItems: "center", marginTop: 20}}>
+                    <Text style={textStyles.text}>Nemaš račun?</Text>
+                    <ActionButton text={"Registracija"} color={"white"} onClick={() => router.push("/auth/register")}/>
                 </View>
             </View>
         </ScreenContainerView>
