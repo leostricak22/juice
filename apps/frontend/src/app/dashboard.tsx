@@ -19,14 +19,7 @@ import Shop from "@/src/components/homepage/Shop";
 
 const Dashboard: React.FC<PageProps> = ({ userData }) => {
     const router = useRouter();
-    const { setUserData } = useUserData();
     const [selectedSection, setSelectedSection] = useState<number>(0);
-
-    const handleLogout = async () => {
-        await AsyncStorage.removeItem('token');
-        await handleUserDataChange(setUserData)
-        router.push("/auth/login");
-    }
 
     return (
         <>
@@ -43,7 +36,6 @@ const Dashboard: React.FC<PageProps> = ({ userData }) => {
                             <Text>AI</Text>
                         </View> :
                         selectedSection === 3 ? <View>
-                            <ActionButton text={"Logout"} color={"orange"} onClick={handleLogout} />
                         </View> : null
                     }
                 </View>
