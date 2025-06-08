@@ -16,24 +16,24 @@ import ActionButton from "@/src/components/button/ActionButton";
 import {Portal} from "react-native-portalize";
 
 const mockTerrains = [
-    {id: "6840216d79130150abd9e52f", name: "Terra 1"},
-    {id: "2", name: "Terra 2"},
-    {id: "3", name: "Terra 3"},
-    {id: "4", name: "Terra 4"},
+    {id: "68446a023bc1be235888c264", name: "Terra 1"},
+    {id: "68446a133bc1be235888c266", name: "Terra 2"},
+    {id: "68446a213bc1be235888c268", name: "Terra 3"},
+    {id: "68446a2f3bc1be235888c26a", name: "Terra 4"},
 ];
 
 const mockReservedTimes = [
-    {terrainId: "6840216d79130150abd9e52f", timeFrom: "10:00", timeTo: "11:30", date: Date.now()},
-    {terrainId: "1", timeFrom: "11:30", timeTo: "12:30", date: Date.now()},
-    {terrainId: "1", timeFrom: "13:00", timeTo: "14:00", date: Date.now()},
-    {terrainId: "2", timeFrom: "12:00", timeTo: "13:30", date: Date.now()},
-    {terrainId: "2", timeFrom: "14:00", timeTo: "15:00", date: Date.now()},
-    {terrainId: "2", timeFrom: "16:00", timeTo: "17:00", date: Date.now()},
-    {terrainId: "3", timeFrom: "14:00", timeTo: "15:30", date: Date.now()},
-    {terrainId: "3", timeFrom: "16:00", timeTo: "17:30", date: Date.now()},
-    {terrainId: "4", timeFrom: "09:30", timeTo: "11:00", date: Date.now()},
-    {terrainId: "4", timeFrom: "12:00", timeTo: "13:00", date: Date.now()},
-    {terrainId: "4", timeFrom: "15:00", timeTo: "16:30", date: Date.now()},
+    {terrainId: "68446a023bc1be235888c264", timeFrom: "10:00", timeTo: "11:30", date: Date.now()},
+    {terrainId: "68446a023bc1be235888c264", timeFrom: "11:30", timeTo: "12:30", date: Date.now()},
+    {terrainId: "68446a023bc1be235888c264", timeFrom: "13:00", timeTo: "14:00", date: Date.now()},
+    {terrainId: "68446a133bc1be235888c266", timeFrom: "12:00", timeTo: "13:30", date: Date.now()},
+    {terrainId: "68446a133bc1be235888c266", timeFrom: "14:00", timeTo: "15:00", date: Date.now()},
+    {terrainId: "68446a213bc1be235888c268", timeFrom: "16:00", timeTo: "17:00", date: Date.now()},
+    {terrainId: "68446a213bc1be235888c268", timeFrom: "14:00", timeTo: "15:30", date: Date.now()},
+    {terrainId: "68446a213bc1be235888c268", timeFrom: "16:00", timeTo: "17:30", date: Date.now()},
+    {terrainId: "68446a2f3bc1be235888c26a", timeFrom: "09:30", timeTo: "11:00", date: Date.now()},
+    {terrainId: "68446a2f3bc1be235888c26a", timeFrom: "12:00", timeTo: "13:00", date: Date.now()},
+    {terrainId: "68446a2f3bc1be235888c26a", timeFrom: "15:00", timeTo: "16:30", date: Date.now()},
 ];
 
 const ReservationTerrainPicker: React.FC<ReservationPickerProps> = ({

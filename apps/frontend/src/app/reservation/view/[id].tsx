@@ -31,6 +31,7 @@ const ViewReservation: React.FC = () => {
     const [reservation, setReservation] = useState<Reservation | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
+    const [isReservationPassed, setIsReservationPassed] = useState<boolean>(false);
     const [playerIndexSelected, setPlayerIndexSelected] = useState<number | null>(null);
 
     const getReservation = async () => {
@@ -65,11 +66,6 @@ const ViewReservation: React.FC = () => {
         setReservation(prev => prev ? {...prev, result: [[6, 3, 6], [4, 6, 2]]} : prev);
     }
 
-    const isReservationPassed = new Date(reservation.date) < new Date() || (new Date(reservation.date).getTime() === new Date().getTime() && reservation.timeTo < new Date().toLocaleTimeString("hr", {
-        hour: "2-digit",
-        minute: "2-digit"
-    }));
-
     const winnerTeam =
         reservation.result &&
         reservation.result.length === 2 &&
@@ -97,7 +93,11 @@ const ViewReservation: React.FC = () => {
                 style={styles.imageBackground}
                 imageStyle={{borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}
             >
-                <Text style={styles.text}>{reservation.hall.name}</Text>
+                <Pressable onPress={() => {
+                    setIsReservationPassed((prev) => !prev);
+                }}>
+                    <Text style={styles.text}>{reservation.hall.name}</Text>
+                </Pressable>
             </ImageBackground>
             <View style={styles.container}>
                 <View style={[styles.selectedReservationDateAndTime, {paddingHorizontal: 16}]}>

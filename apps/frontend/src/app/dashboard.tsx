@@ -16,6 +16,7 @@ import DashboardMenu from "@/src/components/dashboard/DashboardMenu";
 import Navigation from "@/src/components/navigation/Navigation";
 import UserReservations from "@/src/components/homepage/UserReservations";
 import Shop from "@/src/components/homepage/Shop";
+import Competitions from "@/src/components/homepage/Competitions";
 
 const Dashboard: React.FC<PageProps> = ({ userData }) => {
     const router = useRouter();
@@ -36,7 +37,9 @@ const Dashboard: React.FC<PageProps> = ({ userData }) => {
                             <Text>AI</Text>
                         </View> :
                         selectedSection === 3 ? <View>
-                        </View> : null
+                            <Competitions />
+                        </View> :
+                        null
                     }
                 </View>
             </ScreenContainerView>

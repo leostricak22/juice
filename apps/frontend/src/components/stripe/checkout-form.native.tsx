@@ -12,6 +12,8 @@ import ErrorResponse from "@/src/models/dto/ErrorResponse";
 import {isResponseError} from "@/src/utils/Validation";
 
 async function fetchPaymentSheetParams(amount: number, data: any, userData: any) {
+    console.log("payment intent")
+    console.log(data)
     return await fetch(process.env.EXPO_PUBLIC_API_URL + "/api/payment/create-payment-intent", {
         method: "POST",
         headers: {
@@ -42,6 +44,8 @@ export default function CheckoutForm({amount, data, setPaymentMethod}: { amount:
     const [loading, setLoading] = React.useState(false);
     const router = useRouter();
     const {userData} = useUserData();
+
+    console.log(data)
 
     if (!userData) {
         return null
@@ -113,6 +117,8 @@ export default function CheckoutForm({amount, data, setPaymentMethod}: { amount:
     }
 
     useEffect(() => {
+        console.log(1231231232113)
+        console.log(data)
         const initializePaymentSheetOnRender = async () => {
             await initializePaymentSheet();
         }

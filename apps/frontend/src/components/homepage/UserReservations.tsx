@@ -78,7 +78,7 @@ const UserReservations: React.FC = () => {
                                 </View>
 
                                 <View style={styles.reservationRowContainer}>
-                                    <Text style={textStyles.headingSmallNoBold}>
+                                    <Text style={[textStyles.headingSmallNoBold,{maxWidth:200}]}>
                                         {reservation.terrain.name}
                                     </Text>
                                     <Text style={textStyles.headingSmall}>

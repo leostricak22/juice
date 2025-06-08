@@ -97,6 +97,12 @@ const Icon: FC<IconProps> = ({ name, size = 24, color="white", ...props })=> {
         case "crown":
             IconComponent = require('@/assets/images/icons/ts/Crown').default;
             break;
+        case "location":
+            IconComponent = require('@/assets/images/icons/ts/Location').default;
+            break;
+        case "schedule":
+            IconComponent = require('@/assets/images/icons/ts/Schedule').default;
+            break;
         default:
             return null;
     }

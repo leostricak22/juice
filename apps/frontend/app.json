@@ -6,17 +6,23 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "juice",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "ios": {
+      "userInterfaceStyle": "light",
       "supportsTablet": true
     },
     "android": {
+      "userInterfaceStyle": "light",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.leostricak22.juice"
+      "package": "com.leostricak22.juice",
+      "permissions": [
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -25,7 +31,7 @@
     },
     "plugins": [
       ["expo-router", {
-         "origin": "https://cat-allowed-rabbit.ngrok-free.app"
+         "origin": "https://padel-r2mi8.ondigitalocean.app"
       }],
       [
         "@stripe/stripe-react-native",
@@ -49,7 +55,7 @@
     },
     "extra": {
       "router": {
-        "origin": "https://cat-allowed-rabbit.ngrok-free.app"
+        "origin": "https://padel-r2mi8.ondigitalocean.app"
       },
       "eas": {
         "projectId": "951675fa-488e-47ba-96c4-f4f10601a651"

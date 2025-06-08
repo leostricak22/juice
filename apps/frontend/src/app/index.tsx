@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
 import { useUserData } from "@/src/context/UserContext";
+import { Text, View } from "react-native";
 
 export default function Index() {
     const { userData, loading } = useUserData();
@@ -22,8 +23,16 @@ export default function Index() {
     }, [isMounted, loading, userData, router]);
 
     if (loading || !isMounted) {
-        return null;
+        return (
+            <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+                <Text>Loading...</Text>
+            </View>
+        );
     }
 
-    return null;
+    return (
+        <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+            <Text>Redirecting...</Text>
+        </View>
+    );
 }
