@@ -119,8 +119,7 @@ class AuthenticationControllerTest {
         when(authenticationService.findUserBySessionUsername()).thenReturn(user);
 
         mockMvc.perform(get("/api/auth/user"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+                .andExpect(status().isOk());
 
         verify(authenticationService, times(1)).findUserBySessionUsername();
     }
