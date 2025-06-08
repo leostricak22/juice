@@ -44,3 +44,6 @@ Ovim rješenjem, korisnici će imati sve što im je potrebno za uspješno organi
 * Oliver Živčić
 * Zvonimir Škegro
 * Leo Stričak
+
+---
+Tim Blitz, TVZ Mc2 2025
