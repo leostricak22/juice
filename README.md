@@ -27,8 +27,18 @@ Ovim rješenjem, korisnici će imati sve što im je potrebno za uspješno organi
 * Docker
 * Figma
 
+<p align="center">
+  <img src="apps/frontend/assets/images/screens/juice.drawio.png" alt="Logo" />
+</p>
+<p align="center">
+  <img src="apps/frontend/assets/images/screens/deployment.drawio.png" alt="Logo" />
+</p>
+
+
 ## Aplikacija
-* Web verzija: https://juice-frontend-aomia.ondigitalocean.app/
+- [Mobilna aplikacija](https://drive.google.com/file/d/1Lw_QxpAHWWUsm0N9JlbM4b4zn6rA77X9/view?usp=drive_link)
+- [Web verzija](https://juice-frontend-aomia.ondigitalocean.app/)
+
 
 ## Izradili:
 * Oliver Živčić
